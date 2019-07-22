@@ -1,0 +1,37 @@
+{
+    "name": "skrybe",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "build": "webpack --mode production",
+        "dev": "webpack-dev-server --mode development --hot --port 8080",
+        "dev-server": "webpack-dev-server --mode development --hot --host 192.168.1.15 --port 8080"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/eatthatpie/skrybe.git"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "prop-types": "^15.7.2",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.5.5",
+        "@babel/preset-env": "^7.5.5",
+        "@babel/preset-react": "^7.0.0",
+        "babel-loader": "^8.0.6",
+        "css-loader": "^3.1.0",
+        "file-loader": "^4.1.0",
+        "html-loader": "^0.5.5",
+        "html-webpack-plugin": "^3.2.0",
+        "node-sass": "^4.12.0",
+        "prettier": "1.18.2",
+        "sass-loader": "^7.1.0",
+        "style-loader": "^0.23.1",
+        "webpack": "^4.36.1",
+        "webpack-cli": "^3.3.6",
+        "webpack-dev-server": "^3.7.2"
+    }
+}
