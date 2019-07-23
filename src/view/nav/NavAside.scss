@@ -1,0 +1,64 @@
+@import './../../assets/style/variables/variables';
+
+.nav-aside {
+    position: fixed;
+    background-color: #313131;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    padding-top: 72px;
+    z-index: $z-nav-aside;
+
+    > ul {
+        > li {
+            > a {
+                cursor: pointer;
+                display: block;
+                font-size: 1.6rem;
+                padding: 20px 20px;
+
+                &:hover {
+                    color: rgb(49, 152, 105);
+                }
+
+                i {
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+
+    ol {
+        counter-reset: counter -1;
+
+        > li {
+            color: #fff;
+            background-color: #414141;
+            border-top: 2px solid #282828;
+            padding: 20px 20px;
+            cursor: pointer;
+
+            &:before {
+                counter-increment: counter;
+                content: counters(counter, ".") ". "; 
+            }
+
+            &:last-child {
+                border-bottom: 2px solid #282828;
+            }
+
+            > a {
+                > small {
+                    display: block;
+                    font-size: 15px;
+                    color: #bbb;
+                }
+            }
+
+            &:hover {
+                background-color: #515151;
+            }
+        }
+    }
+}
