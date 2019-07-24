@@ -1,0 +1,21 @@
+.color {
+    &-default {
+        color: $default;
+    }
+
+    &-light {
+        color: $light;
+    }
+
+    &-primary {
+        color: $primary;
+    }
+}
+
+.h\:color {
+    &-primary {
+        &:hover {
+            color: $primary;
+        }
+    }
+}
