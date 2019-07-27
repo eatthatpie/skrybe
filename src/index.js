@@ -1,4 +1,4 @@
-import App from '@/container/app/App';
+import App from '@/containers/app/App';
 import createStore from '@/store/createStore';
 import React from 'react';
 import { Provider } from 'react-redux';
