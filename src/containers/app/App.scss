@@ -1,0 +1,9 @@
+@import './../../assets/style/variables/variables';
+
+.app {
+    @media (max-width: $screen-laptop) {
+        .logo {
+            display: none;
+        }
+    }
+}

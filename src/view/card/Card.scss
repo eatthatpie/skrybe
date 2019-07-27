@@ -1,7 +1,14 @@
+@import './../../assets/style/variables/variables';
+
 .card {
     max-width: calc(100% - 692px);
+    box-sizing: border-box;
     width: 660px;
     min-height: 330px;
     padding: 30px 30px;
     outline: 0;
+
+    @media (max-width: $screen-laptop) {
+        max-width: calc(100% - 40px);
+    }
 }
