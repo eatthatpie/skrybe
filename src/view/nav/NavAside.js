@@ -20,7 +20,7 @@ const itemsView = items.map(item => (
     <li className="bg-nav-i bc-bg h:bg-nav-ic">
         <a>
             {item.label}
-            <small className="color-light">{item.desc}</small>
+            <small className="color-light fs-9">{item.desc}</small>
         </a>
     </li>
 ));
@@ -30,7 +30,7 @@ function NavAside(props) {
         <nav className="nav-aside bg-light">
             <ul className="list">
                 <li>
-                    <a className="h:color-primary">
+                    <a className="h:color-primary fs-16">
                         <i className="fas fa-caret-right"></i> Outline
                     </a>
                     <ol className="list">
@@ -38,12 +38,12 @@ function NavAside(props) {
                     </ol>
                 </li>
                 <li>
-                    <a className="h:color-primary">
+                    <a className="h:color-primary fs-16">
                         <i className="fas fa-caret-right"></i> Characters
                     </a>
                 </li>
                 <li>
-                    <a className="h:color-primary">
+                    <a className="h:color-primary fs-16">
                         <i className="fas fa-caret-right"></i> Notes
                     </a>
                 </li>
