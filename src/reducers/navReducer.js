@@ -1,6 +1,9 @@
+import actionTypes from '@/actions/types';
+
 const initialState = {
     outline: {
-        isActive: false,
+        name: 'Outline',
+        isActive: true,
         items: [
             {
                 label: 'One Liner',
@@ -17,23 +20,26 @@ const initialState = {
         ]
     },
     characters: {
+        name: 'Characters',
         isActive: false,
         items: []
     },
     notes: {
+        name: 'Notes',
         isActive: false,
         items: []
     }
 };
 
-export default function navReducer(state = initialState, { name }) {
-    switch (action.type) {
-        case 'NAV_TOGGLE':
+export default function navReducer(state = initialState, { type, name }) {
+    switch (type) {
+        case actionTypes.NAV_TOGGLE:
             const isActive = state[name].isActive;
 
             return {
                 ...state,
                 [name]: {
+                    ...state[name],
                     isActive: !isActive
                 }
             };

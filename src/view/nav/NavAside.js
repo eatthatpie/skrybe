@@ -1,55 +1,55 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { navToggle } from '@/actions/index';
 import './NavAside.scss';
 
-const items = [
-    {
-        label: 'One Liner',
-        desc: 'One line description of your story'
-    },
-    {
-        label: 'Story structure',
-        desc: 'The beginning, the middle and the end'
-    },
-    {
-        label: 'Untitled segment',
-        desc: ''
-    }
-];
-
-const itemsView = items.map(item => (
-    <li className="bg-nav-i bc-bg h:bg-nav-ic">
-        <a>
-            {item.label}
-            <small className="color-light fs-9">{item.desc}</small>
-        </a>
-    </li>
-));
-
 function NavAside(props) {
+    const itemsView = Object.keys(props.nav).map(navName => {
+        const nav = props.nav[navName];
+
+        const childrenView = (
+            <ol className="list">
+                {nav.items.map(item => (
+                    <li className="bg-nav-i bc-bg h:bg-nav-ic">
+                        <a>
+                            {item.label}
+                            <small className="color-light fs-9">{item.desc}</small>
+                        </a>
+                    </li>
+                ))}
+            </ol>
+        );
+
+        return (
+            <li className={nav.isActive ? 'is-active' : ''}>
+                <a
+                    className="h:color-primary fs-16"
+                    data-nav-name={navName}
+                    onClick={handleClick}
+                >
+                    <i className="fas fa-caret-right"></i> {nav.name}
+                </a>
+                {nav.isActive ? childrenView : ''}
+            </li>
+        );
+    });
+
     return (
         <nav className="nav-aside bg-light">
             <ul className="list">
-                <li>
-                    <a className="h:color-primary fs-16">
-                        <i className="fas fa-caret-right"></i> Outline
-                    </a>
-                    <ol className="list">
-                        {itemsView}
-                    </ol>
-                </li>
-                <li>
-                    <a className="h:color-primary fs-16">
-                        <i className="fas fa-caret-right"></i> Characters
-                    </a>
-                </li>
-                <li>
-                    <a className="h:color-primary fs-16">
-                        <i className="fas fa-caret-right"></i> Notes
-                    </a>
-                </li>
+                {itemsView}
             </ul>
         </nav>
     );
+
+    function handleClick(e) {
+        const { dispatch } = props;
+        const name = e.target.getAttribute('data-nav-name');
+
+        dispatch(navToggle({ name }));
+    }
 }
 
-export default NavAside;
+export default connect(state => ({
+    nav: state.nav
+}))(NavAside);

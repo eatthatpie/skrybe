@@ -20,6 +20,14 @@
                     margin-right: 5px;
                 }
             }
+
+            &.is-active {
+                > a {
+                    i {
+                        transform: rotate(90deg);
+                    }
+                }
+            }
         }
     }
 
