@@ -1,6 +1,8 @@
 @import './../../assets/style/variables/variables';
 
 .nav-aside {
+    transition: all 0.15s ease-in-out 0.1s;
+    transform: translateX(-100%);
     position: fixed;
     top: 0;
     left: 0;
@@ -8,6 +10,36 @@
     height: 100%;
     padding-top: 72px;
     z-index: $z-nav-aside;
+
+    &:before {
+        content: '';
+        transition: all 0s ease-in-out 0.15s;
+        position: fixed;
+        top: 0;
+        left: 100%;
+        width: 150px;
+        height: 100%;
+    }
+
+    &:after {
+        content: '';
+        border-radius: 5px;
+        background-color: $light;
+        width: 4px;
+        height: 40px;
+        position: absolute;
+        top: calc(50% - 20px);
+        right: -10px;
+        opacity: 0.612;
+    }
+
+    &:hover {
+        transform: none;
+
+        &:before {
+            transform: scaleX(0);
+        }
+    }
 
     > ul {
         > li {
