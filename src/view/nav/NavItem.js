@@ -6,6 +6,7 @@ function NavItem(props) {
         <ol className="list">
             {props.items.map(item => (
                 <NavSubitem
+                    key={item.label}
                     label={item.label}
                     desc={item.desc}
                 />
