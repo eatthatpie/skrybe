@@ -1,4 +1,4 @@
-import EditorView from '@/view/editor/EditorView';
+import EditorContainer from '@/containers/editor/EditorContainer';
 import Logo from '@/view/logo/Logo';
 import NavContainer from '@/containers/nav/NavContainer';
 import React from 'react';
@@ -10,7 +10,7 @@ function App() {
         <div className="app container">
             <NavContainer />
             <Logo />
-            <EditorView />
+            <EditorContainer />
         </div>
     );
 }

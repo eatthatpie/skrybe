@@ -2,7 +2,7 @@ import Card from '@/view/card/Card';
 import React from 'react';
 import './EditorView.scss';
 
-function EditorView(props) {
+function EditorView() {
     return (
         <div className="editor-view flex">
             <Card />
