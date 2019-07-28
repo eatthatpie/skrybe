@@ -3,7 +3,7 @@ import actionTypes from '@/actions/types';
 const initialState = {
     lastId: 0,
     root: {
-        leadText: '',
+        leadText: 'Write down the one line description of your story.',
         bodyText: '',
         children: []
     }
