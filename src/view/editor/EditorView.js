@@ -6,24 +6,6 @@ class EditorView extends React.Component {
     constructor() {
         super();
     }
-
-    componentDidMount() {
-        this.props.setCard({
-            parentNodeId: 'root',
-            leadText: 'to ciekawe'
-        });
-
-        setTimeout(() => {
-            this.props.setCard({
-                nodeId: '1',
-                bodyText: 'wwaaaaa'
-            });
-
-            setTimeout(() => {
-                console.log(this.props.outlineTree);
-            }, 1000);
-        }, 2000);
-    }
     
     render() {
         return (
