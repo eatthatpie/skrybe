@@ -1,0 +1,19 @@
+@import './../../assets/style/variables/variables';
+
+.button-circle {
+    background-color: $primary;
+    width: 70px;
+    height: 70px;
+    border: 0;
+    border-radius: 50%;
+    outline: 0;
+
+    i {
+        color: $default;
+        font-size: 24px;
+    }
+
+    &:hover {
+        background-color: lighten($primary, 10%);
+    }
+}

@@ -10,8 +10,11 @@ const stateToProps = function(state) {
 
 const dispatchToProps = function(dispatch) {
     return {
-        setCard({ nodeId, parentNodeId, leadText, bodyText }) {
-            dispatch(setOutlineTreeNode({nodeId, parentNodeId, leadText, bodyText }));
+        insertCard({ parentNodeId, leadText, bodyText }) {
+            dispatch(setOutlineTreeNode({ parentNodeId, leadText, bodyText }));
+        },
+        updateCard({ nodeId, leadText, bodyText }) {
+            dispatch(setOutlineTreeNode({ nodeId, leadText, bodyText }));
         }
     };
 };
