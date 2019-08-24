@@ -11,7 +11,7 @@ class EditorView extends React.Component {
     render() {
         return (
             <div className="editor-view flex">
-                <Card leadText={this.props.outlineTree.root.leadText} />
+                <Card leadText={this.props.outlineTree.items.root.leadText} />
                 <ButtonCircle handleClick={() => { this.props.updateCard({ nodeId: 'root', leadText: 'text' }) }} />
             </div>
         );
