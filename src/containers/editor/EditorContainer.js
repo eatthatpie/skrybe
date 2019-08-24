@@ -1,9 +1,11 @@
 import EditorView from '@/view/editor/EditorView';
 import { connect } from 'react-redux';
+import { getCurrentNode } from '@/selectors/index';
 import { setOutlineTreeNode } from '@/actions/index';
 
 const stateToProps = function(state) {
     return ({
+        currentNode: getCurrentNode(state),
         outlineTree: state.outlineTree
     });
 };
