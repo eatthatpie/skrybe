@@ -1,5 +1,9 @@
 import actionTypes from './types';
 
+export const generateDescendantsOfNode = function({ nodeId }) {
+    return { type: actionTypes.GENERATE_DESCENDANTS_OF_NODE, nodeId };
+};
+
 export const navToggle = function({ name }) {
     return { type: actionTypes.NAV_TOGGLE, name };
 };
