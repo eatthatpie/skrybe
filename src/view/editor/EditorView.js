@@ -43,7 +43,7 @@ class EditorView extends React.Component {
                 />
                 <ButtonCircle handleClick={() => {
                     this.props.updateCard({
-                        nodeId: this.props.currentNodeId,
+                        nodeId: this.props.outlineTree.currentNodeId,
                         leadText: this.state.leadText,
                         bodyText: this.state.bodyText
                     });

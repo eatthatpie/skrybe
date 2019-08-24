@@ -9,6 +9,7 @@ describe(`Outline tree reducer`, () => {
     it('should return the initial state', () => {
         expect(reducer(undefined, {})).toEqual({
             lastId: 0,
+            currentNodeId: 'root',
             items: {
                 root: {
                     leadText: 'Write down the one line description of your story.',

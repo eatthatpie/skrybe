@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 const getCurrentNode = createSelector(
     state => {
         return state.outlineTree.items[
-            state.outlineTreeNav.currentNodeId
+            state.outlineTree.currentNodeId
         ];
     },
     currentNode => currentNode

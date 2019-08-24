@@ -2,6 +2,7 @@ import actionTypes from '@/actions/types';
 
 const initialState = {
     lastId: 0,
+    currentNodeId: 'root',
     items: {
         root: {
             leadText: 'Write down the one line description of your story.',

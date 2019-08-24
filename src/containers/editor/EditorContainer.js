@@ -8,7 +8,6 @@ import {
 
 const stateToProps = function(state) {
     return ({
-        currentNodeId: state.outlineTreeNav.currentNodeId,
         currentNode: getCurrentNode(state),
         outlineTree: state.outlineTree
     });
