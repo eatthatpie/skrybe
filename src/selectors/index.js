@@ -9,6 +9,13 @@ const getCurrentNode = createSelector(
     currentNode => currentNode
 );
 
+const getCurrentNodeParentId = createSelector(
+    getCurrentNode,
+    currentNode => {
+        return currentNode.parentNodeId
+    }
+);
+
 const getCurrentNodeParent = createSelector(
     getCurrentNode,
     state => state.outlineTree,
@@ -37,5 +44,6 @@ export {
     getCurrentNode,
     getCurrentNodeParent,
     getCurrentNodeDescendants,
-    getCurrentNodeSiblings
+    getCurrentNodeSiblings,
+    getCurrentNodeParentId
 };

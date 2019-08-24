@@ -19,7 +19,8 @@ export default function outlineTreeReducer(state = initialState, {
     nodeId,
     parentNodeId,
     leadText,
-    bodyText
+    bodyText,
+    shouldMoveAfter
 }) {
     switch (type) {
         case actionTypes.SET_OUTLINE_TREE_NODE: {
@@ -71,8 +72,13 @@ export default function outlineTreeReducer(state = initialState, {
                 siblings: [].concat(parentNode.descendants)
             };
 
+            let currentNodeId = shouldMoveAfter === true
+                ? entryId
+                : state.currentNodeId;
+
             return {
                 ...state,
+                currentNodeId,
                 lastId,
                 items: {
                     ...state.items,
@@ -125,8 +131,13 @@ export default function outlineTreeReducer(state = initialState, {
                 newEntries[id].siblings = entry.descendants.filter(descId => descId !== id);
             });
 
+            let currentNodeId = shouldMoveAfter === true
+                ? Object.keys(newEntries)[0]
+                : state.currentNodeId;
+
             return {
                 ...state,
+                currentNodeId,
                 lastId,
                 items: {
                     ...state.items,
@@ -134,6 +145,80 @@ export default function outlineTreeReducer(state = initialState, {
                     ...newEntries
                 }
             };
+        }
+        case actionTypes.MOVE_UP: {
+            let currentEntry = state.items[state.currentNodeId];
+
+            const currentNodeId = currentEntry.parentNodeId || state.currentNodeId;
+
+            return {
+                ...state,
+                currentNodeId
+            }
+        }
+        case actionTypes.MOVE_DOWN: {
+            let currentEntry = state.items[state.currentNodeId];
+
+            const currentNodeId = currentEntry.descendants[0] || state.currentNodeId;
+
+            return {
+                ...state,
+                currentNodeId
+            }
+        }
+        case actionTypes.MOVE_LEFT: {
+            let parentNodeId = state.items[state.currentNodeId].parentNodeId || null;
+
+            if (!parentNodeId) {
+                return {
+                    ...state
+                };
+            }
+
+            const allSiblings = state.items[parentNodeId].descendants;
+            let currentNodeIndex = allSiblings.indexOf(state.currentNodeId);
+
+            if (currentNodeIndex <= 0) {
+                return {
+                    ...state
+                };
+            } else {
+                currentNodeIndex--;
+            }
+
+            const currentNodeId = allSiblings[currentNodeIndex];
+
+            return {
+                ...state,
+                currentNodeId
+            }
+        }
+        case actionTypes.MOVE_RIGHT: {
+            let parentNodeId = state.items[state.currentNodeId].parentNodeId || null;
+
+            if (!parentNodeId) {
+                return {
+                    ...state
+                };
+            }
+
+            const allSiblings = state.items[parentNodeId].descendants;
+            let currentNodeIndex = allSiblings.indexOf(state.currentNodeId);
+
+            if (currentNodeIndex >= allSiblings.length - 1) {
+                return {
+                    ...state
+                };
+            } else {
+                currentNodeIndex++;
+            }
+
+            const currentNodeId = allSiblings[currentNodeIndex];
+
+            return {
+                ...state,
+                currentNodeId
+            }
         }
         default:
             return state;
