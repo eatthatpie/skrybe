@@ -1,7 +1,7 @@
 import actionTypes from '@/actions/types';
 
 const initialState = {
-    currentNodeId: 'root'
+    currentNodeId: '7'
 };
 
 export default function outlineTreeReducer(state = initialState, { type, currentNodeId }) {

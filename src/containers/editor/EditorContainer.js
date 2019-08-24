@@ -5,8 +5,7 @@ import { setOutlineTreeNode } from '@/actions/index';
 
 const stateToProps = function(state) {
     return ({
-        currentNode: getCurrentNode(state),
-        outlineTree: state.outlineTree
+        currentNode: getCurrentNode(state)
     });
 };
 
