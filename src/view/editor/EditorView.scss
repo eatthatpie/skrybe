@@ -6,9 +6,17 @@
     height: 100%;
     z-index: $z-editor-view;
 
+    .card-ghost {
+        position: absolute;
+    }
+
     .button-circle {
         position: absolute;
-        bottom: 40px;
-        right: 40px;
+        bottom: 30px;
+        right: 30px;
+
+        & + .button-circle {
+            right: 100px;
+        }
     }
 }

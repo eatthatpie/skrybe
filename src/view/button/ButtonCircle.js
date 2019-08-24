@@ -1,13 +1,13 @@
 import React from 'react';
 import './ButtonCircle.scss';
 
-function ButtonCircle({ handleClick }) {
+function ButtonCircle({ handleClick, iconClassName }) {
     return (
         <button
             className="button-circle c-p"
             onClick={handleClick}
         >
-            <i className="fas fa-check"></i>
+            <i className={iconClassName} />
         </button>
     );
 };
