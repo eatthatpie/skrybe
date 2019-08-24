@@ -4,8 +4,13 @@ import React from 'react';
 import './EditorView.scss';
 
 class EditorView extends React.Component {
-    constructor() {
+    constructor(props) {
         super();
+
+        this.state = {
+            leadText: props.currentNode.leadText,
+            bodyText: props.currentNode.bodyText
+        }
     }
     
     render() {
@@ -16,7 +21,11 @@ class EditorView extends React.Component {
                     bodyText={this.props.currentNode.bodyText}
                 />
                 <ButtonCircle handleClick={() => {
-                    this.props.updateCard({ nodeId: 'root', leadText: 'text' })
+                    this.props.updateCard({
+                        nodeId: this.props.currentNodeId,
+                        leadText: this.state.leadText,
+                        bodyText: this.state.bodyText
+                    });
                 }} />
             </div>
         );

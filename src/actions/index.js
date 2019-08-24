@@ -23,9 +23,9 @@ export const setOutlineTreeNode = function({
     };
 };
 
-export const setOutlineTreeCurrentNode = function({ nodeId }) {
+export const setOutlineTreeCurrentNode = function({ currentNodeId }) {
     return {
         type: actionTypes.SET_OUTLINE_TREE_CURRENT_NODE,
-        nodeId
+        currentNodeId
     };
 };
