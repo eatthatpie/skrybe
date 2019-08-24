@@ -11,6 +11,25 @@ class EditorView extends React.Component {
             leadText: props.currentNode.leadText,
             bodyText: props.currentNode.bodyText || 'test.'
         }
+
+        this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
+        this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
+    }
+
+    handleChangeLeadText(e) {
+        const value = e.target.value;
+
+        this.setState({
+            leadText: value
+        });
+    }
+
+    handleChangeBodyText(e) {
+        const value = e.target.value;
+
+        this.setState({
+            bodyText: value
+        });
     }
     
     render() {
@@ -19,6 +38,8 @@ class EditorView extends React.Component {
                 <Card
                     leadText={this.props.currentNode.leadText}
                     bodyText={this.props.currentNode.bodyText}
+                    handleChangeLeadText={this.handleChangeLeadText}
+                    handleChangeBodyText={this.handleChangeBodyText}
                 />
                 <ButtonCircle handleClick={() => {
                     this.props.updateCard({
