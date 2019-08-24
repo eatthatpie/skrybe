@@ -9,7 +9,7 @@ class EditorView extends React.Component {
 
         this.state = {
             leadText: props.currentNode.leadText,
-            bodyText: props.currentNode.bodyText
+            bodyText: props.currentNode.bodyText || 'test.'
         }
     }
     
