@@ -99,7 +99,7 @@ export default function outlineTreeReducer(state = initialState, {
             }
 
             const sentences = entry.bodyText
-                .match(/[^\.!\?]+[\.!\?]+/g)
+                .match(/\(?[^\.\?\!]+[\.!\?]\)?/g)
                 .map(item => item.trim());
 
             let newEntries = {};
