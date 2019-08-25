@@ -8,8 +8,8 @@ class EditorView extends React.Component {
     constructor(props) {
         super();
 
-        this.rootChildPlaceholder = `Write a very short brief of your story. Try to mention its all main parts. For example: John has moved to big city after he broke up with his girlfriend. He meet many of new strange friends there. They eventually help him stand on his feet and move on with his life.`
-        this.rootPlaceholder = ` `;
+        this.rootChildPlaceholder = `Write a very short brief of your story. Try to mention its all main parts. For example: After breaking up with his girlfriend, John moves to a big city to forget about her. He decides to live in an unusual apartment -- the back room of the popular pub. He meets many new and strange people there.`
+        this.rootPlaceholder = `For example: The main character -- JOHN -- writes a book that eventually destroys him.`;
 
         let cardPlaceholder = null;
         if (props.outlineTree.currentNodeId === 'root') {
