@@ -19,14 +19,20 @@ class EditorView extends React.Component {
         this.onClickNavigateDown = this.onClickNavigateDown.bind(this);
         this.onClickNavigateLeft = this.onClickNavigateLeft.bind(this);
         this.onClickNavigateRight = this.onClickNavigateRight.bind(this);
+
+        this.cardRef = React.createRef();
     }
 
     shouldComponentUpdate(nextProps) {
-        if (nextProps.outlineTree.currentNodeId != this.props.outlineTree.currentNodeId) {
+        if (
+            nextProps.outlineTree.currentNodeId !== this.props.outlineTree.currentNodeId
+        ) {
             this.setState({
-                bodyText: this.props.currentNode.bodyText,
-                leadText: this.props.currentNode.leadText
+                bodyText: nextProps.currentNode.bodyText,
+                leadText: nextProps.currentNode.leadText
             });
+
+            this.cardRef.current.focus();
         }
 
         return true;
@@ -92,6 +98,7 @@ class EditorView extends React.Component {
                     bodyText={this.state.bodyText}
                     handleChangeLeadText={this.handleChangeLeadText}
                     handleChangeBodyText={this.handleChangeBodyText}
+                    ref={this.cardRef}
                 />
                 <ButtonCircle
                     iconClassName="fas fa-plus"

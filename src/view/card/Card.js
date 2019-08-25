@@ -20,6 +20,14 @@ export default class Card extends React.Component {
                 : 'card-body is-empty',
             bodyPlaceholder: this.placeholders[0]
         };
+
+        this.focus = this.focus.bind(this);
+
+        this.contentEditableRef = React.createRef();
+    }
+
+    focus() {
+        this.contentEditableRef.current.focus();
     }
 
     shouldComponentUpdate(nextProps) {
@@ -61,6 +69,7 @@ export default class Card extends React.Component {
                         html={bodyText}
                         isDisabled={false}
                         onChange={handleChangeBodyText}
+                        ref={this.contentEditableRef}
                     />
                     <i className="fas fa-pencil-alt fs-10 color-light bg-light" />
                 </div>

@@ -12,6 +12,14 @@ export default class ContentEditable extends React.Component {
         super();
 
         this.emitChange = this.emitChange.bind(this);
+
+        this.focus = this.focus.bind(this);
+    }
+
+    focus() {
+        if (this.htmlEl) {
+            this.htmlEl.focus();
+        }
     }
 
     shouldComponentUpdate(nextProps) {
