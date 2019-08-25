@@ -329,6 +329,53 @@ describe(`Outline tree reducer`, () => {
             });
         });
 
+        it(`should generate descendants only if there is at least one sentence`, () => {
+            expect(
+                reducer({
+                    lastId: 2,
+                    items: {
+                        root: {
+                            leadText: 'Write down the one line description of your story.',
+                            bodyText: '',
+                            parentNodeId: null,
+                            descendants: ['1'],
+                            siblings: []
+                        },
+                        '1': {
+                            leadText: '',
+                            bodyText: '',
+                            parentNodeId: 'root',
+                            descendants: [],
+                            siblings: []
+                        }
+                    }
+                },
+                {
+                    type: actionTypes.GENERATE_DESCENDANTS_OF_NODE,
+                    nodeId: '1'
+                })
+            )
+            .toEqual({
+                lastId: 2,
+                items: {
+                    root: {
+                        leadText: 'Write down the one line description of your story.',
+                        bodyText: '',
+                        parentNodeId: null,
+                        descendants: ['1'],
+                        siblings: []
+                    },
+                    '1': {
+                        leadText: '',
+                        bodyText: '',
+                        parentNodeId: 'root',
+                        descendants: [],
+                        siblings: []
+                    }
+                }
+            });
+        });
+
         it(`should generate descendants only if there are none`, () => {
             expect(
                 reducer({

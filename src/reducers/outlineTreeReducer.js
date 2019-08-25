@@ -104,6 +104,12 @@ export default function outlineTreeReducer(state = initialState, {
                 };
             }
 
+            if (entry.bodyText.length <= 0) {
+                return {
+                    ...state
+                };
+            }
+
             const sentences = entry.bodyText
                 .match(/\(?[^\.\?\!]+[\.!\?]\)?/g)
                 .map(item => item.trim());
