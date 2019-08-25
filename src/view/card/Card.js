@@ -18,6 +18,9 @@ export default class Card extends React.Component {
             bodyClassName: props.bodyText.length > 0
                 ? 'card-body'
                 : 'card-body is-empty',
+            leadClassName: props.leadText.length > 0
+                ? 'card-lead color-light'
+                : 'card-lead color-light is-empty',
             bodyPlaceholder: props.placeholder || this.placeholders[0]
         };
 
@@ -46,6 +49,14 @@ export default class Card extends React.Component {
             }
         }
 
+        if (this.props.leadText !== nextProps.leadText) {
+            this.setState({
+                leadClassName: nextProps.leadText.length > 0
+                    ? 'card-lead color-light'
+                    : 'card-lead color-light is-empty'
+            })
+        }
+
         return true;
     }
 
@@ -54,7 +65,10 @@ export default class Card extends React.Component {
 
         return (
             <div className="card bg-light">
-                <div className="card-lead color-light">
+                <div
+                    className={this.state.leadClassName}
+                    data-placeholder="This is another sibling of the story tree node you've edited before. Write here a word of what you're going to write down below."
+                >
                     <ContentEditable
                         html={leadText}
                         isDisabled={false}
