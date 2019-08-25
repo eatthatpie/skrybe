@@ -88,8 +88,8 @@ class EditorView extends React.Component {
                     onClick={this.onClickNavigateRight}
                 />
                 <Card
-                    leadText={this.props.currentNode.leadText}
-                    bodyText={this.props.currentNode.bodyText}
+                    leadText={this.state.leadText}
+                    bodyText={this.state.bodyText}
                     handleChangeLeadText={this.handleChangeLeadText}
                     handleChangeBodyText={this.handleChangeBodyText}
                 />

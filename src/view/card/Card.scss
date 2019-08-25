@@ -3,6 +3,7 @@
 .card {
     max-width: calc(100% - 692px);
     box-sizing: border-box;
+    position: relative;
     width: 660px;
 
     [contenteditable] {
@@ -16,9 +17,23 @@
     }
 
     &-body {
+        &:before {
+            content: attr(data-placeholder);
+            position: absolute;
+            pointer-events: none;
+            padding: 18px 0 0 40px;
+            opacity: 0;
+        }
+
         [contenteditable] {
             min-height: 210px;
             line-height: 1.8rem;
+        }
+
+        &.is-empty {
+            &:before {
+                opacity: 0.2;
+            }
         }
     }
 
