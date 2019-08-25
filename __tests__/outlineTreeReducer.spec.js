@@ -436,5 +436,45 @@ describe(`Outline tree reducer`, () => {
                 }
             });
         });
+
+        it(`should generate only one descendant if the parent is the root`, () => {
+            expect(
+                reducer({
+                    lastId: 0,
+                    items: {
+                        root: {
+                            leadText: 'Write down the one line description of your story.',
+                            bodyText: 'Praesent viverra nunc ut mi efficitur, eget interdum augue placerat. Donec egestas urna ut dolor sodales, ut semper massa porttitor. Curabitur accumsan augue tortor, vitae tincidunt lorem dignissim porttitor.',
+                            parentNodeId: null,
+                            descendants: [],
+                            siblings: []
+                        }
+                    }
+                },
+                {
+                    type: actionTypes.GENERATE_DESCENDANTS_OF_NODE,
+                    nodeId: 'root'
+                })
+            )
+            .toEqual({
+                lastId: 1,
+                items: {
+                    root: {
+                        leadText: 'Write down the one line description of your story.',
+                        bodyText: 'Praesent viverra nunc ut mi efficitur, eget interdum augue placerat. Donec egestas urna ut dolor sodales, ut semper massa porttitor. Curabitur accumsan augue tortor, vitae tincidunt lorem dignissim porttitor.',
+                        parentNodeId: null,
+                        descendants: ['1'],
+                        siblings: []
+                    },
+                    '1': {
+                        leadText: 'Praesent viverra nunc ut mi efficitur, eget interdum augue placerat. Donec egestas urna ut dolor sodales, ut semper massa porttitor. Curabitur accumsan augue tortor, vitae tincidunt lorem dignissim porttitor.',
+                        bodyText: '',
+                        parentNodeId: 'root',
+                        descendants: [],
+                        siblings: []
+                    }
+                }
+            });
+        });
     });
 });
