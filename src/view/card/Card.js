@@ -15,10 +15,10 @@ export default class Card extends React.Component {
         ];
         
         this.state = {
-            bodyClassName: this.props.bodyText.length > 0
+            bodyClassName: props.bodyText.length > 0
                 ? 'card-body'
                 : 'card-body is-empty',
-            bodyPlaceholder: this.placeholders[0]
+            bodyPlaceholder: props.placeholder || this.placeholders[0]
         };
 
         this.focus = this.focus.bind(this);
@@ -40,7 +40,8 @@ export default class Card extends React.Component {
 
             if (nextProps.bodyText.length <= 0) {
                 this.setState({
-                    bodyPlaceholder: this.placeholders[rand(0, this.placeholders.length - 1)]
+                    bodyPlaceholder: nextProps.placeholder ||
+                        this.placeholders[rand(0, this.placeholders.length - 1)]
                 });
             }
         }

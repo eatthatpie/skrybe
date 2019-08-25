@@ -8,9 +8,20 @@ class EditorView extends React.Component {
     constructor(props) {
         super();
 
+        this.rootChildPlaceholder = `Write a very short brief of your story. Try to mention its all main parts. For example: John has moved to big city after he broke up with his girlfriend. He meet many of new strange friends there. They eventually help him stand on his feet and move on with his life.`
+        this.rootPlaceholder = ` `;
+
+        let cardPlaceholder = null;
+        if (props.outlineTree.currentNodeId === 'root') {
+            cardPlaceholder = this.rootPlaceholder;
+        } else if(props.parentNodeId === 'root') {
+            cardPlaceholder = this.rootChildPlaceholder;
+        }
+
         this.state = {
             leadText: props.currentNode.leadText || '',
-            bodyText: props.currentNode.bodyText || ''
+            bodyText: props.currentNode.bodyText || '',
+            cardPlaceholder
         }
 
         this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
@@ -23,13 +34,26 @@ class EditorView extends React.Component {
         this.cardRef = React.createRef();
     }
 
+    componentDidMount() {
+        this.cardRef.current.focus();
+    }
+
     shouldComponentUpdate(nextProps) {
         if (
             nextProps.outlineTree.currentNodeId !== this.props.outlineTree.currentNodeId
         ) {
+            let cardPlaceholder = null;
+
+            if (nextProps.outlineTree.currentNodeId === 'root') {
+                cardPlaceholder = this.rootPlaceholder;
+            } else if(nextProps.parentNodeId === 'root') {
+                cardPlaceholder = this.rootChildPlaceholder;
+            }
+
             this.setState({
                 bodyText: nextProps.currentNode.bodyText,
-                leadText: nextProps.currentNode.leadText
+                leadText: nextProps.currentNode.leadText,
+                cardPlaceholder
             });
 
             this.cardRef.current.focus();
@@ -98,6 +122,7 @@ class EditorView extends React.Component {
                     bodyText={this.state.bodyText}
                     handleChangeLeadText={this.handleChangeLeadText}
                     handleChangeBodyText={this.handleChangeBodyText}
+                    placeholder={this.state.cardPlaceholder}
                     ref={this.cardRef}
                 />
                 <ButtonCircle
