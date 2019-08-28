@@ -12,6 +12,7 @@ function NavAside(props) {
                         navName={navName}
                         name={props.nav[navName].name}
                         items={props.nav[navName].items}
+                        content={props.nav[navName].content}
                         isActive={props.nav[navName].isActive}
                         handleClick={props.handleClick}
                     />

@@ -14,6 +14,15 @@ function NavItem(props) {
         </ol>
     );
 
+    const content = props.content.length > 0
+        ? (
+              <div
+                  dangerouslySetInnerHTML={{__html: props.content}}
+                  className="nav-aside-content"
+              />
+          )
+        : ''
+
     return (
         <li className={props.isActive ? 'is-active' : ''}>
             <a
@@ -24,6 +33,7 @@ function NavItem(props) {
                 <i className="fas fa-caret-right"></i> {props.name}
             </a>
             {props.isActive ? childrenView : ''}
+            {content}
         </li>
     );
 }
