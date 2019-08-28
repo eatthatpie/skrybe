@@ -33,7 +33,7 @@ export default class Card extends React.Component {
         this.contentEditableRef.current.focus();
     }
 
-    shouldComponentUpdate(nextProps) {
+    componentWillUpdate(nextProps) {
         if (this.props.bodyText !== nextProps.bodyText) {
             this.setState({
                 bodyClassName: nextProps.bodyText.length > 0
@@ -56,8 +56,6 @@ export default class Card extends React.Component {
                     : 'card-lead color-light is-empty'
             })
         }
-
-        return true;
     }
 
     render() {
