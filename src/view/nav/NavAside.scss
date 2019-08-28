@@ -53,6 +53,10 @@
                 }
             }
 
+            .frame {
+                display: none;
+            }
+
             &.is-active {
                 > a {
                     i {
@@ -60,7 +64,7 @@
                     }
                 }
 
-                .nav-aside-content {
+                .frame {
                     display: block;
                 }
             }
@@ -92,16 +96,6 @@
                 }
             }
         }
-    }
-
-    &-content {
-        margin: 0 20px;
-        padding: 10px 15px;
-        border: 1px solid #999;
-        box-sizing: border-box;
-        background-color: #4c4c4c;
-        font-size: 13px;
-        display: none;
     }
 
     @media (max-width: $screen-laptop) {

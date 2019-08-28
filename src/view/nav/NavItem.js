@@ -18,7 +18,7 @@ function NavItem(props) {
         ? (
               <div
                   dangerouslySetInnerHTML={{__html: props.content}}
-                  className="nav-aside-content"
+                  className="frame bg-frame fs-8 mv-0 mh-20 pv-10 ph-15"
               />
           )
         : ''
