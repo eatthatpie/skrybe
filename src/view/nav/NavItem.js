@@ -1,3 +1,4 @@
+import Frame from '@/view/frame/Frame';
 import NavSubitem from '@/view/nav/NavSubitem';
 import React from 'react';
 
@@ -15,12 +16,7 @@ function NavItem(props) {
     );
 
     const content = props.content.length > 0
-        ? (
-              <div
-                  dangerouslySetInnerHTML={{__html: props.content}}
-                  className="frame bg-frame fs-8 mv-0 mh-20 pv-10 ph-15"
-              />
-          )
+        ? <Frame content={props.content} />
         : ''
 
     return (
