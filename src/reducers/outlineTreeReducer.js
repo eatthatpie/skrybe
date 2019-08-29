@@ -111,12 +111,12 @@ export default function outlineTreeReducer(state = initialState, {
             }
 
             const sentences = nodeId === 'root'
-                ? [entry.bodyText]
+                ? [entry.bodyText.replace(/<[^>]*>?/gm, '').trim()]
                 // add dot at the end of the body to avoid missing the sentence for
                 // the lack of proper punctuation mark
-                : `${entry.bodyText}.`
-                      .match(/\(?[^\.\?\!]+[\.!\?]\)?/g)
-                      .map(item => item.trim());
+                : `${entry.bodyText.replace(/<[^>]*>?/gm, '').trim()}.`
+                      .match(/\(?[^\.\?\!]+[\.!\?]\)?/g);
+        
 
             let newEntries = {};
             let lastId = state.lastId;

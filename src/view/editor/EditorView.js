@@ -5,6 +5,8 @@ import React from 'react';
 import './EditorView.scss';
 
 // @TODO: refactor. This class is way too big.
+// Make sth like policies, what controls show in what circumstances, what
+// action to perform, etc.
 class EditorView extends React.Component {
     constructor(props) {
         super();
