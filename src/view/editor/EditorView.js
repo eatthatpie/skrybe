@@ -24,6 +24,8 @@ class EditorView extends React.Component {
             cardPlaceholder
         }
 
+        this.findCharacterNames = this.findCharacterNames.bind(this);
+        this.handleSave = this.handleSave.bind(this);
         this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
         this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
         this.onClickNavigateUp = this.onClickNavigateUp.bind(this);
@@ -60,6 +62,31 @@ class EditorView extends React.Component {
         }
 
         return true;
+    }
+
+    handleSave() {
+        this.props.updateCard({
+            nodeId: this.props.outlineTree.currentNodeId,
+            leadText: this.state.leadText,
+            bodyText: this.state.bodyText
+        });
+
+        const characterNames = this.findCharacterNames();
+
+        this.props.updateCharacters({
+            nodeId: this.props.outlineTree.currentNodeId,
+            characterNames
+        });
+    }
+
+    findCharacterNames() {
+        const characterNameRegex = /[A-Z]{2,}-?\s?[A-Z]+/g;
+        const names = [].concat(
+            this.state.bodyText.match(characterNameRegex),
+            this.state.leadText.match(characterNameRegex)
+        );
+
+        return Array.from(new Set(names.filter(item => !!item)));
     }
 
     handleChangeLeadText(e) {
@@ -137,13 +164,7 @@ class EditorView extends React.Component {
                 />
                 <ButtonCircle
                     iconClassName="fas fa-check"
-                    handleClick={() => {
-                        this.props.updateCard({
-                            nodeId: this.props.outlineTree.currentNodeId,
-                            leadText: this.state.leadText,
-                            bodyText: this.state.bodyText
-                        });
-                    }}
+                    handleClick={this.handleSave}
                 />
             </div>
         );

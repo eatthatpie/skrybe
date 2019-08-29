@@ -54,3 +54,11 @@ export const setOutlineTreeCurrentNode = function({ currentNodeId }) {
         currentNodeId
     };
 };
+
+export const updateCharacters = function({ nodeId, characterNames }) {
+    return {
+        type: actionTypes.UPDATE_CHARACTERS,
+        nodeId,
+        characterNames
+    };
+};

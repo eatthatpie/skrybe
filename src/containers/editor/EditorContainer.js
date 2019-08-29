@@ -4,6 +4,7 @@ import { getCurrentNode, getCurrentNodeParentId } from '@/selectors/index';
 import {
     generateDescendantsOfNode,
     setOutlineTreeNode,
+    updateCharacters,
     moveUp,
     moveDown,
     moveLeft,
@@ -34,6 +35,9 @@ const dispatchToProps = function(dispatch) {
                 nodeId,
                 shouldMoveAfter: true
             }));
+        },
+        updateCharacters({ nodeId, characterNames }) {
+            dispatch(updateCharacters({ nodeId, characterNames }));
         },
         moveUp() {
             dispatch(moveUp());
