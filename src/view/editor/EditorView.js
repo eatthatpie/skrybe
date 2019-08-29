@@ -98,7 +98,8 @@ class EditorView extends React.Component {
     }
 
     findCharacterNames() {
-        const characterNameRegex = /[A-Z]{2,}-?\s?[A-Z]+/g;
+        // English and Polish names are supoorted for now.
+        const characterNameRegex = /[A-ZŻŁĆĘŚĄŹŃ]{2,}-?\s?[A-ZŻÓŁĆĘŚĄŹŃ]+/gu;
         const names = [].concat(
             this.state.bodyText.match(characterNameRegex),
             this.state.leadText.match(characterNameRegex)
