@@ -4,6 +4,7 @@ import CardGhost from '@/view/card/CardGhost';
 import React from 'react';
 import './EditorView.scss';
 
+// @TODO: refactor. This class is way too big.
 class EditorView extends React.Component {
     constructor(props) {
         super();
@@ -25,6 +26,7 @@ class EditorView extends React.Component {
         }
 
         this.findCharacterNames = this.findCharacterNames.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
         this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
@@ -32,6 +34,8 @@ class EditorView extends React.Component {
         this.onClickNavigateDown = this.onClickNavigateDown.bind(this);
         this.onClickNavigateLeft = this.onClickNavigateLeft.bind(this);
         this.onClickNavigateRight = this.onClickNavigateRight.bind(this);
+
+        this.isAllowedToAddSiblings = this.isAllowedToAddSiblings.bind(this);
 
         this.cardRef = React.createRef();
     }
@@ -64,6 +68,18 @@ class EditorView extends React.Component {
         return true;
     }
 
+    handleAdd() {
+        if (!this.isAllowedToAddSiblings()) {
+            return;
+        }
+
+        this.props.insertCard({
+            parentNodeId: this.props.parentNodeId,
+            leadText: '',
+            bodyText: ''
+        });
+    }
+
     handleSave() {
         this.props.updateCard({
             nodeId: this.props.outlineTree.currentNodeId,
@@ -87,6 +103,13 @@ class EditorView extends React.Component {
         );
 
         return Array.from(new Set(names.filter(item => !!item)));
+    }
+
+    isAllowedToAddSiblings() {
+        return (
+            this.props.parentNodeId !== 'root' &&
+            this.props.outlineTree.currentNodeId !== 'root'
+        );
     }
 
     handleChangeLeadText(e) {
@@ -152,16 +175,12 @@ class EditorView extends React.Component {
                     placeholder={this.state.cardPlaceholder}
                     ref={this.cardRef}
                 />
-                <ButtonCircle
-                    iconClassName="fas fa-plus"
-                    handleClick={() => {
-                        this.props.insertCard({
-                            parentNodeId: this.props.parentNodeId,
-                            leadText: '',
-                            bodyText: ''
-                        });
-                    }}
-                />
+                {this.isAllowedToAddSiblings() &&
+                    <ButtonCircle
+                        iconClassName="fas fa-plus"
+                        handleClick={this.handleAdd}
+                    />
+                }
                 <ButtonCircle
                     iconClassName="fas fa-check"
                     handleClick={this.handleSave}
