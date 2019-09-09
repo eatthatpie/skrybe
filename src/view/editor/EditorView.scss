@@ -11,7 +11,7 @@
     }
 
     .button-circle {
-        position: absolute;
+        position: fixed;
         bottom: 30px;
         right: 30px;
 
@@ -26,6 +26,37 @@
 
                     & + .button-circle {
                         right: 310px;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: $screen-laptop) {
+        height: auto;
+        position: static;
+        padding: 75px 0 75px;
+
+        .card-ghost {
+            display: none;
+        }
+
+        .button-circle {
+            bottom: 15px;
+            right: 15px;
+    
+            & + .button-circle {
+                right: 75px;
+    
+                & + .button-circle {
+                    right: 135px;
+    
+                    & + .button-circle {
+                        right: 195px;
+    
+                        & + .button-circle {
+                            right: 255px;
+                        }
                     }
                 }
             }

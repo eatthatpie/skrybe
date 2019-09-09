@@ -1,0 +1,5 @@
+.nav-mobile {
+    @media (min-width: 1025px) {
+        display: none !important;
+    }
+}

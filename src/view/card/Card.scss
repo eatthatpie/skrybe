@@ -84,7 +84,7 @@
     }
 
     @media (max-width: $screen-laptop) {
-        max-width: calc(100% - 40px);
+        max-width: calc(100% - 30px);
     }
 
     @media (max-width: $screen-mobile-landscape) {
@@ -95,6 +95,10 @@
 
         &-lead,
         &-body {
+            &:before {
+                padding: 18px 25px 0 25px;
+            }
+
             &:first-child {
                 [contenteditable] {
                     padding-top: 30px;

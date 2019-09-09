@@ -2,4 +2,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &-col-center {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &-normal {
+        align-items: normal;
+    }
+
+    &-sb {
+        justify-content: space-between;
+    }
 }
