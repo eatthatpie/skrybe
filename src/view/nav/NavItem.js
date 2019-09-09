@@ -26,9 +26,9 @@ function NavItem(props) {
                 data-nav-name={props.navName}
                 onClick={props.handleClick}
             >
-                <i className="fas fa-caret-right"></i> {props.name}
+                <i className="fas fa-angle-right"></i> {props.name}
             </a>
-            {props.isActive ? childrenView : ''}
+            {props.isActive && props.items.length > 0 ? childrenView : ''}
             {content}
         </li>
     );

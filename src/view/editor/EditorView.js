@@ -188,6 +188,9 @@ class EditorView extends React.Component {
                     iconClassName="fas fa-check"
                     handleClick={this.handleSave}
                 />
+                <ButtonCircle iconClassName="fas fa-pen" />
+                <ButtonCircle iconClassName="fas fa-times" />
+                <ButtonCircle iconClassName="fas fa-trash-alt" />
             </div>
         );
     }

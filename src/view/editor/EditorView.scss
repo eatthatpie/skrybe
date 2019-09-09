@@ -17,6 +17,18 @@
 
         & + .button-circle {
             right: 100px;
+
+            & + .button-circle {
+                right: 170px;
+
+                & + .button-circle {
+                    right: 240px;
+
+                    & + .button-circle {
+                        right: 310px;
+                    }
+                }
+            }
         }
     }
 }

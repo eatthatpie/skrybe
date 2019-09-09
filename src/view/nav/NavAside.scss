@@ -39,6 +39,11 @@
         &:before {
             transform: scaleX(0);
         }
+
+        & + .logo {
+            transition: opacity 0.3s ease-in-out 0.2s;
+            opacity: 1;
+        }
     }
 
     > ul {
