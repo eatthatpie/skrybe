@@ -1,6 +1,11 @@
 @import './../../assets/style/variables/variables';
 
 .app {
+    .logo {
+        transition: opacity 0.1s ease-in-out 0.05s;
+        opacity: 0;
+    }
+
     @media (max-width: $screen-laptop) {
         .logo {
             display: none;

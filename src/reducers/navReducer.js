@@ -5,6 +5,7 @@ const initialState = {
         name: 'Outline',
         isActive: true,
         content: '',
+        isItemless: true,
         items: [
             {
                 label: 'One Liner',
