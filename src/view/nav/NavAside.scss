@@ -1,0 +1,112 @@
+@import './../../assets/style/variables/variables';
+
+.nav-aside {
+    transition: all 0.15s ease-in-out 0.1s;
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    padding-top: 72px;
+    z-index: $z-nav-aside;
+
+    &:before {
+        content: '';
+        transition: all 0s ease-in-out 0.15s;
+        position: fixed;
+        top: 0;
+        left: 100%;
+        width: 150px;
+        height: 100%;
+    }
+
+    &:after {
+        content: '';
+        border-radius: 5px;
+        background-color: $light;
+        width: 4px;
+        height: 40px;
+        position: absolute;
+        top: calc(50% - 20px);
+        right: -10px;
+        opacity: 0.612;
+    }
+
+    &:hover {
+        transform: none;
+
+        &:before {
+            transform: scaleX(0);
+        }
+
+        & + .logo {
+            transition: opacity 0.3s ease-in-out 0.2s;
+            opacity: 1;
+        }
+    }
+
+    > ul {
+        > li {
+            > a {
+                cursor: pointer;
+                display: block;
+                padding: 20px 20px;
+
+                i {
+                    margin-right: 5px;
+                }
+            }
+
+            .frame {
+                display: none;
+            }
+
+            &.is-active {
+                > a {
+                    i {
+                        transform: rotate(90deg);
+                    }
+                }
+
+                .frame {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    ol {
+        counter-reset: counter -1;
+
+        > li {
+            border-top-width: 2px;
+            border-top-style: solid;
+            padding: 20px 20px;
+            cursor: pointer;
+
+            &:before {
+                counter-increment: counter;
+                content: counters(counter, ".") ". "; 
+            }
+
+            &:last-child {
+                border-bottom-width: 2px;
+                border-bottom-style: solid;
+            }
+
+            > a {
+                > small {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    @media (max-width: $screen-laptop) {
+        &:before,
+        &:after {
+            display: none;
+        }
+    }
+}

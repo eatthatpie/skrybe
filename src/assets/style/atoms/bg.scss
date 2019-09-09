@@ -1,0 +1,29 @@
+.bg {
+    background-color: $bg;
+
+    &-frame {
+        background-color: #4c4c4c;
+    }
+
+    &-light {
+        background-color: $bg-light;
+    }
+
+    &-nav-i {
+        background-color: #414141;
+    }
+}
+
+.h\:bg {
+    &-nav-i {
+        &:hover {
+            background-color: rgb(49, 152, 105);
+        }
+    }
+
+    &-nav-ic {
+        &:hover {
+            background-color: #515151;
+        }
+    }
+}

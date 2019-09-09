@@ -1,0 +1,56 @@
+import actionTypes from '@/actions/types';
+
+const initialState = {
+    outline: {
+        name: 'Outline',
+        isActive: true,
+        content: '',
+        isItemless: true,
+        items: [
+            {
+                label: 'One Liner',
+                desc: 'One line description of your story'
+            },
+            {
+                label: 'Story structure',
+                desc: 'The beginning, the middle and the end'
+            },
+            {
+                label: 'Untitled segment',
+                desc: ''
+            }
+        ]
+    },
+    characters: {
+        name: 'Characters',
+        isActive: true,
+        content: `
+            To add a character simply type the name in capital letters, like JOHN, JANE while editing your story card.
+            <br/><br/>
+            Remember, that each letter matters, so JANES will be considered as a character other than JANE.`,
+        items: []
+    },
+    notes: {
+        name: 'Notes',
+        isActive: false,
+        content: '',
+        items: []
+    }
+};
+
+export default function navReducer(state = initialState, { type, name }) {
+    switch (type) {
+        case actionTypes.NAV_TOGGLE:
+            const isActive = state[name].isActive;
+
+            return {
+                ...state,
+                [name]: {
+                    ...state[name],
+                    isActive: !isActive
+                }
+            };
+        default:
+            return state;
+    }
+};

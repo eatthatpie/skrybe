@@ -1,0 +1,34 @@
+@import './../../assets/style/variables/variables';
+
+.editor-view {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: $z-editor-view;
+
+    .card-ghost {
+        position: absolute;
+    }
+
+    .button-circle {
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+
+        & + .button-circle {
+            right: 100px;
+
+            & + .button-circle {
+                right: 170px;
+
+                & + .button-circle {
+                    right: 240px;
+
+                    & + .button-circle {
+                        right: 310px;
+                    }
+                }
+            }
+        }
+    }
+}

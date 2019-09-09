@@ -1,0 +1,21 @@
+import EditorContainer from '@/containers/editor/EditorContainer';
+import Logo from '@/view/logo/Logo';
+import NavContainer from '@/containers/nav/NavContainer';
+import React from 'react';
+import '@/assets/style/style.scss';
+import './App.scss';
+
+// https://fontawesome.com/icons/sticky-note?style=solid
+// https://www.iconfinder.com/icons/2672445/binary_data_diversity_tree_icon
+
+function App() {
+    return (
+        <div className="app container">
+            <NavContainer />
+            <Logo />
+            <EditorContainer />
+        </div>
+    );
+}
+
+export default App;
