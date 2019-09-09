@@ -1,5 +1,6 @@
 import NavMobile from '@/view/nav/NavMobile';
 import { connect } from 'react-redux';
+import { navAsideMobileToggle } from '@/actions';
 
 const stateToProps = function(state) {
     return ({
@@ -8,8 +9,8 @@ const stateToProps = function(state) {
 
 const dispatchToProps = function(dispatch) {
     return {
-        navAsideOpen() {
-            alert('opening');
+        openNavAsideMobile() {
+            dispatch(navAsideMobileToggle({ isOpen: true }));
         }
     };
 };

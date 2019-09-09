@@ -5,7 +5,7 @@ import './NavMobile.scss';
 function NavMobile(props) {
     return (
         <nav className="nav-mobile flex flex-normal flex-sb fixed cover-top h-60 bg-black z-550 ph-15">
-            <Hamburger />
+            <Hamburger handleClick={props.openNavAsideMobile} />
             <div className="flex flex-normal h-100p">
                 <a className="flex ph-10">
                     <i className="fas fa-angle-up fs-24" />

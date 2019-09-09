@@ -1,10 +1,11 @@
 import NavAside from '@/view/nav/NavAside';
 import { connect } from 'react-redux';
-import { navToggle } from '@/actions/index';
+import { navToggle, navAsideMobileToggle } from '@/actions/index';
 
 const stateToProps = function(state) {
     return ({
-        nav: state.nav
+        nav: state.nav.items,
+        isOpenMobile: state.view.navAsideMobile.isOpen
     });
 };
 
@@ -14,6 +15,9 @@ const dispatchToProps = function(dispatch) {
             const name = e.target.getAttribute('data-nav-name');
 
             dispatch(navToggle({ name }));
+        },
+        closeNavAsideMobile() {
+            dispatch(navAsideMobileToggle({ isOpen: false }));
         }
     };
 };

@@ -85,6 +85,13 @@
 
     @media (max-width: $screen-laptop) {
         max-width: calc(100% - 30px);
+
+        &-lead,
+        &-body {
+            i {
+                display: none;
+            }
+        }
     }
 
     @media (max-width: $screen-mobile-landscape) {

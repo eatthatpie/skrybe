@@ -27,6 +27,10 @@ export const moveRight = function() {
     return { type: actionTypes.MOVE_RIGHT };
 };
 
+export const navAsideMobileToggle = function({ isOpen }) {
+    return { type: actionTypes.NAV_ASIDE_MOBILE_TOGGLE, isOpen }
+}
+
 export const navToggle = function({ name }) {
     return { type: actionTypes.NAV_TOGGLE, name };
 };

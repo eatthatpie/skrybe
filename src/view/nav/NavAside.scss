@@ -34,16 +34,28 @@
     }
 
     &:hover {
-        transform: none;
+        @media (min-width: 1025px) {
+            transform: none;
 
-        &:before {
-            transform: scaleX(0);
-        }
+            &:before {
+                transform: scaleX(0);
+            }
 
-        & + .logo {
-            transition: opacity 0.3s ease-in-out 0.2s;
-            opacity: 1;
+            & + .logo {
+                transition: opacity 0.3s ease-in-out 0.2s;
+                opacity: 1;
+            }
         }
+    }
+
+    &-close {
+        color: #fff;
+        background: transparent;
+        position: absolute;
+        border: 0;
+        font-size: 2.0rem;
+        top: 12px;
+        left: 10px;
     }
 
     > ul {
@@ -104,6 +116,17 @@
     }
 
     @media (max-width: $screen-laptop) {
+        overflow: auto;
+        max-height: 100%;
+
+        &.is-open {
+            transform: none;
+
+            &:before {
+                transform: scaleX(0);
+            }
+        }
+
         &:before,
         &:after {
             display: none;

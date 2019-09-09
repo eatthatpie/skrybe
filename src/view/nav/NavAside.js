@@ -4,7 +4,13 @@ import './NavAside.scss';
 
 function NavAside(props) {
     return (
-        <nav className="nav-aside bg-light">
+        <nav className={`nav-aside bg-light ${props.isOpenMobile ? 'is-open' : ''}`}>
+            <button
+                className="nav-aside-close"
+                onClick={props.closeNavAsideMobile}
+            >
+                <i className="fas fa-times" />
+            </button>
             <ul className="list">
                 {Object.keys(props.nav).map(navName => 
                     <NavItem
