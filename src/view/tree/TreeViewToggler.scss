@@ -1,0 +1,30 @@
+.tree-view-toggler {
+    cursor: pointer;
+    position: fixed;
+    right: 30px;
+    top: 30px;
+    width: 60px;
+    height: 60px;
+
+    > .btn {
+        cursor: pointer;
+        position: absolute;
+        text-align: center;
+        width: 60px;
+        height: 60px;
+        top: 0;
+        right: 0;
+
+        > i {
+            line-height: 60px;
+        }
+
+        &:before {
+            left: 0;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        display: none;
+    }
+}

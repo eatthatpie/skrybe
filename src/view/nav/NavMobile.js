@@ -19,6 +19,9 @@ function NavMobile(props) {
                 <a className="flex ph-10">
                     <i className="fas fa-angle-right fs-24" />
                 </a>
+                <a className="flex ph-10">
+                    <i className="fas fa-project-diagram fs-15" />
+                </a>
             </div>
         </nav>
     );

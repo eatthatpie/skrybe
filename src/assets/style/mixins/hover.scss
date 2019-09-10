@@ -1,0 +1,43 @@
+@mixin hover-out ($color: $color-primary-darker, $thickness: 1px, $distance: 3px) {
+    position: relative;
+
+    &:before,
+    &:after {
+        content: '';
+        @include transform(scale(0));
+        @include transition(transform .2s, opacity .1s);
+        background-color: $color;
+        bottom: -$distance;
+        height: $thickness;
+        position: absolute;
+        opacity: .61;
+    }
+
+    &:before {
+        @include transform-origin(100%, 0);
+        left: 0;
+        right: 50%;
+    }
+
+    &:after {
+        @include transform-origin(0, 0);
+        left: 50%;
+        right: 0;
+    }
+
+    &:hover {
+        &:before,
+        &:after {
+            @include transform-none();
+            opacity: 1;
+        }
+
+        &:before {
+            @include transform-origin(0, 0);
+        }
+    
+        &:after {
+            @include transform-origin(100%, 0);
+        }
+    }
+}

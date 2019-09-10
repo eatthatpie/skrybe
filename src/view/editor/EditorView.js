@@ -1,6 +1,8 @@
 import ButtonCircle from '@/view/button/ButtonCircle';
 import Card from '@/view/card/Card';
 import CardGhost from '@/view/card/CardGhost';
+import TreeMap from '@/view/tree/TreeMap';
+import TreeViewToggler from '@/view/tree/TreeViewToggler';
 import React from 'react';
 import './EditorView.scss';
 
@@ -32,10 +34,6 @@ class EditorView extends React.Component {
         this.handleSave = this.handleSave.bind(this);
         this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
         this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
-        this.onClickNavigateUp = this.onClickNavigateUp.bind(this);
-        this.onClickNavigateDown = this.onClickNavigateDown.bind(this);
-        this.onClickNavigateLeft = this.onClickNavigateLeft.bind(this);
-        this.onClickNavigateRight = this.onClickNavigateRight.bind(this);
 
         this.isAllowedToAddSiblings = this.isAllowedToAddSiblings.bind(this);
 
@@ -130,54 +128,47 @@ class EditorView extends React.Component {
             bodyText: value
         });
     }
-
-    onClickNavigateUp() {
-        this.props.moveUp();
-    }
-
-    onClickNavigateDown() {
-        this.props.moveDown();
-    }
-
-    onClickNavigateLeft() {
-        this.props.moveLeft();
-    }
-
-    onClickNavigateRight() {
-        this.props.moveRight();
-    }
     
     render() {
         return (
-            <div className="editor-view flex">
-                <CardGhost
-                    className="to-top"
-                    iconClassName="angle-up"
-                    onClick={this.onClickNavigateUp}
+            <div className={`editor-view ${this.props.isTreeMode ? 'is-tree-view' : ''}`}>
+                <TreeViewToggler
+                    className="z-550"
+                    handleClick={() => { this.props.toggleTreeMode({ isTreeMode: !this.props.isTreeMode }) }}
                 />
-                <CardGhost
-                    className="to-bottom"
-                    iconClassName="angle-down"
-                    onClick={this.onClickNavigateDown}
-                />
-                <CardGhost
-                    className="to-left"
-                    iconClassName="angle-left"
-                    onClick={this.onClickNavigateLeft}
-                />
-                <CardGhost
-                    className="to-right"
-                    iconClassName="angle-right"
-                    onClick={this.onClickNavigateRight}
-                />
-                <Card
-                    leadText={this.state.leadText}
-                    bodyText={this.state.bodyText}
-                    handleChangeLeadText={this.handleChangeLeadText}
-                    handleChangeBodyText={this.handleChangeBodyText}
-                    placeholder={this.state.cardPlaceholder}
-                    ref={this.cardRef}
-                />
+                <div className="card-view flex h-100p">
+                    <CardGhost
+                        className="to-top"
+                        iconClassName="angle-up"
+                        onClick={this.props.moveUp}
+                    />
+                    <CardGhost
+                        className="to-bottom"
+                        iconClassName="angle-down"
+                        onClick={this.props.moveDown}
+                    />
+                    <CardGhost
+                        className="to-left"
+                        iconClassName="angle-left"
+                        onClick={this.props.moveLeft}
+                    />
+                    <CardGhost
+                        className="to-right"
+                        iconClassName="angle-right"
+                        onClick={this.props.moveRight}
+                    />
+                    <Card
+                        leadText={this.state.leadText}
+                        bodyText={this.state.bodyText}
+                        handleChangeLeadText={this.handleChangeLeadText}
+                        handleChangeBodyText={this.handleChangeBodyText}
+                        placeholder={this.state.cardPlaceholder}
+                        ref={this.cardRef}
+                    />
+                </div>
+                <div className="tree-view flex h-100p">
+                    <TreeMap />
+                </div>
                 {this.isAllowedToAddSiblings() &&
                     <ButtonCircle
                         iconClassName="fas fa-plus"

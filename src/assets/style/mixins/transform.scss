@@ -1,0 +1,23 @@
+@mixin transform($expr) {
+    -webkit-transform: $expr;
+    -moz-transform: $expr;
+    -ms-transform: $expr;
+    -o-transform: $expr;
+    transform: $expr;
+}
+
+@mixin transform-none() {
+    @include transform(none);
+} 
+
+@mixin transform-reset() {
+    @include transform-none();
+}
+
+@mixin transform-origin($x: 50%, $y: 50%) {
+    -webkit-transform-origin: $x $y;
+    -moz-transform-origin: $x $y;
+    -ms-transform-origin: $x $y;
+    -o-transform-origin: $x $y;
+    transform-origin: $x $y;
+}

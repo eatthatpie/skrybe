@@ -8,12 +8,14 @@ import {
     moveUp,
     moveDown,
     moveLeft,
-    moveRight
+    moveRight,
+    toggleTreeMode
 } from '@/actions/index';
 
 const stateToProps = function(state) {
     return ({
         currentNode: getCurrentNode(state),
+        isTreeMode: state.mode.isTreeMode,
         parentNodeId: getCurrentNodeParentId(state),
         outlineTree: state.outlineTree
     });
@@ -50,6 +52,9 @@ const dispatchToProps = function(dispatch) {
         },
         moveRight() {
             dispatch(moveRight());
+        },
+        toggleTreeMode({ isTreeMode }) {
+            dispatch(toggleTreeMode({ isTreeMode }));
         }
     };
 };

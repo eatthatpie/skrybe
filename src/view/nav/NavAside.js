@@ -1,3 +1,4 @@
+import IconClose from '@/view/icon/IconClose';
 import NavItem from '@/view/nav/NavItem';
 import React from 'react';
 import './NavAside.scss';
@@ -9,7 +10,7 @@ function NavAside(props) {
                 className="nav-aside-close"
                 onClick={props.closeNavAsideMobile}
             >
-                <i className="fas fa-times" />
+                <IconClose />
             </button>
             <ul className="list">
                 {Object.keys(props.nav).map(navName => 

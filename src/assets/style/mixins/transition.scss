@@ -1,0 +1,18 @@
+@mixin transition($expr...) {
+    @if (length($expr) < 1) {
+        $expr: .2s;
+    }
+    -webkit-transition: $expr;
+    -moz-transition: $expr;
+    -ms-transition: $expr;
+    -o-transition: $expr;
+    transition: $expr;
+}
+
+@mixin transition-delay($d: 0s) {
+    -webkit-transition-delay: $d;
+    -moz-transition-delay: $d;
+    -ms-transition-delay: $d;
+    -o-transition-delay: $d;
+    transition-delay: $d;
+}
