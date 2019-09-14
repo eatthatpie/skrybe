@@ -59,6 +59,13 @@ export const setOutlineTreeCurrentNode = function({ currentNodeId }) {
     };
 };
 
+export const toggleEditMode = function({ isEditMode }) {
+    return {
+        type: actionTypes.TOGGLE_EDIT_MODE,
+        isEditMode
+    };
+};
+
 export const toggleTreeMode = function({ isTreeMode }) {
     return {
         type: actionTypes.TOGGLE_TREE_MODE,

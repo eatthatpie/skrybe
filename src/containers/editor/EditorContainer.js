@@ -9,12 +9,14 @@ import {
     moveDown,
     moveLeft,
     moveRight,
+    toggleEditMode,
     toggleTreeMode
 } from '@/actions/index';
 
 const stateToProps = function(state) {
     return ({
         currentNode: getCurrentNode(state),
+        isEditMode: state.mode.isEditMode,
         isTreeMode: state.mode.isTreeMode,
         parentNodeId: getCurrentNodeParentId(state),
         outlineTree: state.outlineTree
@@ -55,6 +57,9 @@ const dispatchToProps = function(dispatch) {
         },
         toggleTreeMode({ isTreeMode }) {
             dispatch(toggleTreeMode({ isTreeMode }));
+        },
+        toggleEditMode({ isEditMode }) {
+            dispatch(toggleEditMode({ isEditMode }));
         }
     };
 };
