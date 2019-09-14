@@ -1,4 +1,5 @@
 import React from 'react';
+import Tooltip from '@/view/tooltip/Tooltip';
 import './TreeViewToggler.scss';
 
 function TreeViewToggler(props) {
@@ -8,8 +9,15 @@ function TreeViewToggler(props) {
             onClick={props.handleClick}
         >
             <span className="btn btn-reversed">
-                <i className="fas fa-project-diagram"></i>
+                <i className="fas fa-project-diagram" />
+                <i className="fas fa-sticky-note" />
             </span>
+            {props.title &&
+                <Tooltip
+                    text={props.title}
+                    position="left"
+                />
+            }
         </a>
     );
 }

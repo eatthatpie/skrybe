@@ -2,4 +2,10 @@
     @media (min-width: 1025px) {
         display: none !important;
     }
+    
+    &.is-edit-mode {
+        > * {
+            display: none;
+        }
+    }
 }

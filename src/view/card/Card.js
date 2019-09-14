@@ -71,6 +71,8 @@ export default class Card extends React.Component {
                         html={leadText}
                         isDisabled={false}
                         onChange={handleChangeLeadText}
+                        onBlur={this.props.onBlur}
+                        onFocus={this.props.onFocus}
                     />
                     <i className="fas fa-pencil-alt fs-10 color-light bg-light" />
                 </div>
@@ -82,6 +84,8 @@ export default class Card extends React.Component {
                         html={bodyText}
                         isDisabled={false}
                         onChange={handleChangeBodyText}
+                        onBlur={this.props.onBlur}
+                        onFocus={this.props.onFocus}
                         ref={this.contentEditableRef}
                     />
                     <i className="fas fa-pencil-alt fs-10 color-light bg-light" />

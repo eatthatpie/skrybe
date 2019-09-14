@@ -8,38 +8,28 @@
     height: 100%;
     z-index: $z-editor-view;
 
-    @media (min-width: 1025px) {
-        .card-view {
-            @include transition(all 0.3s ease-in-out 0.05s);
-            position: absolute;
-            left: 0;
-            right: 0;
-        }
-    
-        .tree-view {
-            @include transition(all 0.3s ease-in-out 0s);
-            @include transform(scale(0.7));
-            opacity: 0;
-        }
-    
-        &.is-tree-view {
-            .card-view {
-                @include transition(all 0.3s ease-in-out 0s);
-                @include transform(scale(1.2));
-                opacity: 0;
-            }
-    
-            .tree-view {
-                @include transition(all 0.2s ease-in-out 0.05s);
-                @include transform-none();
-                opacity: 1;
-            }
+    .editor-controls:not(.editor-controls--mobile) {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+
+        @media (max-width: $screen-laptop) {
+            bottom: 15px;
+            right: 15px;
         }
     }
 
-    @media (max-width: 1024px) {
-        .tree-view {
-            display: none;
+    .editor-controls--mobile {
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    &.is-edit-mode {
+        .editor-controls--mobile {
+            @media (max-width: $screen-laptop) {
+                pointer-events: all;
+                opacity: 1;
+            }
         }
     }
 
@@ -47,24 +37,35 @@
         position: absolute;
     }
 
-    .button-circle {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-
-        & + .button-circle {
-            right: 100px;
-
-            & + .button-circle {
-                right: 170px;
-
-                & + .button-circle {
-                    right: 240px;
-
-                    & + .button-circle {
-                        right: 310px;
-                    }
-                }
+    @media (min-width: 1025px) {
+        .card-view {
+            @include transition(all 0.2s ease-in-out 0s);
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+    
+        .tree-view {
+            @include transition(all 0.2s ease-in-out 0s);
+            //@include transform(scale(1.2));
+            position: relative;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+        }
+    
+        &.is-tree-view {
+            .card-view {
+                @include transition(all 0.2s ease-in-out 0s);
+                @include transform(scale(0.618));
+                opacity: 0;
+            }
+    
+            .tree-view {
+                @include transition(all 0.3s ease-in-out 0s);
+                @include transform-none();
+                pointer-events: all;
+                opacity: 1;
             }
         }
     }
@@ -74,28 +75,19 @@
         position: static;
         padding: 75px 0 75px;
 
+        .tree-view {
+            display: none;
+        }
+
         .card-ghost {
             display: none;
         }
 
-        .button-circle {
-            bottom: 15px;
-            right: 15px;
-    
-            & + .button-circle {
-                right: 70px;
-    
-                & + .button-circle {
-                    right: 125px;
-    
-                    & + .button-circle {
-                        right: 180px;
-    
-                        & + .button-circle {
-                            right: 235px;
-                        }
-                    }
-                }
+        &.is-edit-mode {
+            padding: 75px 0 0;
+
+            .editor-controls:not(.editor-controls--mobile) {
+                display: none;
             }
         }
     }

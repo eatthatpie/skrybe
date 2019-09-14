@@ -1,3 +1,6 @@
+@import './../../assets/style/variables/variables';
+@import './../../assets/style/mixins/mixins';
+
 .tree-view-toggler {
     cursor: pointer;
     position: fixed;
@@ -16,11 +19,41 @@
         right: 0;
 
         > i {
+            @include transition(0.2s);
+            position: absolute;
             line-height: 60px;
+            top: 1px;
+
+            &.fa-project-diagram {
+                left: calc(50% - 12px);
+                
+            }
+
+            &.fa-sticky-note {
+                @include transform(scale(0.618));
+                left: calc(50% - 8px);
+                opacity: 0;
+            }
         }
 
         &:before {
             left: 0;
+        }
+    }
+
+    &.is-tree-mode {
+        > .btn {
+            > i {
+                &.fa-project-diagram {
+                    @include transform(scale(0.618));
+                    opacity: 0;
+                }
+    
+                &.fa-sticky-note {
+                    @include transform-none();
+                    opacity: 1;
+                }
+            }
         }
     }
 

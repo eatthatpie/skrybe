@@ -1,7 +1,7 @@
-import ButtonCircle from '@/view/button/ButtonCircle';
 import Card from '@/view/card/Card';
 import CardGhost from '@/view/card/CardGhost';
-import TreeMap from '@/view/tree/TreeMap';
+import EditorControls from '@/view/editor/EditorControls';
+import TreeView from '@/view/tree/TreeView';
 import TreeViewToggler from '@/view/tree/TreeViewToggler';
 import React from 'react';
 import './EditorView.scss';
@@ -13,8 +13,12 @@ class EditorView extends React.Component {
     constructor(props) {
         super();
 
-        this.rootChildPlaceholder = `Write a very short brief of your story. Try to mention its all main parts. For example: After breaking up with his girlfriend, John moves to a big city to forget about her. He decides to live in an unusual apartment -- the back room of the popular pub. He meets many new and strange people there.`
-        this.rootPlaceholder = `For example: The main character -- JOHN -- writes a book that eventually destroys him.`;
+        this.rootChildPlaceholder = `
+            Write a very short brief of your story. Try to mention its all main parts. For example: After breaking up with his girlfriend, John moves to a big city to forget about her. He decides to live in an unusual apartment...
+        `
+        this.rootPlaceholder = `
+            For example: The main character -- JOHN -- writes a book that eventually destroys him.
+        `;
 
         let cardPlaceholder = null;
         if (props.outlineTree.currentNodeId === 'root') {
@@ -26,14 +30,19 @@ class EditorView extends React.Component {
         this.state = {
             leadText: props.currentNode.leadText || '',
             bodyText: props.currentNode.bodyText || '',
-            cardPlaceholder
+            cardPlaceholder,
+            shouldGainFocusOnUpdate: false
         }
 
         this.findCharacterNames = this.findCharacterNames.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
+        this.handleDiscard = this.handleDiscard.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
         this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
+        this.handleCardFocus = this.handleCardFocus.bind(this);
+        this.handleCardBlur = this.handleCardBlur.bind(this);
 
         this.isAllowedToAddSiblings = this.isAllowedToAddSiblings.bind(this);
 
@@ -62,10 +71,33 @@ class EditorView extends React.Component {
                 cardPlaceholder
             });
 
-            this.cardRef.current.focus();
+            if (this.state.shouldGainFocusOnUpdate) {
+                this.cardRef.current.focus();
+
+                this.setState({
+                    shouldGainFocusOnUpdate: false
+                });
+            }
         }
 
         return true;
+    }
+
+    handleEdit() {
+        if (this.cardRef.current) {
+            this.cardRef.current.focus();
+        }
+    }
+
+    handleDiscard() {
+        this.setState({
+            leadText: this.props.currentNode.leadText || '',
+            bodyText: this.props.currentNode.bodyText || ''
+        });
+
+        if (this.cardRef.current) {
+            this.cardRef.current.blur();
+        }
     }
 
     handleAdd() {
@@ -81,18 +113,24 @@ class EditorView extends React.Component {
     }
 
     handleSave() {
-        this.props.updateCard({
-            nodeId: this.props.outlineTree.currentNodeId,
-            leadText: this.state.leadText,
-            bodyText: this.state.bodyText
+        this.setState({
+            shouldGainFocusOnUpdate: true
         });
 
-        const characterNames = this.findCharacterNames();
-
-        this.props.updateCharacters({
-            nodeId: this.props.outlineTree.currentNodeId,
-            characterNames
-        });
+        setTimeout(() => {
+            this.props.updateCard({
+                nodeId: this.props.outlineTree.currentNodeId,
+                leadText: this.state.leadText,
+                bodyText: this.state.bodyText
+            });
+    
+            const characterNames = this.findCharacterNames();
+    
+            this.props.updateCharacters({
+                nodeId: this.props.outlineTree.currentNodeId,
+                characterNames
+            });
+        }, 1)
     }
 
     findCharacterNames() {
@@ -128,13 +166,42 @@ class EditorView extends React.Component {
             bodyText: value
         });
     }
+
+    handleCardFocus() {
+        setTimeout(() => {
+            this.props.toggleEditMode({ isEditMode: true });
+        }, 200);
+    }
+
+    handleCardBlur() {
+        setTimeout(() => {
+            this.props.toggleEditMode({ isEditMode: false });
+        }, 200);
+    }
     
     render() {
         return (
-            <div className={`editor-view ${this.props.isTreeMode ? 'is-tree-view' : ''}`}>
+            <div className={
+                `editor-view ${this.props.isTreeMode ? 'is-tree-view' : ''} ${this.props.isEditMode ? 'is-edit-mode' : ''}`
+            }>
+                <EditorControls
+                    hideAllIf={this.props.isTreeMode}
+                    className="editor-controls--mobile flex flex-normal flex-sb fixed cover-top h-60 bg-black z-550 ph-15 st:ph-0"
+                    controls={{
+                        save: {
+                            visibleIf: this.props.isEditMode,
+                            handleClick: this.handleSave.bind(this)
+                        },
+                        discard: {
+                            visibleIf: this.props.isEditMode,
+                            handleClick: this.handleDiscard.bind(this)
+                        }
+                    }}
+                />
                 <TreeViewToggler
-                    className="z-550"
+                    className={`z-550 ${this.props.isTreeMode ? 'is-tree-mode' : ''}`}
                     handleClick={() => { this.props.toggleTreeMode({ isTreeMode: !this.props.isTreeMode }) }}
+                    title="Toggle story tree view"
                 />
                 <div className="card-view flex h-100p">
                     <CardGhost
@@ -164,24 +231,37 @@ class EditorView extends React.Component {
                         handleChangeBodyText={this.handleChangeBodyText}
                         placeholder={this.state.cardPlaceholder}
                         ref={this.cardRef}
+                        onFocus={this.handleCardFocus}
+                        onBlur={this.handleCardBlur}
                     />
                 </div>
-                <div className="tree-view flex h-100p">
-                    <TreeMap />
-                </div>
-                {this.isAllowedToAddSiblings() &&
-                    <ButtonCircle
-                        iconClassName="fas fa-plus"
-                        handleClick={this.handleAdd}
-                    />
-                }
-                <ButtonCircle
-                    iconClassName="fas fa-check"
-                    handleClick={this.handleSave}
+                <TreeView />
+                <EditorControls
+                    hideAllIf={this.props.isTreeMode}
+                    controls={{
+                        edit: {
+                            visibleIf: !this.props.isEditMode,
+                            handleClick: this.handleEdit.bind(this)
+                        },
+                        add: {
+                            visibleIf: this.isAllowedToAddSiblings() &&
+                                !this.props.isEditMode,
+                            handleClick: this.handleAdd.bind(this)
+                        },
+                        remove: {
+                            visibleIf: this.isAllowedToAddSiblings() &&
+                                !this.props.isEditMode
+                        },
+                        save: {
+                            visibleIf: this.props.isEditMode,
+                            handleClick: this.handleSave.bind(this)
+                        },
+                        discard: {
+                            visibleIf: this.props.isEditMode,
+                            handleClick: this.handleDiscard.bind(this)
+                        }
+                    }}
                 />
-                <ButtonCircle iconClassName="fas fa-pen" />
-                <ButtonCircle iconClassName="fas fa-times" />
-                <ButtonCircle iconClassName="fas fa-trash-alt" />
             </div>
         );
     }
