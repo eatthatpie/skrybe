@@ -12,3 +12,10 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+
+@media (max-width: $screen-tablet) {
+    .st\:ph-0 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
