@@ -3,6 +3,7 @@ import Logo from '@/view/logo/Logo';
 import NavContainer from '@/containers/nav/NavContainer';
 import NavMobileContainer from '@/containers/nav/NavMobileContainer'
 import React from 'react';
+import { DatabaseContext } from '@/services/database';
 import '@/assets/style/style.scss';
 import './App.scss';
 
@@ -16,7 +17,9 @@ function App() {
             <NavMobileContainer />
             <NavContainer />
             <Logo />
-            <EditorContainer />
+            <DatabaseContext.Consumer>
+                {database => <EditorContainer database={database} />}
+            </DatabaseContext.Consumer>
         </div>
     );
 }

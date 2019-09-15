@@ -30,7 +30,8 @@ module.exports = {
         alias: {
             '@': path.resolve(__dirname, 'src/')
         },
-        extensions: ['*', '.js', '.json']
+        extensions: ['*', '.js', '.json'],
+        mainFiles: ['index']
     },
     plugins: [
         new HtmlWebPackPlugin({
