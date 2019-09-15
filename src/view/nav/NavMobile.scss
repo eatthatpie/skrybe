@@ -8,4 +8,10 @@
             display: none;
         }
     }
+
+    a {
+        &.is-inactive {
+            opacity: 0.1;
+        }
+    }
 }

@@ -14,10 +14,10 @@ class EditorView extends React.Component {
         super();
 
         this.rootChildPlaceholder = `
-            Write a very short brief of your story. Try to mention its all main parts. For example: After breaking up with his girlfriend, John moves to a big city to forget about her. He decides to live in an unusual apartment...
+            Write a very short brief of your story. Try to mention its all main parts. For example: After breaking up with her boyfriend, JANE moves to a big city to forget about him. She decides to live in an unusual apartment...
         `
         this.rootPlaceholder = `
-            For example: The main character -- JOHN -- writes a book that eventually destroys him.
+            For example: The main character -- JANE -- writes a book that eventually destroys her as a human.
         `;
 
         let cardPlaceholder = null;
@@ -49,38 +49,34 @@ class EditorView extends React.Component {
         this.cardRef = React.createRef();
     }
 
-    componentDidMount() {
-        this.cardRef.current.focus();
-    }
-
-    shouldComponentUpdate(nextProps) {
+    componentWillUpdate(nextProps) {
         if (
-            nextProps.outlineTree.currentNodeId !== this.props.outlineTree.currentNodeId
+            nextProps.outlineTree.currentNodeId === this.props.outlineTree.currentNodeId
         ) {
-            let cardPlaceholder = null;
-
-            if (nextProps.outlineTree.currentNodeId === 'root') {
-                cardPlaceholder = this.rootPlaceholder;
-            } else if(nextProps.parentNodeId === 'root') {
-                cardPlaceholder = this.rootChildPlaceholder;
-            }
-
-            this.setState({
-                bodyText: nextProps.currentNode.bodyText,
-                leadText: nextProps.currentNode.leadText,
-                cardPlaceholder
-            });
-
-            if (this.state.shouldGainFocusOnUpdate) {
-                this.cardRef.current.focus();
-
-                this.setState({
-                    shouldGainFocusOnUpdate: false
-                });
-            }
+            return;
         }
 
-        return true;
+        let cardPlaceholder = null;
+
+        if (nextProps.outlineTree.currentNodeId === 'root') {
+            cardPlaceholder = this.rootPlaceholder;
+        } else if(nextProps.parentNodeId === 'root') {
+            cardPlaceholder = this.rootChildPlaceholder;
+        }
+
+        this.setState({
+            bodyText: nextProps.currentNode.bodyText,
+            leadText: nextProps.currentNode.leadText,
+            cardPlaceholder
+        });
+
+        if (this.state.shouldGainFocusOnUpdate) {
+            this.cardRef.current.focus();
+
+            this.setState({
+                shouldGainFocusOnUpdate: false
+            });
+        }
     }
 
     handleEdit() {
@@ -113,24 +109,24 @@ class EditorView extends React.Component {
     }
 
     handleSave() {
-        this.setState({
-            shouldGainFocusOnUpdate: true
-        });
-
-        setTimeout(() => {
-            this.props.updateCard({
-                nodeId: this.props.outlineTree.currentNodeId,
-                leadText: this.state.leadText,
-                bodyText: this.state.bodyText
+        this.setState(
+            {
+                shouldGainFocusOnUpdate: true
+            },
+            () => {
+                this.props.updateCard({
+                    nodeId: this.props.outlineTree.currentNodeId,
+                    leadText: this.state.leadText,
+                    bodyText: this.state.bodyText
+                });
+        
+                const characterNames = this.findCharacterNames();
+        
+                this.props.updateCharacters({
+                    nodeId: this.props.outlineTree.currentNodeId,
+                    characterNames
+                });
             });
-    
-            const characterNames = this.findCharacterNames();
-    
-            this.props.updateCharacters({
-                nodeId: this.props.outlineTree.currentNodeId,
-                characterNames
-            });
-        }, 1)
     }
 
     findCharacterNames() {
@@ -205,22 +201,30 @@ class EditorView extends React.Component {
                 />
                 <div className="card-view flex h-100p">
                     <CardGhost
-                        className="to-top"
+                        className={
+                            `to-top ${!this.props.canMoveUp ? 'is-inactive' : ''}`
+                        }
                         iconClassName="angle-up"
                         onClick={this.props.moveUp}
                     />
                     <CardGhost
-                        className="to-bottom"
+                        className={
+                            `to-bottom ${!this.props.canMoveDown ? 'is-inactive' : ''}`
+                        }
                         iconClassName="angle-down"
                         onClick={this.props.moveDown}
                     />
                     <CardGhost
-                        className="to-left"
+                        className={
+                            `to-left ${!this.props.canMoveLeft ? 'is-inactive' : ''}`
+                        }
                         iconClassName="angle-left"
                         onClick={this.props.moveLeft}
                     />
                     <CardGhost
-                        className="to-right"
+                        className={
+                            `to-right ${!this.props.canMoveRight ? 'is-inactive' : ''}`
+                        }
                         iconClassName="angle-right"
                         onClick={this.props.moveRight}
                     />

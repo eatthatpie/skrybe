@@ -1,6 +1,13 @@
 import EditorView from '@/view/editor/EditorView';
 import { connect } from 'react-redux';
-import { getCurrentNode, getCurrentNodeParentId } from '@/selectors/index';
+import {
+    getCurrentNode,
+    getCurrentNodeParentId,
+    canMoveUp,
+    canMoveDown,
+    canMoveLeft,
+    canMoveRight
+} from '@/selectors';
 import {
     generateDescendantsOfNode,
     setOutlineTreeNode,
@@ -19,7 +26,11 @@ const stateToProps = function(state) {
         isEditMode: state.mode.isEditMode,
         isTreeMode: state.mode.isTreeMode,
         parentNodeId: getCurrentNodeParentId(state),
-        outlineTree: state.outlineTree
+        outlineTree: state.outlineTree,
+        canMoveUp: canMoveUp(state),
+        canMoveDown: canMoveDown(state),
+        canMoveLeft: canMoveLeft(state),
+        canMoveRight: canMoveRight(state)
     });
 };
 

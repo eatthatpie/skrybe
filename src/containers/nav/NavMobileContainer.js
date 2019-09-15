@@ -1,6 +1,12 @@
 import NavMobile from '@/view/nav/NavMobile';
 import { connect } from 'react-redux';
 import {
+    canMoveUp,
+    canMoveDown,
+    canMoveLeft,
+    canMoveRight
+} from '@/selectors';
+import {
     moveUp,
     moveDown,
     moveLeft,
@@ -12,6 +18,10 @@ const stateToProps = function(state) {
     return ({
         isEditMode: state.mode.isEditMode,
         isTreeMode: state.mode.isTreeMode,
+        canMoveUp: canMoveUp(state),
+        canMoveDown: canMoveDown(state),
+        canMoveLeft: canMoveLeft(state),
+        canMoveRight: canMoveRight(state)
     });
 };
 

@@ -10,25 +10,25 @@ function NavMobile(props) {
             <Hamburger handleClick={props.openNavAsideMobile} />
             <div className="flex flex-normal h-100p">
                 <a
-                    className="flex ph-10"
+                    className={`flex ph-10 ${!props.canMoveUp ? 'is-inactive' : ''}`}
                     onClick={props.moveUp}
                 >
                     <i className="fas fa-angle-up fs-24" />
                 </a>
                 <a
-                    className="flex ph-10"
+                    className={`flex ph-10 ${!props.canMoveDown ? 'is-inactive' : ''}`}
                     onClick={props.moveDown}
                 >
                     <i className="fas fa-angle-down fs-24" />
                 </a>
                 <a
-                    className="flex ph-10"
+                    className={`flex ph-10 ${!props.canMoveLeft ? 'is-inactive' : ''}`}
                     onClick={props.moveLeft}
                 >
                     <i className="fas fa-angle-left fs-24" />
                 </a>
                 <a
-                    className="flex ph-10"
+                    className={`flex ph-10 ${!props.canMoveRight ? 'is-inactive' : ''}`}
                     onClick={props.moveRight}
                 >
                     <i className="fas fa-angle-right fs-24" />
