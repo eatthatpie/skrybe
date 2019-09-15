@@ -1,0 +1,49 @@
+@import './../../assets/style/mixins/mixins';
+@import './../../assets/style/variables/variables';
+
+.spinner {
+    @include dimensions(40px);
+    @include border-circle();
+    border: 4px solid $default;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    animation: spin 3s linear infinite;
+
+    &:before {
+        content: '';
+        @include position-cover(-4px);
+        @include border-circle();
+        border: 4px solid $default;
+        box-sizing: content-box;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        animation: spin 3s infinite;
+    }
+}
+
+@include keyframes(spin) {
+    0% {
+        @include transform(rotate(0));
+    }
+
+    25% {
+        @include transform(rotate(270deg));
+    }
+
+    50% {
+        @include transform(rotate(540deg));
+    }
+
+    75% {
+        @include transform(rotate(810deg));
+    }
+
+    100% {
+        @include transform(rotate(1080deg));
+    }
+}

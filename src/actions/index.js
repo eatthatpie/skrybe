@@ -73,6 +73,13 @@ export const toggleEditMode = function({ isEditMode }) {
     };
 };
 
+export const toggleLayoutOverlay = function({ isLayoutOverlayActive }) {
+    return {
+        type: actionTypes.TOGGLE_LAYOUT_OVERLAY,
+        isLayoutOverlayActive
+    }
+}
+
 export const toggleTreeMode = function({ isTreeMode }) {
     return {
         type: actionTypes.TOGGLE_TREE_MODE,
