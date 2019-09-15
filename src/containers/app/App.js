@@ -2,26 +2,40 @@ import EditorContainer from '@/containers/editor/EditorContainer';
 import Logo from '@/view/logo/Logo';
 import NavContainer from '@/containers/nav/NavContainer';
 import NavMobileContainer from '@/containers/nav/NavMobileContainer'
-import React from 'react';
+import React, { useContext } from 'react';
+import { connect } from 'react-redux';
 import { DatabaseContext } from '@/services/database';
+import { dangerouslyResetOutlineTree } from '@/actions';
 import '@/assets/style/style.scss';
 import './App.scss';
 
-// https://fontawesome.com/icons/sticky-note?style=solid
-// https://www.iconfinder.com/icons/2672445/binary_data_diversity_tree_icon
+function App(props) {
+    const database = useContext(DatabaseContext);
 
-// @FIXME: this should be a view, not a container
-function App() {
+    database.fetch('/user/testuser/project/test-project').then(snapshot => {
+        props.dangerouslyResetOutlineTree(snapshot.val());
+    });
+
     return (
         <div className="app container">
             <NavMobileContainer />
             <NavContainer />
             <Logo />
-            <DatabaseContext.Consumer>
-                {database => <EditorContainer database={database} />}
-            </DatabaseContext.Consumer>
+            <EditorContainer database={database} />
         </div>
     );
 }
 
-export default App;
+const stateToProps = function(state) {
+    return ({});
+};
+
+const dispatchToProps = function(dispatch) {
+    return {
+        dangerouslyResetOutlineTree(outlineTree) {
+            dispatch(dangerouslyResetOutlineTree(outlineTree));
+        }
+    };
+};
+
+export default connect(stateToProps, dispatchToProps)(App);

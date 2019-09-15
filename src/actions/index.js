@@ -1,5 +1,12 @@
 import actionTypes from './types';
 
+export const dangerouslyResetOutlineTree = function(outlineTree) {
+    return {
+        type: actionTypes.DANGEROUSLY_RESET_OUTLINE_TREE,
+        dangerousOutlineTree: outlineTree,
+    }
+}
+
 export const generateDescendantsOfNode = function({
     nodeId,
     shouldMoveAfter

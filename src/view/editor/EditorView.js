@@ -31,7 +31,8 @@ class EditorView extends React.Component {
             leadText: props.currentNode.leadText || '',
             bodyText: props.currentNode.bodyText || '',
             cardPlaceholder,
-            shouldGainFocusOnUpdate: false
+            shouldGainFocusOnUpdate: false,
+            shouldSaveToDatabaseOnUpdate: false
         }
 
         this.findCharacterNames = this.findCharacterNames.bind(this);
@@ -77,6 +78,17 @@ class EditorView extends React.Component {
                 shouldGainFocusOnUpdate: false
             });
         }
+
+        if (this.state.shouldSaveToDatabaseOnUpdate) {
+            this.props.database.set(
+                '/user/testuser/project/test-project',
+                nextProps.outlineTree
+            );
+
+            this.setState({
+                shouldSaveToDatabaseOnUpdate: false
+            });
+        }
     }
 
     handleEdit() {
@@ -114,18 +126,25 @@ class EditorView extends React.Component {
                 shouldGainFocusOnUpdate: true
             },
             () => {
-                this.props.updateCard({
-                    nodeId: this.props.outlineTree.currentNodeId,
-                    leadText: this.state.leadText,
-                    bodyText: this.state.bodyText
-                });
-        
-                const characterNames = this.findCharacterNames();
-        
-                this.props.updateCharacters({
-                    nodeId: this.props.outlineTree.currentNodeId,
-                    characterNames
-                });
+                this.setState(
+                    {
+                        shouldSaveToDatabaseOnUpdate: true
+                    },
+                    () => {
+                        this.props.updateCard({
+                            nodeId: this.props.outlineTree.currentNodeId,
+                            leadText: this.state.leadText,
+                            bodyText: this.state.bodyText
+                        });
+                
+                        const characterNames = this.findCharacterNames();
+                
+                        this.props.updateCharacters({
+                            nodeId: this.props.outlineTree.currentNodeId,
+                            characterNames
+                        });
+                    }
+                );
             });
     }
 

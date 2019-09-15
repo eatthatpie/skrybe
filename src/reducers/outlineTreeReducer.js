@@ -21,9 +21,27 @@ export default function outlineTreeReducer(state = initialState, {
     parentNodeId,
     leadText,
     bodyText,
-    shouldMoveAfter
+    shouldMoveAfter,
+    dangerousOutlineTree
 }) {
     switch (type) {
+        case actionTypes.DANGEROUSLY_RESET_OUTLINE_TREE: {
+            Object.keys(dangerousOutlineTree.items).forEach(nodeId => {
+                if (!dangerousOutlineTree.items[nodeId].descendants) {
+                    dangerousOutlineTree.items[nodeId] = Object.assign({}, dangerousOutlineTree.items[nodeId], {
+                        descendants: []
+                    });
+                }
+
+                if (!dangerousOutlineTree.items[nodeId].siblings) {
+                    dangerousOutlineTree.items[nodeId] = Object.assign({}, dangerousOutlineTree.items[nodeId], {
+                        siblings: []
+                    });
+                }
+            });
+
+            return { ...dangerousOutlineTree };
+        }
         case actionTypes.SET_OUTLINE_TREE_NODE: {
             if (nodeId && parentNodeId) {
                 throw new Error(`[Outline Tree Reducer SET_OUTLINE_TREE_NODE] You cannot specified both nodeId and parentNodeId at the same time.`);

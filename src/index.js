@@ -6,11 +6,12 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 
 const store = createStore();
+const firebaseDatabaseProvider = new FirebaseProvider();
 
 render(
     <Provider store={store}>
         <DatabaseContext.Provider value={
-            new Database({ provider: new FirebaseProvider() })
+            new Database({ provider: firebaseDatabaseProvider })
         }>
             <App />
         </DatabaseContext.Provider>
