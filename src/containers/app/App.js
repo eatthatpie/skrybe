@@ -9,6 +9,7 @@ import './App.scss';
 // https://fontawesome.com/icons/sticky-note?style=solid
 // https://www.iconfinder.com/icons/2672445/binary_data_diversity_tree_icon
 
+// @FIXME: this should be a view, not a container
 function App() {
     return (
         <div className="app container">
