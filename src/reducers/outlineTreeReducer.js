@@ -38,6 +38,15 @@ export default function outlineTreeReducer(state = initialState, {
                         siblings: []
                     });
                 }
+
+                if (
+                    !dangerousOutlineTree.items[nodeId].parentNodeId &&
+                    dangerousOutlineTree.items[nodeId].parentNodeId !== null
+                ) {
+                    dangerousOutlineTree.items[nodeId] = Object.assign({}, dangerousOutlineTree.items[nodeId], {
+                        parentNodeId: null
+                    });
+                }
             });
 
             return { ...dangerousOutlineTree };

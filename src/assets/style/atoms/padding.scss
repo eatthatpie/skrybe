@@ -13,6 +13,26 @@
     padding-right: 15px;
 }
 
+.ph-25 {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.pt-30 {
+    padding-top: 30px;
+}
+
+.pt-50 {
+    padding-top: 50px;
+}
+
+@media (max-width: $screen-laptop) {
+    .sl\:ph-20 {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
 @media (max-width: $screen-tablet) {
     .st\:ph-0 {
         padding-left: 0;

@@ -4,10 +4,20 @@ const initialState = {
     isLayoutOverlayActive: false,
     navAsideMobile: {
         isOpen: false
+    },
+    popup: {
+        type: '',
+        isActive: true
     }
 };
 
-export default function viewReducer(state = initialState, { type, isLayoutOverlayActive, isOpen }) {
+export default function viewReducer(state = initialState, {
+    type,
+    isActivePopup,
+    isLayoutOverlayActive,
+    isOpen,
+    popupType
+}) {
     switch (type) {
         case actionTypes.NAV_ASIDE_MOBILE_TOGGLE: {
             return {
@@ -22,6 +32,16 @@ export default function viewReducer(state = initialState, { type, isLayoutOverla
                 ...state,
                 isLayoutOverlayActive
             };
+        }
+        case actionTypes.TOGGLE_POPUP: {
+            return {
+                ...state,
+                popup: {
+                    ...state.popup,
+                    isActive: isActivePopup,
+                    type: popupType || state.popup.type
+                }
+            }
         }
         default:
             return state;

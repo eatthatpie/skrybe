@@ -80,6 +80,14 @@ export const toggleLayoutOverlay = function({ isLayoutOverlayActive }) {
     }
 }
 
+export const togglePopup = function({ isActivePopup, popupType }) {
+    return {
+        type: actionTypes.TOGGLE_POPUP,
+        isActivePopup,
+        popupType
+    }
+}
+
 export const toggleTreeMode = function({ isTreeMode }) {
     return {
         type: actionTypes.TOGGLE_TREE_MODE,

@@ -2,19 +2,24 @@ import App from '@/containers/app/App';
 import createStore from '@/store/createStore';
 import React from 'react';
 import { Database, DatabaseContext, FirebaseProvider } from '@/services/database';
+import { Auth, AuthContext } from '@/services/auth';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 
 const store = createStore();
-const firebaseDatabaseProvider = new FirebaseProvider();
+const firebaseProvider = new FirebaseProvider();
 
 render(
     <Provider store={store}>
-        <DatabaseContext.Provider value={
-            new Database({ provider: firebaseDatabaseProvider })
+        <AuthContext.Provider value={
+            new Auth({ provider: firebaseProvider })
         }>
-            <App />
-        </DatabaseContext.Provider>
+            <DatabaseContext.Provider value={
+                new Database({ provider: firebaseProvider })
+            }>
+                <App />
+            </DatabaseContext.Provider>
+        </AuthContext.Provider>
     </Provider>,
     document.getElementById('root')
 );

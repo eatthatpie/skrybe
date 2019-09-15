@@ -1,6 +1,7 @@
 import Card from '@/view/card/Card';
 import CardGhost from '@/view/card/CardGhost';
 import EditorControls from '@/view/editor/EditorControls';
+import HintSignIn from '@/view/hint/HintSignIn';
 import TreeView from '@/view/tree/TreeView';
 import TreeViewToggler from '@/view/tree/TreeViewToggler';
 import React from 'react';
@@ -81,7 +82,7 @@ class EditorView extends React.Component {
 
         if (this.state.shouldSaveToDatabaseOnUpdate) {
             this.props.database.set(
-                '/user/testuser/project/test-project',
+                `/user/${this.props.auth.getCurrentUserId()}/project/test-project`,
                 nextProps.outlineTree
             );
 
@@ -285,6 +286,9 @@ class EditorView extends React.Component {
                         }
                     }}
                 />
+                <HintSignIn handleClick={
+                    () => { this.props.togglePopup({ isActive: true, type: 'sign-in' }) }
+                } />
             </div>
         );
     }
