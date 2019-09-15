@@ -1,0 +1,22 @@
+.icon-close {
+    display: block;
+    position: relative;
+    width: 30px;
+    height: 30px;
+
+    > span {
+        background-color: #fff;
+        position: absolute;
+        display: block;
+        height: 2px;
+        width: 100%;
+
+        &:nth-child(1) {
+            transform: translateY(16px) rotate(45deg);
+        }
+
+        &:nth-child(2) {
+            transform: translateY(16px) rotate(-45deg);
+        }
+    }
+}

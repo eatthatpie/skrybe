@@ -1,33 +1,93 @@
+@import './../../assets/style/mixins/mixins';
 @import './../../assets/style/variables/variables';
 
 .editor-view {
+    overflow: hidden;
     position: absolute;
     width: 100%;
     height: 100%;
     z-index: $z-editor-view;
 
+    .editor-controls:not(.editor-controls--mobile) {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+
+        @media (max-width: $screen-laptop) {
+            bottom: 15px;
+            right: 15px;
+        }
+    }
+
+    .editor-controls--mobile {
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    &.is-edit-mode {
+        .editor-controls--mobile {
+            @media (max-width: $screen-laptop) {
+                pointer-events: all;
+                opacity: 1;
+            }
+        }
+    }
+
     .card-ghost {
         position: absolute;
     }
 
-    .button-circle {
-        position: absolute;
-        bottom: 30px;
-        right: 30px;
+    @media (min-width: 1025px) {
+        .card-view {
+            @include transition(all 0.2s ease-in-out 0s);
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+    
+        .tree-view {
+            @include transition(all 0.2s ease-in-out 0s);
+            //@include transform(scale(1.2));
+            position: relative;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+        }
+    
+        &.is-tree-view {
+            .card-view {
+                @include transition(all 0.2s ease-in-out 0s);
+                @include transform(scale(0.618));
+                opacity: 0;
+            }
+    
+            .tree-view {
+                @include transition(all 0.3s ease-in-out 0s);
+                @include transform-none();
+                pointer-events: all;
+                opacity: 1;
+            }
+        }
+    }
 
-        & + .button-circle {
-            right: 100px;
+    @media (max-width: $screen-laptop) {
+        height: auto;
+        position: static;
+        padding: 75px 0 75px;
 
-            & + .button-circle {
-                right: 170px;
+        .tree-view {
+            display: none;
+        }
 
-                & + .button-circle {
-                    right: 240px;
+        .card-ghost {
+            display: none;
+        }
 
-                    & + .button-circle {
-                        right: 310px;
-                    }
-                }
+        &.is-edit-mode {
+            padding: 75px 0 0;
+
+            .editor-controls:not(.editor-controls--mobile) {
+                display: none;
             }
         }
     }

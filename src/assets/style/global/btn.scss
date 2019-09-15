@@ -1,0 +1,43 @@
+@import './../variables/variables';
+
+.btn {
+    position: relative;
+
+    &:before {
+        content: '';
+        @include transition(0.1s);
+        @include transform(scale(0.618));
+        position: absolute;
+        border-radius: 50%;
+        height: 100%;
+        width: 100%;
+        background-color: rgba($btn-hover, 0.5);
+        z-index: -1;
+        opacity: 0;
+    }
+
+    &:not(.is-disabled) {
+        &:hover {
+            &:before {
+                @include transform-none();
+                opacity: 1;
+            }
+        }
+    }
+
+    &-reversed {
+        &:before {
+            @include transition(0s);
+            @include transform-none();
+            opacity: 1;
+        }
+
+        &:not(.is-disabled) {
+            &:hover {
+                &:before {
+                    background-color: rgba($btn-hover, 1);
+                }
+            }
+        }
+    }
+}

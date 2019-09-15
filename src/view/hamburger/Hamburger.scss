@@ -1,0 +1,15 @@
+.hamburger {
+    display: block;
+    width: 30px;
+
+    > span {
+        background-color: #fff;
+        display: block;
+        height: 2px;
+        width: 100%;
+
+        & + span {
+            margin-top: 5px;
+        }
+    }
+}

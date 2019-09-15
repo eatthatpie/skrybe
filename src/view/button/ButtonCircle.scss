@@ -16,4 +16,13 @@
     &:hover {
         background-color: lighten($primary, 10%);
     }
+
+    @media (max-width: $screen-laptop) {
+        width: 48px;
+        height: 48px;
+
+        i {
+            font-size: 20px;
+        }
+    }
 }

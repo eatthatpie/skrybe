@@ -14,6 +14,7 @@ const initialState = {
     }
 };
 
+// @FIXME: refactor
 export default function outlineTreeReducer(state = initialState, {
     type,
     nodeId,
@@ -141,9 +142,21 @@ export default function outlineTreeReducer(state = initialState, {
                 newEntries[id].siblings = entry.descendants.filter(descId => descId !== id);
             });
 
-            let currentNodeId = shouldMoveAfter === true
-                ? Object.keys(newEntries)[0]
-                : state.currentNodeId;
+            let currentNodeId = state.currentNodeId;
+
+            if (shouldMoveAfter === true) {
+                let nextSiblingIndex = entry.siblings.indexOf(state.currentNodeId) + 1;
+                let nextSiblingId = entry.siblings[nextSiblingIndex];
+
+                if (
+                    nextSiblingIndex < entry.siblings.length &&
+                    state.items[nextSiblingId].bodyText.length <= 0
+                ) {
+                    currentNodeId = nextSiblingId;
+                } else {
+                    currentNodeId = Object.keys(newEntries)[0];
+                }
+            }
 
             return {
                 ...state,

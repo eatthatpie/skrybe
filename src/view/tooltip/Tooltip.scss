@@ -1,0 +1,49 @@
+@import './../../assets/style/mixins/mixins';
+@import './../../assets/style/variables/variables';
+
+.tooltip {
+    @include hide();
+    @include transform(translateY(-10px) translateX(-50%));
+    @include transition(.100s);
+    background-color: $btn-hover;
+    color: $default;
+    position: absolute;
+    white-space: nowrap;
+    border-radius: 5px;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    font-size: 14px;
+    padding: 5px 8px;
+
+    &:before {
+        content: '';
+        @include triangle-bottom(5px, $btn-hover);
+        position: absolute;
+        top: 100%;
+        left: calc(50% - 5px);
+    }
+
+    &--left {
+        @include transform(translateY(-50%) translateX(-10px));
+        left: auto;
+        bottom: auto;
+        right: calc(100% + 10px);
+        top: 50%;
+
+        &:before {
+            @include triangle-right(5px, $btn-hover);
+            right: auto;
+            left: 100%;
+            top: calc(50% - 5px);
+        }
+    }
+
+    :hover > & {
+        @include show();
+        @include transform(translateX(-50%));
+
+        &.tooltip--left {
+            @include transform(translateY(-50%));
+        }
+    }
+}

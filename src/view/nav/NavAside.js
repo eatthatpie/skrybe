@@ -1,10 +1,17 @@
+import IconClose from '@/view/icon/IconClose';
 import NavItem from '@/view/nav/NavItem';
 import React from 'react';
 import './NavAside.scss';
 
 function NavAside(props) {
     return (
-        <nav className="nav-aside bg-light">
+        <nav className={`nav-aside bg-light ${props.isOpenMobile ? 'is-open' : ''}`}>
+            <button
+                className="nav-aside-close"
+                onClick={props.closeNavAsideMobile}
+            >
+                <IconClose />
+            </button>
             <ul className="list">
                 {Object.keys(props.nav).map(navName => 
                     <NavItem

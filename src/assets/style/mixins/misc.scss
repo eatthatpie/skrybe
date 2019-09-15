@@ -1,0 +1,39 @@
+@mixin box-shadow($expr) {
+    -webkit-box-shadow: $expr;
+    -moz-box-shadow: $expr;
+    box-shadow: $expr;
+}
+
+@mixin hide() {
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+}
+
+@mixin no-highlight() {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@mixin user-select($expr: none) {
+    -webkit-touch-callout: $expr;
+    -webkit-user-select: $expr;
+    -khtml-user-select: $expr; 
+    -moz-user-select: $expr;
+    -ms-user-select: $expr;
+    user-select: $expr;
+}
+
+@mixin show() {
+    visibility: visible;
+    pointer-events: all;
+    opacity: 1;
+}
+
+@mixin tap-color($color) {
+    -webkit-tap-highlight-color: $color;
+}

@@ -3,7 +3,19 @@
     padding-bottom: 10px;
 }
 
+.ph-10 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .ph-15 {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+@media (max-width: $screen-tablet) {
+    .st\:ph-0 {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }

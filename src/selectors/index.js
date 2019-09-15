@@ -40,10 +40,50 @@ const getCurrentNodeSiblings = createSelector(
     }
 );
 
+const canMoveUp = createSelector(
+    getCurrentNode,
+    currentNode => {
+        return currentNode.parentNodeId !== null;
+    }
+);
+
+const canMoveDown = createSelector(
+    getCurrentNode,
+    currentNode => {
+        return currentNode.descendants.length > 0;
+    }
+);
+
+const canMoveLeft = createSelector(
+    getCurrentNodeParent,
+    state => state.outlineTree,
+    (parentNode, outlineTree) => {
+        const allSiblings = parentNode ? parentNode.descendants : [];
+        let currentNodeIndex = allSiblings.indexOf(outlineTree.currentNodeId);
+
+        return currentNodeIndex > 0;
+    }
+);
+
+const canMoveRight = createSelector(
+    getCurrentNodeParent,
+    state => state.outlineTree,
+    (parentNode, outlineTree) => {
+        const allSiblings = parentNode ? parentNode.descendants : [];
+        let currentNodeIndex = allSiblings.indexOf(outlineTree.currentNodeId);
+
+        return currentNodeIndex < allSiblings.length - 1;
+    }
+);
+
 export {
     getCurrentNode,
     getCurrentNodeParent,
     getCurrentNodeDescendants,
     getCurrentNodeSiblings,
-    getCurrentNodeParentId
+    getCurrentNodeParentId,
+    canMoveUp,
+    canMoveDown,
+    canMoveLeft,
+    canMoveRight
 };

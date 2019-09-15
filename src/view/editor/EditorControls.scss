@@ -1,0 +1,37 @@
+@import './../../assets/style/variables/variables';
+
+.editor-controls {
+    .button-circle {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+
+        @for $i from 1 through 10 {
+            &:nth-child(#{$i}) {
+                right: #{($i - 1) * 70}px;
+
+                @media (max-width: $screen-laptop) {
+                    right: #{($i - 1) * 55}px;
+                }
+            }
+        }
+    }
+
+    &--mobile {
+        &[class^='ph-'] {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .button-circle {
+            position: static;
+            background-color: transparent;
+            height: 60px;
+            width: 60px;
+
+            i {
+                font-size: 30px;
+            }
+        }
+    }
+}

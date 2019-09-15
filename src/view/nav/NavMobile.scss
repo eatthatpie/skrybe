@@ -1,0 +1,17 @@
+.nav-mobile {
+    @media (min-width: 1025px) {
+        display: none !important;
+    }
+    
+    &.is-edit-mode {
+        > * {
+            display: none;
+        }
+    }
+
+    a {
+        &.is-inactive {
+            opacity: 0.1;
+        }
+    }
+}

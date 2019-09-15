@@ -1,8 +1,9 @@
 @import './../../assets/style/variables/variables';
+@import './../../assets/style/mixins/mixins';
 
 .nav-aside {
-    transition: all 0.15s ease-in-out 0.1s;
-    transform: translateX(-100%);
+    @include transition(all 0.15s ease-in-out 0.1s);
+    @include transform(translateX(-100%));
     position: fixed;
     top: 0;
     left: 0;
@@ -34,15 +35,32 @@
     }
 
     &:hover {
-        transform: none;
+        @media (min-width: 1025px) {
+            transform: none;
 
-        &:before {
-            transform: scaleX(0);
+            &:before {
+                transform: scaleX(0);
+            }
+
+            & + .logo {
+                transition: opacity 0.3s ease-in-out 0.2s;
+                opacity: 1;
+            }
         }
+    }
 
-        & + .logo {
-            transition: opacity 0.3s ease-in-out 0.2s;
-            opacity: 1;
+    &-close {
+        color: #fff;
+        background: transparent;
+        position: absolute;
+        border: 0;
+        font-size: 2.0rem;
+        top: 12px;
+        left: 10px;
+        outline: 0;
+
+        @media (min-width: $screen-nav-breakpoint + 1px) {
+            display: none;
         }
     }
 
@@ -104,6 +122,17 @@
     }
 
     @media (max-width: $screen-laptop) {
+        overflow: auto;
+        max-height: 100%;
+
+        &.is-open {
+            transform: none;
+
+            &:before {
+                transform: scaleX(0);
+            }
+        }
+
         &:before,
         &:after {
             display: none;

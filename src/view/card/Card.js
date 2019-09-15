@@ -65,12 +65,14 @@ export default class Card extends React.Component {
             <div className="card bg-light">
                 <div
                     className={this.state.leadClassName}
-                    data-placeholder="This is another sibling of the story tree node you've edited before. Write here a word of what you're going to write down below."
+                    data-placeholder="What are you going to write about here?"
                 >
                     <ContentEditable
                         html={leadText}
                         isDisabled={false}
                         onChange={handleChangeLeadText}
+                        onBlur={this.props.onBlur}
+                        onFocus={this.props.onFocus}
                     />
                     <i className="fas fa-pencil-alt fs-10 color-light bg-light" />
                 </div>
@@ -82,6 +84,8 @@ export default class Card extends React.Component {
                         html={bodyText}
                         isDisabled={false}
                         onChange={handleChangeBodyText}
+                        onBlur={this.props.onBlur}
+                        onFocus={this.props.onFocus}
                         ref={this.contentEditableRef}
                     />
                     <i className="fas fa-pencil-alt fs-10 color-light bg-light" />

@@ -1,6 +1,10 @@
 .bg {
     background-color: $bg;
 
+    &-black {
+        background-color: #000;
+    }
+
     &-frame {
         background-color: #4c4c4c;
     }

@@ -2,4 +2,13 @@
     width: 60px;
     height: 60px;
     border-radius: 2px;
+
+    &.is-inactive {
+        cursor: default;
+        opacity: 0.1;
+
+        &:before {
+            display: none;
+        }
+    }
 }

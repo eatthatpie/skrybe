@@ -1,7 +1,7 @@
 @import './../../assets/style/variables/variables';
 
 .card {
-    max-width: calc(100% - 692px);
+    max-width: calc(100% - 610px);
     box-sizing: border-box;
     position: relative;
     border-radius: 2px;
@@ -84,7 +84,20 @@
     }
 
     @media (max-width: $screen-laptop) {
-        max-width: calc(100% - 40px);
+        max-width: calc(100% - 30px);
+
+        &-lead,
+        &-body {
+            i {
+                display: none;
+            }
+        }
+
+        &-body {
+            [contenteditable] {
+                min-height: 200px;
+            }
+        }
     }
 
     @media (max-width: $screen-mobile-landscape) {
@@ -95,6 +108,10 @@
 
         &-lead,
         &-body {
+            &:before {
+                padding: 18px 25px 0 25px;
+            }
+
             &:first-child {
                 [contenteditable] {
                     padding-top: 30px;
