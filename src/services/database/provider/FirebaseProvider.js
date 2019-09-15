@@ -14,11 +14,19 @@ export default class FirebaseProvider {
     }
 
     getCurrentUserId() {
-        return this.auth.currentUser !== null ? this.auth.currentUser.uid : null;
+        return this.isAuth() ? this.auth.currentUser.uid : null;
     }
 
     fetch(ref) {
         return this.db.ref(ref).once('value');
+    }
+
+    isAuth() {
+        return this.auth.currentUser !== null;
+    }
+
+    onAuthStateChanged(callback) {
+        return this.auth.onAuthStateChanged(callback);
     }
 
     set(ref, data, callback) {
@@ -27,25 +35,36 @@ export default class FirebaseProvider {
 
     signInWithFacebookPopup() {
         return this.auth
-            .signInWithPopup(this.facebookAuthProvider)
-            .then(function(result) {
-                const token = result.credential.accessToken;
-                const user = result.user;
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+                return this.auth.signInWithPopup(this.facebookAuthProvider)
+                    .then(function(result) {
+                        const token = result.credential.accessToken;
+                        const user = result.user;
+                    })
+                    .catch(function(e) {
+                        console.error(e);
+                    });
             })
-            .catch(function(e) {
-                console.error(e);
-            });
+            
     }
 
     signInWithGooglePopup() {
         return this.auth
-            .signInWithPopup(this.googleAuthProvider)
-            .then(function(result) {
-                const token = result.credential.accessToken;
-                const user = result.user;
-            })
-            .catch(function(e) {
-                console.error(e);
-            });
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+                return this.auth.signInWithPopup(this.googleAuthProvider)
+                    .then(function(result) {
+                        const token = result.credential.accessToken;
+                        const user = result.user;
+                    })
+                    .catch(function(e) {
+                        console.error(e);
+                    });
+                });
+    }
+
+    signOut() {
+        return this.auth.signOut();
     }
 };

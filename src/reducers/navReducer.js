@@ -4,7 +4,7 @@ const initialState = {
     items: {
         outline: {
             name: 'Outline',
-            isActive: true,
+            isActive: false,
             content: '',
             isItemless: true,
             items: [
@@ -24,7 +24,7 @@ const initialState = {
         },
         characters: {
             name: 'Characters',
-            isActive: true,
+            isActive: false,
             content: `
                 To add a character simply type the name in capital letters, like JOHN, JANE while editing your story card.
                 <br/><br/>

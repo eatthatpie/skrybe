@@ -80,7 +80,10 @@ class EditorView extends React.Component {
             });
         }
 
-        if (this.state.shouldSaveToDatabaseOnUpdate) {
+        if (
+            this.state.shouldSaveToDatabaseOnUpdate &&
+            this.props.auth.isAuth
+        ) {
             this.props.database.set(
                 `/user/${this.props.auth.getCurrentUserId()}/project/test-project`,
                 nextProps.outlineTree
@@ -286,9 +289,13 @@ class EditorView extends React.Component {
                         }
                     }}
                 />
-                <HintSignIn handleClick={
-                    () => { this.props.togglePopup({ isActive: true, type: 'sign-in' }) }
-                } />
+                {!this.props.auth.isAuth &&
+                    <HintSignIn
+                        handleClick={
+                            () => { this.props.togglePopup({ isActive: true, type: 'sign-in' }) }
+                        }
+                    />
+                }
             </div>
         );
     }
