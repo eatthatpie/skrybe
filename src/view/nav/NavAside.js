@@ -27,7 +27,7 @@ function NavAside(props) {
                 {props.isAuth &&
                     <li className="bg-nav-i">
                         <a onClick={props.handleSignOut}>
-                            <i class="fas fa-power-off" /> Sign out
+                            <i className="fas fa-power-off" /> Sign out
                         </a>
                     </li>
                 }

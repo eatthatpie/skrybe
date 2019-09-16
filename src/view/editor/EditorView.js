@@ -82,10 +82,10 @@ class EditorView extends React.Component {
 
         if (
             this.state.shouldSaveToDatabaseOnUpdate &&
-            this.props.auth.isAuth
+            this.props.isAuth
         ) {
             this.props.database.set(
-                `/user/${this.props.auth.getCurrentUserId()}/project/test-project`,
+                `/user/${this.props.currentUserId}/project/test-project`,
                 nextProps.outlineTree
             );
 
@@ -127,28 +127,22 @@ class EditorView extends React.Component {
     handleSave() {
         this.setState(
             {
-                shouldGainFocusOnUpdate: true
+                shouldGainFocusOnUpdate: true,
+                shouldSaveToDatabaseOnUpdate: true
             },
             () => {
-                this.setState(
-                    {
-                        shouldSaveToDatabaseOnUpdate: true
-                    },
-                    () => {
-                        this.props.updateCard({
-                            nodeId: this.props.outlineTree.currentNodeId,
-                            leadText: this.state.leadText,
-                            bodyText: this.state.bodyText
-                        });
-                
-                        const characterNames = this.findCharacterNames();
-                
-                        this.props.updateCharacters({
-                            nodeId: this.props.outlineTree.currentNodeId,
-                            characterNames
-                        });
-                    }
-                );
+                this.props.updateCard({
+                    nodeId: this.props.outlineTree.currentNodeId,
+                    leadText: this.state.leadText,
+                    bodyText: this.state.bodyText
+                });
+        
+                const characterNames = this.findCharacterNames();
+        
+                this.props.updateCharacters({
+                    nodeId: this.props.outlineTree.currentNodeId,
+                    characterNames
+                });
             });
     }
 
@@ -289,7 +283,7 @@ class EditorView extends React.Component {
                         }
                     }}
                 />
-                {!this.props.auth.isAuth &&
+                {!this.props.isAuth &&
                     <HintSignIn
                         handleClick={
                             () => { this.props.togglePopup({ isActive: true, type: 'sign-in' }) }

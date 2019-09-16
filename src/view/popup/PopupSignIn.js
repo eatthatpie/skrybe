@@ -21,15 +21,18 @@ export default function PopupDashboard(props) {
                 </p>
                 <p>
                     <a
+                        className="bg-social-tw d-inb br-50 h-60 sl:h-48 flex c-p"
+                        onClick={props.signInWithTwitterFunc}
+                    >
+                        Sign in with Twitter
+                    </a>
+                </p>
+                <p>
+                    <a
                         className="bg-social-fb d-inb br-50 h-60 sl:h-48 flex c-p"
                         onClick={props.signInWithFacebookFunc}
                     >
                         Sign in with Facebook
-                    </a>
-                </p>
-                <p>
-                    <a className="bg-social-tw d-inb br-50 h-60 sl:h-48 flex c-p inactive">
-                        Sign in with Twitter
                     </a>
                 </p>
                 <p className="pt-30">

@@ -16,7 +16,6 @@ function Popup(props) {
             .signInWithFacebookPopup()
             .then(() => {
                 props.togglePopup({ isActive: false });
-                props.handleAuthStateChange();
             });
     }
 
@@ -25,7 +24,14 @@ function Popup(props) {
             .signInWithGooglePopup()
             .then(() => {
                 props.togglePopup({ isActive: false });
-                props.handleAuthStateChange();
+            });
+    }
+
+    function signInWithTwitter() {
+        props.auth
+            .signInWithTwitterPopup()
+            .then(() => {
+                props.togglePopup({ isActive: false });
             });
     }
 
@@ -35,6 +41,7 @@ function Popup(props) {
                 {...props}
                 signInWithFacebookFunc={signInWithFacebook}
                 signInWithGoogleFunc={signInWithGoogle}
+                signInWithTwitterFunc={signInWithTwitter}
             />
         );
     } else {

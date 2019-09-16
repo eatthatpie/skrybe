@@ -1,6 +1,5 @@
 export default class Auth {
     constructor({ provider }) {
-        this.isAuth = false;
         this.provider = provider;
     }
 
@@ -8,12 +7,12 @@ export default class Auth {
         return this.provider.getCurrentUserId();
     }
 
-    onAuthStateChanged(callback) {
-        return this.provider.onAuthStateChanged(callback);
+    isAuth() {
+        return this.provider.isAuth();
     }
 
-    setIsAuth(isAuth) {
-        this.isAuth = isAuth;
+    onAuthStateChanged(callback) {
+        return this.provider.onAuthStateChanged(callback);
     }
 
     signInWithFacebookPopup() {
@@ -22,6 +21,10 @@ export default class Auth {
 
     signInWithGooglePopup() {
         return this.provider.signInWithGooglePopup()
+    }
+
+    signInWithTwitterPopup() {
+        return this.provider.signInWithTwitterPopup()
     }
     
     signOut() {

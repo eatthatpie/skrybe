@@ -4,7 +4,7 @@ import Logo from '@/view/logo/Logo';
 import NavContainer from '@/containers/nav/NavContainer';
 import NavMobileContainer from '@/containers/nav/NavMobileContainer'
 import PopupContainer from '@/containers/popup/PopupContainer';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AuthContext } from '@/services/auth';
 import { DatabaseContext } from '@/services/database';
@@ -20,17 +20,25 @@ function App(props) {
     const auth = useContext(AuthContext);
     const database = useContext(DatabaseContext);
 
-    const [isAuth, setIsAuth] = useState(auth.isAuth);
+    const [isAuth, setIsAuth] = useState(auth.isAuth());
+    const [currentUserId, setCurrentUserId] = useState(auth.getCurrentUserId());
 
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            auth.setIsAuth(true);
-            setIsAuth(true);
+    useEffect(() => {
+        if (isAuth) {
+            setCurrentUserId(auth.getCurrentUserId());
+        }
+    }, [isAuth]);
 
+    useEffect(() => {
+        if (isAuth) {
             props.togglePopup({ isActive: false });
 
             handleAuthStateChange();
         }
+    }, [currentUserId])
+
+    auth.onAuthStateChanged(isAuth => {
+        setIsAuth(isAuth);
     });
 
     function handleSignOut() {
@@ -42,13 +50,23 @@ function App(props) {
     function handleAuthStateChange() {
         props.toggleLayoutOverlay({ isActive: true });
 
+        const uid = currentUserId || auth.getCurrentUserId();
+
         database
-            .fetch(`/user/${auth.getCurrentUserId()}/project/test-project`)
+            .fetch(`/user/${uid}/project/test-project`)
             .then(snapshot => {
                 if (snapshot.val()) {
                     props.dangerouslyResetOutlineTree(snapshot.val());
-                }
+                } else {
+                    props.dangerouslyResetOutlineTree(props.savedOutlineTree);
 
+                    database.set(
+                        `/user/${uid}/project/test-project`,
+                        props.savedOutlineTree
+                    );
+                }
+            })
+            .finally(() => {
                 props.toggleLayoutOverlay({ isActive: false });
             });
     }
@@ -63,19 +81,19 @@ function App(props) {
             <Logo />
             <EditorContainer
                 database={database}
-                auth={auth}
+                currentUserId={currentUserId}
+                isAuth={isAuth}
             />
             <LayoutMaskContainer />
-            <PopupContainer
-                auth={auth}
-                handleAuthStateChange={handleAuthStateChange}
-            />
+            <PopupContainer auth={auth} />
         </div>
     );
 }
 
 const stateToProps = function(state) {
-    return ({});
+    return ({
+        savedOutlineTree: state.outlineTree
+    });
 };
 
 const dispatchToProps = function(dispatch) {
