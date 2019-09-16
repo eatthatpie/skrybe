@@ -2,10 +2,26 @@
     cursor: pointer;
 }
 
+.br-50 {
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+}
+
+.cover {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
 .cover-top {
     top: 0;
     left: 0;
     right: 0;
+}
+
+.inactive {
+    opacity: 0.2;
 }
 
 .to-top {

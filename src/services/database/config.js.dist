@@ -1,0 +1,13 @@
+export default {
+    database: {
+        firebaseProvider: {
+            apiKey: '',
+            authDomain: '',
+            databaseURL: '',
+            projectId: '',
+            storageBucket: '',
+            messagingSenderId: '',
+            appId: ''
+        }
+    }
+};

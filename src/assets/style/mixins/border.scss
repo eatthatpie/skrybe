@@ -3,3 +3,7 @@
     -moz-border-radius: $radius;
     border-radius: $radius;
 }
+
+@mixin border-circle() {
+    @include border-radius(50%);
+}

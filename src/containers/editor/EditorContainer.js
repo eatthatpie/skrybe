@@ -17,6 +17,7 @@ import {
     moveLeft,
     moveRight,
     toggleEditMode,
+    togglePopup,
     toggleTreeMode
 } from '@/actions/index';
 
@@ -68,6 +69,9 @@ const dispatchToProps = function(dispatch) {
         },
         toggleTreeMode({ isTreeMode }) {
             dispatch(toggleTreeMode({ isTreeMode }));
+        },
+        togglePopup({ isActive, type }) {
+            dispatch(togglePopup({ isActivePopup: isActive, popupType: type }));
         },
         toggleEditMode({ isEditMode }) {
             dispatch(toggleEditMode({ isEditMode }));

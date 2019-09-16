@@ -5,3 +5,11 @@
 .h-100p {
     height: 100%;
 }
+
+.sl\:h {
+    @media (max-width: 1024px) {
+        &-48 {
+            height: 48px;
+        }
+    }
+}

@@ -1,5 +1,12 @@
 import actionTypes from './types';
 
+export const dangerouslyResetOutlineTree = function(outlineTree) {
+    return {
+        type: actionTypes.DANGEROUSLY_RESET_OUTLINE_TREE,
+        dangerousOutlineTree: outlineTree,
+    }
+}
+
 export const generateDescendantsOfNode = function({
     nodeId,
     shouldMoveAfter
@@ -65,6 +72,21 @@ export const toggleEditMode = function({ isEditMode }) {
         isEditMode
     };
 };
+
+export const toggleLayoutOverlay = function({ isLayoutOverlayActive }) {
+    return {
+        type: actionTypes.TOGGLE_LAYOUT_OVERLAY,
+        isLayoutOverlayActive
+    }
+}
+
+export const togglePopup = function({ isActivePopup, popupType }) {
+    return {
+        type: actionTypes.TOGGLE_POPUP,
+        isActivePopup,
+        popupType
+    }
+}
 
 export const toggleTreeMode = function({ isTreeMode }) {
     return {

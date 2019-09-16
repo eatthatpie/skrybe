@@ -16,6 +16,44 @@
     &-nav-i {
         background-color: #414141;
     }
+
+    &-primary {
+        background-color: $primary;
+    }
+
+    &-reversed {
+        background-color: $default-light;
+        color: $bg;
+    }
+
+    &-social {
+        &-google {
+            background-color: #d32e2a;
+            color: #fff;
+
+            &:hover {
+                background-color: lighten(#d32e2a, 10%);
+            }
+        }
+
+        &-fb {
+            background-color: #3b579d;
+            color: #fff;
+
+            &:hover {
+                background-color: lighten(#3b579d, 10%);
+            }
+        }
+
+        &-tw {
+            background-color: #2caae1;
+            color: #fff;
+
+            &:hover {
+                background-color: lighten(#2caae1, 10%);
+            }
+        }
+    }
 }
 
 .h\:bg {
@@ -28,6 +66,12 @@
     &-nav-ic {
         &:hover {
             background-color: #515151;
+        }
+    }
+
+    &-primary-lighten {
+        &:hover {
+            background-color: lighten($primary, 10%);
         }
     }
 }

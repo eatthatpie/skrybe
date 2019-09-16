@@ -1,0 +1,16 @@
+@import './../../assets/style/mixins/mixins';
+@import './../../assets/style/variables/variables';
+
+.layout-mask {
+    @include hide();
+    @include transition(0.1s);
+    @include position-cover();
+    background-color: rgba($overlay, 0.7);
+    pointer-events: none;
+    z-index: $z-overlay;
+
+    &.is-active {
+        @include show();
+        pointer-events: all;
+    }
+}

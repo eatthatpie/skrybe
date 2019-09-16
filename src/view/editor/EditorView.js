@@ -1,6 +1,7 @@
 import Card from '@/view/card/Card';
 import CardGhost from '@/view/card/CardGhost';
 import EditorControls from '@/view/editor/EditorControls';
+import HintSignIn from '@/view/hint/HintSignIn';
 import TreeView from '@/view/tree/TreeView';
 import TreeViewToggler from '@/view/tree/TreeViewToggler';
 import React from 'react';
@@ -31,7 +32,8 @@ class EditorView extends React.Component {
             leadText: props.currentNode.leadText || '',
             bodyText: props.currentNode.bodyText || '',
             cardPlaceholder,
-            shouldGainFocusOnUpdate: false
+            shouldGainFocusOnUpdate: false,
+            shouldSaveToDatabaseOnUpdate: false
         }
 
         this.findCharacterNames = this.findCharacterNames.bind(this);
@@ -77,6 +79,20 @@ class EditorView extends React.Component {
                 shouldGainFocusOnUpdate: false
             });
         }
+
+        if (
+            this.state.shouldSaveToDatabaseOnUpdate &&
+            this.props.isAuth
+        ) {
+            this.props.database.set(
+                `/user/${this.props.currentUserId}/project/test-project`,
+                nextProps.outlineTree
+            );
+
+            this.setState({
+                shouldSaveToDatabaseOnUpdate: false
+            });
+        }
     }
 
     handleEdit() {
@@ -111,7 +127,8 @@ class EditorView extends React.Component {
     handleSave() {
         this.setState(
             {
-                shouldGainFocusOnUpdate: true
+                shouldGainFocusOnUpdate: true,
+                shouldSaveToDatabaseOnUpdate: true
             },
             () => {
                 this.props.updateCard({
@@ -266,6 +283,13 @@ class EditorView extends React.Component {
                         }
                     }}
                 />
+                {!this.props.isAuth &&
+                    <HintSignIn
+                        handleClick={
+                            () => { this.props.togglePopup({ isActive: true, type: 'sign-in' }) }
+                        }
+                    />
+                }
             </div>
         );
     }
