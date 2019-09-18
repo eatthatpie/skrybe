@@ -5,6 +5,10 @@
     svg {
         width: 115px;
 
+        @media (max-width: $screen-tablet) {
+            width: 90px;
+        }
+
         path {
             stroke-dasharray: 1000;
             stroke-dashoffset: 1000;
