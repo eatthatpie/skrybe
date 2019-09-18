@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function PopupDashboard(props) {
     return (
-        <div className="popup-dashboard h-100p flex flex-center">
+        <div className="popup-dashboard h-100p flex flex-center ph-15">
             <Content className="text-center">
                 <h3>
                     Skrybe needs to match you with your story.

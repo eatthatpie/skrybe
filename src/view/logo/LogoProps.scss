@@ -1,0 +1,79 @@
+@import './../../assets/style/mixins/mixins';
+@import './../../assets/style/variables/variables';
+
+.logo-props {
+    svg {
+        width: 115px;
+
+        path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+
+            &.p1 {
+                animation: logoDrawIn 0.6s ease-in-out 0.4s, colorFade 1.2s;
+                animation-fill-mode: forwards;
+            }
+
+            &.p2 {
+                animation: logoDrawIn 0.6s ease-in-out, colorFade 1.2s;
+                animation-fill-mode: forwards;
+            }
+
+            &.p3 {
+                animation: logoDrawIn 0.6s ease-in-out 0.4s, colorFade 1.2s;
+                animation-fill-mode: forwards;
+            }
+        }
+
+        circle {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+
+            &.ct {
+                animation: logoDrawIn 0.6s ease-in-out 0s, colorFade 1.2s;
+                animation-fill-mode: forwards;
+            }
+
+            &.cb2 {
+                animation: logoDrawIn 0.6s ease-in-out 0.2s, colorFade 1.2s;
+                animation-fill-mode: forwards;
+            }
+
+            &.cb1, &.cb3 {
+                animation: logoDrawIn 0.6s ease-in-out 0.5s, colorFade 1.2s;
+                animation-fill-mode: forwards;
+            }
+        }
+    }
+}
+
+@include keyframes(logoDrawIn) {
+    0% {
+        stroke-dashoffset: 1000;
+        stroke: #3dbf84;
+    }
+
+    80% {
+        stroke-dashoffset: 610;
+        // stroke: #fff;
+    }
+
+    100% {
+        stroke-dashoffset: 610;
+        stroke: #3dbf84;
+    }
+}
+
+@include keyframes(colorFade) {
+    0% {
+        stroke: #fff;
+    }
+
+    80% {
+        stroke: #fff;
+    }
+
+    100% {
+        stroke: #3dbf84;
+    }
+}
