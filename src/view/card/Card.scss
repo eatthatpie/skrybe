@@ -1,3 +1,4 @@
+@import './../../assets/style/mixins/mixins';
 @import './../../assets/style/variables/variables';
 
 .card {
@@ -13,11 +14,46 @@
         outline: 0;
     }
 
+    &-tooltip {
+        @include hide();
+        @include transition(all 0.1s ease-in-out 0s);
+        @include transform(translateY(-10px));
+        position: absolute;
+        font-style: normal;
+        right: 13%;
+        left: 13%;
+        bottom: 65px;
+        line-height: 0.9rem;
+        padding: 18px 25px 14px;
+
+        &:after{
+            content: '';
+            @include triangle-bottom(10px, $default-light);
+            position: absolute;
+            left: calc(50% - 5px);
+            bottom: -10px;
+        }
+
+        strong {
+            font-weight: 900;
+        }
+    }
+
     &-lead {
         font-style: italic;
+        position: relative;
 
         &:before {
             padding: 37px 40px 0 40px;
+        }
+
+        &:hover {
+            .card-tooltip {
+                @include show();
+                @include transition(all 0.1s ease-in-out 0.5s);
+                @include transform-none();
+                pointer-events: none;
+            }
         }
     }
 

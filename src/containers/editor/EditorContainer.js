@@ -2,6 +2,7 @@ import EditorView from '@/view/editor/EditorView';
 import { connect } from 'react-redux';
 import {
     getCurrentNode,
+    getCurrentNodeParent,
     getCurrentNodeParentId,
     canMoveUp,
     canMoveDown,
@@ -16,6 +17,8 @@ import {
     moveDown,
     moveLeft,
     moveRight,
+    moveToNode,
+    removeNodeWithDescendants,
     toggleEditMode,
     togglePopup,
     toggleTreeMode
@@ -24,9 +27,10 @@ import {
 const stateToProps = function(state) {
     return ({
         currentNode: getCurrentNode(state),
+        parentNodeId: getCurrentNodeParentId(state),
+        parentNode: getCurrentNodeParent(state),
         isEditMode: state.mode.isEditMode,
         isTreeMode: state.mode.isTreeMode,
-        parentNodeId: getCurrentNodeParentId(state),
         outlineTree: state.outlineTree,
         canMoveUp: canMoveUp(state),
         canMoveDown: canMoveDown(state),
@@ -67,11 +71,17 @@ const dispatchToProps = function(dispatch) {
         moveRight() {
             dispatch(moveRight());
         },
+        moveToNode({ nodeId }) {
+            dispatch(moveToNode({ nodeId }));
+        },
+        removeNodeWithDescendants({ nodeId }) {
+            dispatch(removeNodeWithDescendants({ nodeId }));
+        },
         toggleTreeMode({ isTreeMode }) {
             dispatch(toggleTreeMode({ isTreeMode }));
         },
-        togglePopup({ isActive, type }) {
-            dispatch(togglePopup({ isActivePopup: isActive, popupType: type }));
+        togglePopup({ isActive, type, props }) {
+            dispatch(togglePopup({ isActivePopup: isActive, popupType: type, props }));
         },
         toggleEditMode({ isEditMode }) {
             dispatch(toggleEditMode({ isEditMode }));

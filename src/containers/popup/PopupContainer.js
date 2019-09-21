@@ -1,4 +1,5 @@
 import PopupDashboard from '@/view/popup/PopupDashboard';
+import PopupRemoveItemConfirmation from '@/view/popup/PopupRemoveItemConfirmation';
 import PopupSignIn from '@/view/popup/PopupSignIn';
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
@@ -44,6 +45,10 @@ function Popup(props) {
                 signInWithTwitterFunc={signInWithTwitter}
             />
         );
+    } else if (props.popupData.type === 'remove-item-confirmation') {
+        contentView = (
+            <PopupRemoveItemConfirmation {...props} />
+        );
     } else {
         contentView = <PopupDashboard {...props} />;
     }
@@ -65,8 +70,8 @@ const stateToProps = function(state) {
 
 const dispatchToProps = function(dispatch) {
     return {
-        togglePopup({ isActive, type }) {
-            dispatch(togglePopup({ isActivePopup: isActive, popupType: type }));
+        togglePopup({ isActive, type, props }) {
+            dispatch(togglePopup({ isActivePopup: isActive, popupType: type, props }));
         }
     };
 };

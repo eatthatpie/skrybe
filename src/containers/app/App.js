@@ -1,6 +1,6 @@
 import EditorContainer from '@/containers/editor/EditorContainer';
 import LayoutMaskContainer from '@/containers/layout/LayoutMaskContainer';
-import Logo from '@/view/logo/Logo';
+import LogoProps from '@/view/logo/LogoProps';
 import NavContainer from '@/containers/nav/NavContainer';
 import NavMobileContainer from '@/containers/nav/NavMobileContainer'
 import PopupContainer from '@/containers/popup/PopupContainer';
@@ -78,7 +78,7 @@ function App(props) {
                 isAuth={isAuth}
                 handleSignOut={handleSignOut}
             />
-            <Logo />
+            <LogoProps className={props.isTreeMode ? 'is-hidden' : ''} />
             <EditorContainer
                 database={database}
                 currentUserId={currentUserId}
@@ -92,7 +92,8 @@ function App(props) {
 
 const stateToProps = function(state) {
     return ({
-        savedOutlineTree: state.outlineTree
+        savedOutlineTree: state.outlineTree,
+        isTreeMode: state.mode.isTreeMode
     });
 };
 

@@ -1,13 +1,22 @@
 @import './../../assets/style/variables/variables';
 
 .app {
-    .logo {
-        transition: opacity 0.1s ease-in-out 0.05s;
-        opacity: 0;
+    .logo-props {
+        position: absolute;
+        left: 30px;
+        top: 30px;
+        
+        svg {
+            width: 50px;
+        }
+
+        &.is-hidden {
+            opacity: 0;
+        }
     }
 
     @media (max-width: $screen-laptop) {
-        .logo {
+        .logo-props {
             display: none;
         }
     }

@@ -34,12 +34,20 @@ export const moveRight = function() {
     return { type: actionTypes.MOVE_RIGHT };
 };
 
+export const moveToNode = function({ nodeId }) {
+    return { type: actionTypes.MOVE_TO_NODE, nodeId };
+};
+
 export const navAsideMobileToggle = function({ isOpen }) {
-    return { type: actionTypes.NAV_ASIDE_MOBILE_TOGGLE, isOpen }
-}
+    return { type: actionTypes.NAV_ASIDE_MOBILE_TOGGLE, isOpen };
+};
 
 export const navToggle = function({ name }) {
     return { type: actionTypes.NAV_TOGGLE, name };
+};
+
+export const removeNodeWithDescendants = function({ nodeId }) {
+    return { type: actionTypes.REMOVE_NODE_WITH_DESCENDANTS, nodeId };
 };
 
 export const setOutlineTreeNode = function({
@@ -80,11 +88,12 @@ export const toggleLayoutOverlay = function({ isLayoutOverlayActive }) {
     }
 }
 
-export const togglePopup = function({ isActivePopup, popupType }) {
+export const togglePopup = function({ isActivePopup, popupType, props }) {
     return {
         type: actionTypes.TOGGLE_POPUP,
         isActivePopup,
-        popupType
+        popupType,
+        props
     }
 }
 
