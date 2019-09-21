@@ -41,10 +41,12 @@ class EditorView extends React.Component {
         this.handleDiscard = this.handleDiscard.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
         this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
         this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
         this.handleCardFocus = this.handleCardFocus.bind(this);
         this.handleCardBlur = this.handleCardBlur.bind(this);
+        this.handleTreeBulletClick = this.handleTreeBulletClick.bind(this);
 
         this.isAllowedToAddSiblings = this.isAllowedToAddSiblings.bind(this);
 
@@ -144,6 +146,38 @@ class EditorView extends React.Component {
                     characterNames
                 });
             });
+    }
+
+    handleRemove() {
+        const self = this;
+
+        this.props.togglePopup({
+            isActive: true,
+            type: 'remove-item-confirmation',
+            props: {
+                currentNode: this.props.currentNode,
+                onRemove() {
+                    self.props.togglePopup({
+                        isActive: false
+                    });
+
+                    self.props.moveToNode({ nodeId: self.props.currentNode.parentNodeId });
+
+                    self.props.removeNodeWithDescendants({
+                        nodeId: self.props.outlineTree.currentNodeId
+                    });
+
+                    self.setState({
+                        shouldSaveToDatabaseOnUpdate: true
+                    });
+                }
+            }
+        });
+    }
+
+    handleTreeBulletClick(nodeId) {
+        this.props.moveToNode({ nodeId });
+        this.props.toggleTreeMode({ isTreeMode: false });
     }
 
     findCharacterNames() {
@@ -248,6 +282,7 @@ class EditorView extends React.Component {
                     <Card
                         leadText={this.state.leadText}
                         bodyText={this.state.bodyText}
+                        parentBodyText={this.props.parentNode ? this.props.parentNode.bodyText : null}
                         handleChangeLeadText={this.handleChangeLeadText}
                         handleChangeBodyText={this.handleChangeBodyText}
                         placeholder={this.state.cardPlaceholder}
@@ -256,7 +291,11 @@ class EditorView extends React.Component {
                         onBlur={this.handleCardBlur}
                     />
                 </div>
-                <TreeView />
+                <TreeView
+                    data={this.props.outlineTree.items}
+                    currentNodeId={this.props.outlineTree.currentNodeId}
+                    handleClick={this.handleTreeBulletClick}
+                />
                 <EditorControls
                     hideAllIf={this.props.isTreeMode}
                     controls={{
@@ -271,7 +310,8 @@ class EditorView extends React.Component {
                         },
                         remove: {
                             visibleIf: this.isAllowedToAddSiblings() &&
-                                !this.props.isEditMode
+                                !this.props.isEditMode,
+                            handleClick: this.handleRemove.bind(this)
                         },
                         save: {
                             visibleIf: this.props.isEditMode,

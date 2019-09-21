@@ -60,6 +60,9 @@ export default class Card extends React.Component {
 
     render() {
         const { leadText, bodyText, handleChangeLeadText, handleChangeBodyText } = this.props;
+        const parentBodyText = this.props.parentBodyText
+            ? this.props.parentBodyText.replace(leadText, `<strong>${leadText}</strong>`)
+            : null;
 
         return (
             <div className="card bg-light">
@@ -67,6 +70,12 @@ export default class Card extends React.Component {
                     className={this.state.leadClassName}
                     data-placeholder="What are you going to write about here?"
                 >
+                    {parentBodyText &&
+                        <div
+                            className="card-tooltip bg-reversed br-50 text-center fs-8 sl:hide"
+                            dangerouslySetInnerHTML={{__html: parentBodyText}}
+                        />
+                    }
                     <ContentEditable
                         html={leadText}
                         isDisabled={false}
