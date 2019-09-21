@@ -7,7 +7,8 @@ const initialState = {
     },
     popup: {
         type: '',
-        isActive: true
+        isActive: false,
+        props: null
     }
 };
 
@@ -16,7 +17,8 @@ export default function viewReducer(state = initialState, {
     isActivePopup,
     isLayoutOverlayActive,
     isOpen,
-    popupType
+    popupType,
+    props
 }) {
     switch (type) {
         case actionTypes.NAV_ASIDE_MOBILE_TOGGLE: {
@@ -39,7 +41,8 @@ export default function viewReducer(state = initialState, {
                 popup: {
                     ...state.popup,
                     isActive: isActivePopup,
-                    type: popupType || state.popup.type
+                    type: popupType || state.popup.type,
+                    props: props || state.popup.props
                 }
             }
         }
