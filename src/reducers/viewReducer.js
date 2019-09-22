@@ -7,7 +7,7 @@ const initialState = {
     },
     popup: {
         type: '',
-        isActive: false,
+        isActive: true,
         props: null
     }
 };

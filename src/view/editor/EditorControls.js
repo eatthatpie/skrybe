@@ -2,12 +2,6 @@ import ButtonCircle from '@/view/button/ButtonCircle';
 import React from 'react';
 import './EditorControls.scss';
 
-{/* <EditorControls
-	controls="{['add', 'save', 'edit', 'remove', 'cancel']}"
-	mode="bottom"
-	state="{this.props.controlsState}"
-/> */}
-
 export default function EditorControls(props) {
     const controlsMap = {
         add: {

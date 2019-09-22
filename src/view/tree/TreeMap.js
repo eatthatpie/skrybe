@@ -204,15 +204,18 @@ export default function Map({ data }) {
             const distanceX = Math.abs(x1 - x2);
             const distanceY = Math.abs(y1 - y2);
 
+            const currentDistance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
             if (touchesDistance !== null) {
                 zoom({
                     clientX: (x1 + x2) / 2,
                     clientY: (y1 + y2) / 2,
-                    deltaY: Math.sqrt(distanceX * distanceX + distanceY * distanceY) < touchesDistance
+                    deltaY: currentDistance < touchesDistance,
+                    zoomFactor: Math.abs(currentDistance - touchesDistance) / 150
                 });
             }
 
-            setTouchesDistance(Math.sqrt(distanceX * distanceX + distanceY * distanceY));
+            setTouchesDistance(currentDistance);
 
             return;
         }
@@ -221,11 +224,6 @@ export default function Map({ data }) {
         const y = e.changedTouches ? e.changedTouches[0].pageY : e.pageY;
         const dx = currentMouse.x - x;
         const dy = currentMouse.y - y;
-
-        // let recentOriginX = (x - currentTranslate.x);
-        // let recentOriginY = (y - currentTranslate.y / currentScale);
-
-        // console.log(recentOriginY, currentScale - 1, currentOrigin.y, currentOrigin.y / (currentScale - 1));
 
         if (isDragging) {
             const translateX = currentTranslate.x - dx;
@@ -261,37 +259,39 @@ export default function Map({ data }) {
         });
     }
 
-    function zoom({ clientX, clientY, deltaY }) {
-        let recentOriginX = currentOrigin.x;
-        let recentOriginY = currentOrigin.y;
+    function zoom({ clientX, clientY, deltaY, zoomFactor }) {
+        const dMouseX = clientX - currentMouse.x;
+        const dMouseY = clientY - currentMouse.y;
+
+        let originX = currentOrigin.x + (dMouseX / currentScale);
+        let originY = currentOrigin.y + (dMouseY / currentScale);
 
         if (lastAction && lastAction.type === 'drag') {
             setLastAction({ type: 'wheel', params: null });
 
-            recentOriginX = (currentMouse.x - currentTranslate.x);
-            recentOriginY = (currentMouse.y - currentTranslate.y);
+            const dtox = (currentOrigin.x + currentTranslate.x) - currentOrigin.x * currentScale;
+            const dtoy = (currentOrigin.y + currentTranslate.y) - currentOrigin.y * currentScale;
+
+            originX = (clientX - dtox) / currentScale;
+            originY = (clientY - dtoy) / currentScale;
         }
-
-        const dMouseX = clientX - currentMouse.x;
-        const dMouseY = clientY - currentMouse.y;
-
-        const originX = recentOriginX + (dMouseX / currentScale);
-        const originY = recentOriginY + (dMouseY / currentScale);
 
         const translateX = clientX - originX;
         const translateY = clientY - originY;
 
         let scale = currentScale;
 
+        zoomFactor = zoomFactor || 0.2;
+
         if (deltaY > 0) {
             if (currentScale > 0.5) {
-                scale = currentScale - 0.2;
+                scale = currentScale - zoomFactor;
             }
         } else if (deltaY !== null && deltaY !== undefined) {
             if (currentScale < 5) {
-                scale = currentScale + 0.2;
+                scale = currentScale + zoomFactor;
             } else if (currentScale < 7) {
-                scale = currentScale + 0.5;
+                scale = currentScale + zoomFactor * 2.5;
             }
         }
 
@@ -315,7 +315,7 @@ export default function Map({ data }) {
         setMouse({ x: clientX, y: clientY });
     }
 
-    const [lastAction, setLastAction] = useState(null);
+    const [lastAction, setLastAction] = useState({ type: 'drag', params: { x: 0, y: 0 } });
 
     const [currentBulletHovered, setCurrentBulletHovered] = useState(null);
 
