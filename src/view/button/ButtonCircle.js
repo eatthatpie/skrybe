@@ -6,6 +6,7 @@ function ButtonCircle({ className, handleClick, iconClassName, title }) {
     return (
         <button
             className={`button-circle c-p ${className}`}
+            aria-label={title || ''}
             onClick={handleClick}
         >
             <i className={iconClassName} />

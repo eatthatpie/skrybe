@@ -9,6 +9,7 @@ function NavAside(props) {
             <button
                 className="nav-aside-close"
                 onClick={props.closeNavAsideMobile}
+                aria-label="close"
             >
                 <IconClose />
             </button>
