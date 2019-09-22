@@ -8,9 +8,50 @@ export default function Map({ data }) {
         if (!text) {
             return null;
         }
+        
+        const shortenedText = text.substring(0, 88);
 
         const width = 280 / currentScale;
-        const height = 32 / currentScale;
+        const height = 40 / currentScale;
+
+        let textRender;
+
+        if (shortenedText.length > 50) {
+            textRender = (
+                <React.Fragment>
+                    <text
+                        textAnchor="middle"
+                        x={x}
+                        y={y - height + (1 / currentScale) - (8 / currentScale)}
+                        fill="#000"
+                        style={{ fontSize: `${12 / currentScale}px` }}
+                    >
+                        {shortenedText.substring(0, 44)}
+                    </text>
+                    <text
+                        textAnchor="middle"
+                        x={x}
+                        y={y - height + (1 / currentScale) + (8 / currentScale)}
+                        fill="#000"
+                        style={{ fontSize: `${12 / currentScale}px` }}
+                    >
+                        {shortenedText.substring(44, 88)}{text.length > 88 ? '...' : ''}
+                    </text>
+                </React.Fragment>
+            );
+        } else {
+            textRender = (
+                <text
+                    textAnchor="middle"
+                    x={x}
+                    y={y - height + (1 / currentScale)}
+                    fill="#000"
+                    style={{ fontSize: `${12 / currentScale}px` }}
+                >
+                    {shortenedText}
+                </text>
+            );
+        }
 
         return (
             <g className="tt">
@@ -27,15 +68,7 @@ export default function Map({ data }) {
                     points={`${x - (8 / currentScale)},${y - (24 / currentScale)} ${x + (9 / currentScale)},${y - (24 / currentScale)} ${x},${y - (16 / currentScale)}`}
                     fill="#ffffffee"
                 />
-                <text
-                    textAnchor="middle"
-                    x={x}
-                    y={y - height - (3 / currentScale)}
-                    fill="#000"
-                    style={{ fontSize: `${12 / currentScale}px` }}
-                >
-                    {text}
-                </text>
+                {textRender}
             </g>
         );
     }
@@ -43,12 +76,24 @@ export default function Map({ data }) {
     function circle(key, x, y, className, handleClick) {
         const radius = 8 / currentScale;
 
+        function handleClickFunc(e) {
+            if (window.innerWidth <= 1024) {
+                if (currentBulletHovered === key) {
+                    handleClick(e);
+                } else {
+                    setCurrentBulletHovered(key)
+                }
+            } else {
+                handleClick(e);
+            }
+        }
+
         return (
             <g
                 className={`bullet ${className}`}
-                onMouseOver={() => { setCurrentBulletHovered(key) }}
+                onMouseOver={() => { if (window.innerWidth > 1024) setCurrentBulletHovered(key) }}
                 onMouseOut={() => { setCurrentBulletHovered(null) }}
-                onClick={handleClick}
+                onClick={handleClickFunc}
             >
                 <circle
                     cx={x}
@@ -75,7 +120,11 @@ export default function Map({ data }) {
         const item = data[key];
         const pointx = (right + left) / 2;
         const stepY = 40;
-        const className = item.className || '';
+        let className = item.className || '';
+
+        if (item.isEmpty) {
+            className += ' is-empty';
+        }
 
         let out = [circle(key, pointx, stepY * level, className, item.handleClick)];
 
@@ -140,17 +189,43 @@ export default function Map({ data }) {
         setMouse({ x, y });
         setIsDragging(false);
 
-        setOrigin({
-            x: x - currentTranslate.x,
-            y: y - currentTranslate.y
-        });
+        setLastAction({ type: 'drag', params: { x, y } });
+
+        setTouchesDistance(null);
     }
 
     function handleDragMove(e) {
+        if (e.changedTouches && e.changedTouches.length === 2) {
+            const x1 = e.changedTouches[0].pageX;
+            const y1 = e.changedTouches[0].pageY;
+            const x2 = e.changedTouches[1].pageX;
+            const y2 = e.changedTouches[1].pageY;
+
+            const distanceX = Math.abs(x1 - x2);
+            const distanceY = Math.abs(y1 - y2);
+
+            if (touchesDistance !== null) {
+                zoom({
+                    clientX: (x1 + x2) / 2,
+                    clientY: (y1 + y2) / 2,
+                    deltaY: Math.sqrt(distanceX * distanceX + distanceY * distanceY) < touchesDistance
+                });
+            }
+
+            setTouchesDistance(Math.sqrt(distanceX * distanceX + distanceY * distanceY));
+
+            return;
+        }
+
         const x = e.changedTouches ? e.changedTouches[0].pageX : e.pageX;
         const y = e.changedTouches ? e.changedTouches[0].pageY : e.pageY;
         const dx = currentMouse.x - x;
         const dy = currentMouse.y - y;
+
+        // let recentOriginX = (x - currentTranslate.x);
+        // let recentOriginY = (y - currentTranslate.y / currentScale);
+
+        // console.log(recentOriginY, currentScale - 1, currentOrigin.y, currentOrigin.y / (currentScale - 1));
 
         if (isDragging) {
             const translateX = currentTranslate.x - dx;
@@ -179,24 +254,44 @@ export default function Map({ data }) {
     }
 
     function handleWheel(e) {
-        const dMouseX = e.clientX - currentMouse.x;
-        const dMouseY = e.clientY - currentMouse.y;
+        zoom({
+            clientX: e.clientX,
+            clientY: e.clientY,
+            deltaY: e.deltaY
+        });
+    }
 
-        const originX = currentOrigin.x + (dMouseX / currentScale);
-        const originY = currentOrigin.y + (dMouseY / currentScale);
+    function zoom({ clientX, clientY, deltaY }) {
+        let recentOriginX = currentOrigin.x;
+        let recentOriginY = currentOrigin.y;
 
-        const translateX = e.clientX - originX;
-        const translateY = e.clientY - originY;
+        if (lastAction && lastAction.type === 'drag') {
+            setLastAction({ type: 'wheel', params: null });
+
+            recentOriginX = (currentMouse.x - currentTranslate.x);
+            recentOriginY = (currentMouse.y - currentTranslate.y);
+        }
+
+        const dMouseX = clientX - currentMouse.x;
+        const dMouseY = clientY - currentMouse.y;
+
+        const originX = recentOriginX + (dMouseX / currentScale);
+        const originY = recentOriginY + (dMouseY / currentScale);
+
+        const translateX = clientX - originX;
+        const translateY = clientY - originY;
 
         let scale = currentScale;
 
-        if (e.deltaY > 0) {
+        if (deltaY > 0) {
             if (currentScale > 0.5) {
                 scale = currentScale - 0.2;
             }
-        } else if (e.deltaY !== null && e.deltaY !== undefined) {
-            if (currentScale < 3) {
+        } else if (deltaY !== null && deltaY !== undefined) {
+            if (currentScale < 5) {
                 scale = currentScale + 0.2;
+            } else if (currentScale < 7) {
+                scale = currentScale + 0.5;
             }
         }
 
@@ -217,10 +312,14 @@ export default function Map({ data }) {
             transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`
         });
 
-        setMouse({ x: e.clientX, y: e.clientY });
+        setMouse({ x: clientX, y: clientY });
     }
 
+    const [lastAction, setLastAction] = useState(null);
+
     const [currentBulletHovered, setCurrentBulletHovered] = useState(null);
+
+    const [touchesDistance, setTouchesDistance] = useState(null);
 
     const [isDragging, setIsDragging] = useState(false);
 
@@ -268,6 +367,9 @@ export default function Map({ data }) {
             onMouseDown={handleDragStart}
             onMouseUp={handleDragEnd}
             onMouseMove={handleDragMove}
+            onTouchStart={handleDragStart}
+            onTouchEnd={handleDragEnd}
+            onTouchMove={handleDragMove}
         >
             <defs>
                 <linearGradient id="fade" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -295,6 +397,7 @@ export default function Map({ data }) {
                 width="150"
                 height="100%"
                 fill="url(#fade)"
+                className="gradient-shadow"
             />
             <rect
                 x="calc(100% - 150px)"
@@ -302,6 +405,7 @@ export default function Map({ data }) {
                 width="150"
                 height="100%"
                 fill="url(#fade-reverse)"
+                className="gradient-shadow"
             />
         </svg>
     );

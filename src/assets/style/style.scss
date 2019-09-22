@@ -7,6 +7,7 @@
 @import 'global/global';
 
 body {
+    overscroll-behavior: none; // this should work on Chrome >= 63
     font-family: 'Barlow', sans-serif;
     font-size: 20px;
     font-weight: 300;

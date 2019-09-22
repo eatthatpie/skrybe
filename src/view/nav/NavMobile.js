@@ -33,7 +33,10 @@ function NavMobile(props) {
                 >
                     <i className="fas fa-angle-right fs-24" />
                 </a>
-                <a className="flex ph-10">
+                <a
+                    className="flex ph-10"
+                    onClick={() => { props.toggleTreeMode({ isTreeMode: !props.isTreeMode }) }}
+                >
                     <i className="fas fa-project-diagram fs-15" />
                 </a>
             </div>

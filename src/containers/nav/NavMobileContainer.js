@@ -11,7 +11,8 @@ import {
     moveDown,
     moveLeft,
     moveRight,
-    navAsideMobileToggle
+    navAsideMobileToggle,
+    toggleTreeMode
 } from '@/actions';
 
 const stateToProps = function(state) {
@@ -41,6 +42,9 @@ const dispatchToProps = function(dispatch) {
         },
         openNavAsideMobile() {
             dispatch(navAsideMobileToggle({ isOpen: true }));
+        },
+        toggleTreeMode({ isTreeMode }) {
+            dispatch(toggleTreeMode({ isTreeMode }));
         }
     };
 };
