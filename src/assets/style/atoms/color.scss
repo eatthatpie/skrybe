@@ -1,4 +1,8 @@
 .color {
+    &-bg {
+        color: $bg;
+    }
+
     &-default {
         color: $default;
     }

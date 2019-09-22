@@ -9,13 +9,11 @@
         svg {
             width: 50px;
         }
-
-        &.is-hidden {
-            opacity: 0;
-        }
     }
 
     @media (max-width: $screen-laptop) {
+        height: 100vh;
+
         .logo-props {
             display: none;
         }

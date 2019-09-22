@@ -54,6 +54,44 @@ class EditorView extends React.Component {
     }
 
     componentWillUpdate(nextProps) {
+        // @TESTING
+        // if (
+        //     this.state.shouldGainFocusOnUpdate &&
+        //     nextProps.outlineTree.currentNodeId !== this.props.outlineTree.currentNodeId
+        // ) {
+        //     this.cardRef.current.focus();
+
+        //     this.setState({
+        //         shouldGainFocusOnUpdate: false
+        //     });
+        // }
+
+        if (
+            this.state.shouldSaveToDatabaseOnUpdate &&
+            this.props.isAuth
+        ) {
+            this.props.database.set(
+                `/user/${this.props.currentUserId}/project/test-project`,
+                nextProps.outlineTree
+            );
+
+            this.setState({
+                shouldSaveToDatabaseOnUpdate: false
+            });
+        } else if (
+            this.state.shouldSaveToDatabaseOnUpdate &&
+            !this.props.isAuth
+        ) {
+            localStorage.setItem(
+                'skrybe:osot',
+                JSON.stringify(nextProps.outlineTree)
+            );
+
+            this.setState({
+                shouldSaveToDatabaseOnUpdate: false
+            });
+        }
+
         if (
             nextProps.outlineTree.currentNodeId === this.props.outlineTree.currentNodeId
         ) {
@@ -73,28 +111,6 @@ class EditorView extends React.Component {
             leadText: nextProps.currentNode.leadText,
             cardPlaceholder
         });
-
-        if (this.state.shouldGainFocusOnUpdate) {
-            this.cardRef.current.focus();
-
-            this.setState({
-                shouldGainFocusOnUpdate: false
-            });
-        }
-
-        if (
-            this.state.shouldSaveToDatabaseOnUpdate &&
-            this.props.isAuth
-        ) {
-            this.props.database.set(
-                `/user/${this.props.currentUserId}/project/test-project`,
-                nextProps.outlineTree
-            );
-
-            this.setState({
-                shouldSaveToDatabaseOnUpdate: false
-            });
-        }
     }
 
     handleEdit() {
@@ -108,10 +124,6 @@ class EditorView extends React.Component {
             leadText: this.props.currentNode.leadText || '',
             bodyText: this.props.currentNode.bodyText || ''
         });
-
-        if (this.cardRef.current) {
-            this.cardRef.current.blur();
-        }
     }
 
     handleAdd() {
@@ -223,14 +235,23 @@ class EditorView extends React.Component {
     handleCardBlur() {
         setTimeout(() => {
             this.props.toggleEditMode({ isEditMode: false });
+
+            if (
+                this.state.bodyText !== this.props.currentNode.bodyText ||
+                this.state.leadText !== this.props.currentNode.leadText
+            ) {
+                this.handleSave();
+            }
         }, 200);
     }
     
     render() {
         return (
-            <div className={
-                `editor-view ${this.props.isTreeMode ? 'is-tree-view' : ''} ${this.props.isEditMode ? 'is-edit-mode' : ''}`
-            }>
+            <div
+                className={
+                    `editor-view ${this.props.isTreeMode ? 'is-tree-view' : ''} ${this.props.isEditMode ? 'is-edit-mode' : ''}`
+                }
+            >
                 <EditorControls
                     hideAllIf={this.props.isTreeMode}
                     className="editor-controls--mobile flex flex-normal flex-sb fixed cover-top h-60 bg-black z-550 ph-15 st:ph-0"

@@ -41,6 +41,34 @@
         }
     }
 
+    .card-view {
+        @include transition(all 0.2s ease-in-out 0s);
+    }
+
+    .tree-view {
+        @include transition(all 0.2s ease-in-out 0s);
+        //@include transform(scale(1.2));
+        position: relative;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0;
+    }
+
+    &.is-tree-view {
+        .card-view {
+            @include transition(all 0.2s ease-in-out 0s);
+            @include transform(scale(0.618));
+            opacity: 0;
+        }
+
+        .tree-view {
+            @include transition(all 0.3s ease-in-out 0s);
+            @include transform-none();
+            pointer-events: all;
+            opacity: 1;
+        }
+    }
+
     &.is-edit-mode {
         .editor-controls--mobile {
             @media (max-width: $screen-laptop) {
@@ -52,34 +80,9 @@
     
     @media (min-width: 1025px) {
         .card-view {
-            @include transition(all 0.2s ease-in-out 0s);
             position: absolute;
             left: 0;
             right: 0;
-        }
-    
-        .tree-view {
-            @include transition(all 0.2s ease-in-out 0s);
-            //@include transform(scale(1.2));
-            position: relative;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0;
-        }
-    
-        &.is-tree-view {
-            .card-view {
-                @include transition(all 0.2s ease-in-out 0s);
-                @include transform(scale(0.618));
-                opacity: 0;
-            }
-    
-            .tree-view {
-                @include transition(all 0.3s ease-in-out 0s);
-                @include transform-none();
-                pointer-events: all;
-                opacity: 1;
-            }
         }
     }
 
@@ -89,7 +92,7 @@
         padding: 75px 0 75px;
 
         .tree-view {
-            display: none;
+            @include position-cover();
         }
 
         .card-ghost {

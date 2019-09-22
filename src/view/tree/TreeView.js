@@ -10,6 +10,7 @@ export default function Map({ data, handleClick, currentNodeId }) {
             [keys[i]]: {
                 children: data[keys[i]].descendants,
                 text: data[keys[i]].leadText || null,
+                isEmpty: !(data[keys[i]].bodyText && data[keys[i]].bodyText.length > 0),
                 handleClick: () => { handleClick(keys[i]) },
                 className: keys[i] === currentNodeId ? 'is-current' : null
             }

@@ -9,12 +9,7 @@
     outline: 0;
 
     i {
-        color: $default;
         font-size: 24px;
-    }
-
-    &:hover {
-        background-color: lighten($primary, 10%);
     }
 
     @media (max-width: $screen-laptop) {

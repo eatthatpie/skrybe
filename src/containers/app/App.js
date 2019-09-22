@@ -11,7 +11,8 @@ import { DatabaseContext } from '@/services/database';
 import {
     dangerouslyResetOutlineTree,
     toggleLayoutOverlay,
-    togglePopup
+    togglePopup,
+    toggleTreeMode
 } from '@/actions';
 import '@/assets/style/style.scss';
 import './App.scss';
@@ -22,6 +23,24 @@ function App(props) {
 
     const [isAuth, setIsAuth] = useState(auth.isAuth());
     const [currentUserId, setCurrentUserId] = useState(auth.getCurrentUserId());
+
+    useEffect(() => {
+        window.addEventListener('keyup', handleKeyUp);
+
+        return () => {
+            window.removeEventListener('keyup', handleKeyUp);
+        }
+    }, [handleKeyUp]);
+
+    useEffect(() => {
+        const offlineStoredOutlineTree = localStorage.getItem('skrybe:osot');
+
+        if (!!offlineStoredOutlineTree) {
+            props.dangerouslyResetOutlineTree(
+                JSON.parse(offlineStoredOutlineTree)
+            );
+        }
+    }, [null]);
 
     useEffect(() => {
         if (isAuth) {
@@ -65,20 +84,38 @@ function App(props) {
                         props.savedOutlineTree
                     );
                 }
+
+                localStorage.removeItem('skrybe:osot');
             })
             .finally(() => {
                 props.toggleLayoutOverlay({ isActive: false });
             });
     }
 
+    function handleKeyUp(e) {
+        if (e.code === 'Escape') {
+            props.toggleTreeMode({ isTreeMode: !props.isTreeMode });
+        }
+    }
+
+    function handleBodyClick(e) {
+        if (
+            window.innerWidth <= 1024 &&
+            e.target.classList.contains('app') ||
+            e.target.classList.contains('editor-view')
+        ) {
+            props.toggleTreeMode({ isTreeMode: true });
+        }
+    }
+
     return (
-        <div className="app container">
+        <div className="app container" onClick={handleBodyClick}>
             <NavMobileContainer />
             <NavContainer
                 isAuth={isAuth}
                 handleSignOut={handleSignOut}
             />
-            <LogoProps className={props.isTreeMode ? 'is-hidden' : ''} />
+            <LogoProps className="z-1100" />
             <EditorContainer
                 database={database}
                 currentUserId={currentUserId}
@@ -107,7 +144,10 @@ const dispatchToProps = function(dispatch) {
         },
         togglePopup({ isActive, type }) {
             dispatch(togglePopup({ isActivePopup: isActive, popupType: type }));
-        }
+        },
+        toggleTreeMode({ isTreeMode }) {
+            dispatch(toggleTreeMode({ isTreeMode }));
+        },
     };
 };
 

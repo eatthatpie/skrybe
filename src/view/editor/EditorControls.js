@@ -2,37 +2,31 @@ import ButtonCircle from '@/view/button/ButtonCircle';
 import React from 'react';
 import './EditorControls.scss';
 
-{/* <EditorControls
-	controls="{['add', 'save', 'edit', 'remove', 'cancel']}"
-	mode="bottom"
-	state="{this.props.controlsState}"
-/> */}
-
 export default function EditorControls(props) {
     const controlsMap = {
         add: {
-            className: 'control-add',
-            iconClassName: 'fas fa-plus',
+            className: 'control-add h:bg-primary-lighten',
+            iconClassName: 'fas fa-plus color-default',
             title: 'Add sibling for this card'
         },
         save: {
-            className: 'control-save',
-            iconClassName: 'fas fa-check',
+            className: 'control-save h:bg-primary-lighten',
+            iconClassName: 'fas fa-check color-default',
             title: 'Save changes'
         },
         edit: {
-            className: 'control-edit',
-            iconClassName: 'fas fa-pen',
+            className: 'control-edit h:bg-primary-lighten',
+            iconClassName: 'fas fa-pen color-default',
             title: 'Edit this card'
         },
         remove: {
-            className: 'control-remove',
-            iconClassName: 'fas fa-trash-alt',
+            className: 'control-remove bg-social-google',
+            iconClassName: 'fas fa-trash-alt color-default',
             title: 'Remove this card'
         },
         discard: {
-            className: 'control-discard',
-            iconClassName: 'fas fa-times',
+            className: 'control-discard bg-reversed',
+            iconClassName: 'fas fa-times color-bg',
             title: 'Discard changes'
         }
     };
