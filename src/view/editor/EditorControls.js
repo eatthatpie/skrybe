@@ -13,7 +13,7 @@ export default function EditorControls(props) {
             className: 'control-generate h:bg-primary-lighten',
             iconClassName: 'fas fa-sitemap color-default',
             title: 'Generate descendants for this card',
-            titleDisabled: 'You cannot generate descendants if there are some already'
+            titleDisabled: 'This card already has descendants'
         },
         save: {
             className: 'control-save h:bg-primary-lighten',

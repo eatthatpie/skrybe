@@ -15,10 +15,10 @@ class EditorView extends React.Component {
         super();
 
         this.rootChildPlaceholder = `
-            Write a very short brief of your story. Try to mention its all main parts. For example: After breaking up with her boyfriend, JANE moves to a big city to forget about him. She decides to live in an unusual apartment...
+            Write here a very short brief of your story. Try to mention its all main parts. For example: After breaking up with her boyfriend, JANE moves to a big city to forget about him. She decides to live in an unusual apartment...
         `
         this.rootPlaceholder = `
-            For example: The main character -- JANE -- writes a book that eventually destroys her as a human.
+            Write here.
         `;
 
         let cardPlaceholder = null;
@@ -95,6 +95,17 @@ class EditorView extends React.Component {
         }
 
         if (
+            this.state.bodyText !== nextProps.currentNode.bodyText ||
+            this.state.leadText !== nextProps.currentNode.leadText
+        ) {
+            this.setState({
+                bodyText: nextProps.currentNode.bodyText,
+                leadText: nextProps.currentNode.leadText,
+                cardPlaceholder
+            });
+        }
+
+        if (
             nextProps.outlineTree.currentNodeId === this.props.outlineTree.currentNodeId
         ) {
             return;
@@ -107,12 +118,6 @@ class EditorView extends React.Component {
         } else if(nextProps.parentNodeId === 'root') {
             cardPlaceholder = this.rootChildPlaceholder;
         }
-
-        this.setState({
-            bodyText: nextProps.currentNode.bodyText,
-            leadText: nextProps.currentNode.leadText,
-            cardPlaceholder
-        });
     }
 
     handleEdit() {
@@ -147,6 +152,33 @@ class EditorView extends React.Component {
                 shouldSaveToDatabaseOnUpdate: true
             },
             () => {
+                if (
+                    this.props.outlineTree.currentNodeId === 'root' &&
+                    Object.keys(this.props.outlineTree.items).length === 1 &&
+                    this.state.bodyText.length > 0
+                ) {
+                    const self = this;
+            
+                    this.props.togglePopup({
+                        isActive: true,
+                        type: 'tutorial-step-1',
+                        props: {
+                            onClickGenerateDescendants() {
+                                self.props.togglePopup({
+                                    isActive: false
+                                });
+        
+                                self.handleGenerate();
+                            },
+                            onClickGoBackToEditing() {
+                                self.props.togglePopup({
+                                    isActive: false
+                                });
+                            }
+                        }
+                    });
+                }
+
                 this.props.updateCard({
                     nodeId: this.props.outlineTree.currentNodeId,
                     leadText: this.state.leadText,
@@ -191,9 +223,17 @@ class EditorView extends React.Component {
 
     handleGenerate() {
         if (this.isAllowedToAddChildren()) {
-            this.props.generateDescendants({
-                nodeId: this.props.outlineTree.currentNodeId
-            })
+            this.setState(
+                {
+                    shouldGainFocusOnUpdate: true,
+                    shouldSaveToDatabaseOnUpdate: true
+                },
+                () => {
+                    this.props.generateDescendants({
+                        nodeId: this.props.outlineTree.currentNodeId
+                    });
+                }
+            );
         }
     }
 
@@ -338,7 +378,7 @@ class EditorView extends React.Component {
                     hideAllIf={this.props.isTreeMode}
                     controls={{
                         generate: {
-                            visibleIf: !this.props.isEditMode,
+                            visibleIf: !this.props.isEditMode && this.props.currentNode.bodyText.length > 0,
                             disabledIf: !this.isAllowedToAddChildren(),
                             handleClick: this.handleGenerate.bind(this)
                         },

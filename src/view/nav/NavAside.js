@@ -4,6 +4,22 @@ import React from 'react';
 import './NavAside.scss';
 
 function NavAside(props) {
+    function onClickQuickHelp() {
+        props.togglePopup({
+            isActive: true,
+            type: 'tutorial-step-1',
+            props: {
+                headerText: 'Quick help',
+                isGenerateButtonHidden: true,
+                onClickGoBackToEditing() {
+                    props.togglePopup({
+                        isActive: false
+                    });
+                }
+            }
+        });
+    }
+
     return (
         <nav className={`nav-aside bg-light ${props.isOpenMobile ? 'is-open' : ''}`}>
             <button
@@ -25,6 +41,11 @@ function NavAside(props) {
                         handleClick={props.handleClick}
                     />
                 )}
+                <li className="bg-nav-i">
+                    <a onClick={onClickQuickHelp}>
+                        <i className="far fa-question-circle"></i> Quick help
+                    </a>
+                </li>
                 {props.isAuth &&
                     <li className="bg-nav-i">
                         <a onClick={props.handleSignOut}>
