@@ -12,6 +12,8 @@ export default class ContentEditable extends React.Component {
         super();
 
         this.emitChange = this.emitChange.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+        this.onPaste = this.onPaste.bind(this);
 
         this.focus = this.focus.bind(this);
     }
@@ -52,6 +54,17 @@ export default class ContentEditable extends React.Component {
         this.lastHtml = html;
     }
 
+    onDrop(e) {
+        e.preventDefault();
+    }
+
+    onPaste(e) {
+        e.preventDefault();
+
+        const plainText = e.clipboardData.getData('text/plain');
+        document.execCommand("insertHTML", false, plainText);
+    }
+
     render() {
         var {
             tagName,
@@ -66,6 +79,8 @@ export default class ContentEditable extends React.Component {
                 ref: (e) => this.htmlEl = e,
                 onInput: this.emitChange,
                 onBlur: this.props.onBlur || this.emitChange,
+                onPaste: this.onPaste,
+                onDrop: this.onDrop,
                 contentEditable: !this.props.isDisabled,
                 dangerouslySetInnerHTML: {
                     __html: html

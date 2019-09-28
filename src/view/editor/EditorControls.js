@@ -9,6 +9,12 @@ export default function EditorControls(props) {
             iconClassName: 'fas fa-plus color-default',
             title: 'Add sibling for this card'
         },
+        generate: {
+            className: 'control-generate h:bg-primary-lighten',
+            iconClassName: 'fas fa-sitemap color-default',
+            title: 'Generate descendants for this card',
+            titleDisabled: 'You cannot generate descendants if there are some already'
+        },
         save: {
             className: 'control-save h:bg-primary-lighten',
             iconClassName: 'fas fa-check color-default',
@@ -43,8 +49,9 @@ export default function EditorControls(props) {
 
                     const control = controlsMap[item];
                     const condition = props.controls[item].visibleIf;
+                    const isDisabled = props.controls[item].disabledIf || false;
 
-                    const handleClick = props.controls[item].handleClick
+                    const handleClick = props.controls[item].handleClick && !isDisabled
                         ? props.controls[item].handleClick
                         : () => {}
 
@@ -55,9 +62,9 @@ export default function EditorControls(props) {
                     return (
                         <ButtonCircle
                             key={index}
-                            className={control.className}
+                            className={`${control.className} ${isDisabled ? 'is-disabled' : ''}`}
                             iconClassName={control.iconClassName}
-                            title={control.title}
+                            title={isDisabled && control.titleDisabled ? control.titleDisabled : control.title}
                             handleClick={handleClick}
                         />
                     )

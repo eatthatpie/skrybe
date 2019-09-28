@@ -42,6 +42,7 @@ class EditorView extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
+        this.handleGenerate = this.handleGenerate.bind(this);
         this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
         this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
         this.handleCardFocus = this.handleCardFocus.bind(this);
@@ -49,6 +50,7 @@ class EditorView extends React.Component {
         this.handleTreeBulletClick = this.handleTreeBulletClick.bind(this);
 
         this.isAllowedToAddSiblings = this.isAllowedToAddSiblings.bind(this);
+        this.isAllowedToAddChildren = this.isAllowedToAddChildren.bind(this);
 
         this.cardRef = React.createRef();
     }
@@ -187,6 +189,14 @@ class EditorView extends React.Component {
         });
     }
 
+    handleGenerate() {
+        if (this.isAllowedToAddChildren()) {
+            this.props.generateDescendants({
+                nodeId: this.props.outlineTree.currentNodeId
+            })
+        }
+    }
+
     handleTreeBulletClick(nodeId) {
         this.props.moveToNode({ nodeId });
         this.props.toggleTreeMode({ isTreeMode: false });
@@ -207,6 +217,13 @@ class EditorView extends React.Component {
         return (
             this.props.parentNodeId !== 'root' &&
             this.props.outlineTree.currentNodeId !== 'root'
+        );
+    }
+
+    isAllowedToAddChildren() {
+        return (
+            !this.props.currentNode.descendants ||
+            this.props.currentNode.descendants.length <= 0
         );
     }
 
@@ -277,28 +294,28 @@ class EditorView extends React.Component {
                             `to-top ${!this.props.canMoveUp ? 'is-inactive' : ''}`
                         }
                         iconClassName="angle-up"
-                        onClick={this.props.moveUp}
+                        onClick={() => { this.handleSave(); this.props.moveUp(); }}
                     />
                     <CardGhost
                         className={
                             `to-bottom ${!this.props.canMoveDown ? 'is-inactive' : ''}`
                         }
                         iconClassName="angle-down"
-                        onClick={this.props.moveDown}
+                        onClick={() => { this.handleSave(); this.props.moveDown(); }}
                     />
                     <CardGhost
                         className={
                             `to-left ${!this.props.canMoveLeft ? 'is-inactive' : ''}`
                         }
                         iconClassName="angle-left"
-                        onClick={this.props.moveLeft}
+                        onClick={() => { this.handleSave(); this.props.moveLeft(); }}
                     />
                     <CardGhost
                         className={
                             `to-right ${!this.props.canMoveRight ? 'is-inactive' : ''}`
                         }
                         iconClassName="angle-right"
-                        onClick={this.props.moveRight}
+                        onClick={() => { this.handleSave(); this.props.moveRight(); }}
                     />
                     <Card
                         leadText={this.state.leadText}
@@ -320,6 +337,11 @@ class EditorView extends React.Component {
                 <EditorControls
                     hideAllIf={this.props.isTreeMode}
                     controls={{
+                        generate: {
+                            visibleIf: !this.props.isEditMode,
+                            disabledIf: !this.isAllowedToAddChildren(),
+                            handleClick: this.handleGenerate.bind(this)
+                        },
                         edit: {
                             visibleIf: !this.props.isEditMode,
                             handleClick: this.handleEdit.bind(this)
