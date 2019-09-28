@@ -95,8 +95,8 @@ class EditorView extends React.Component {
         }
 
         if (
-            this.state.bodyText !== nextProps.currentNode.bodyText ||
-            this.state.leadText !== nextProps.currentNode.leadText
+            this.props.currentNode.bodyText !== nextProps.currentNode.bodyText ||
+            this.props.currentNode.leadText !== nextProps.currentNode.leadText
         ) {
             this.setState({
                 bodyText: nextProps.currentNode.bodyText,
