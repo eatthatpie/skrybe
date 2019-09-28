@@ -15,6 +15,10 @@
 
     &-nav-i {
         background-color: #414141;
+
+        & + .bg-nav-i {
+            border-top: 1px solid #616161;
+        }
     }
 
     &-primary {

@@ -16,13 +16,13 @@ function NavItem(props) {
     );
 
     const content = props.content.length > 0
-        ? <Frame content={props.content} />
+        ? <Frame content={props.content} className="mt-10 mb-10" />
         : ''
 
     return (
         <li className={props.isActive ? 'is-active' : ''}>
             <a
-                className="h:color-primary fs-16"
+                className=" h:bg-nav-ic fs-16"
                 data-nav-name={props.navName}
                 onClick={props.handleClick}
             >

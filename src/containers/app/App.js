@@ -117,7 +117,7 @@ function App(props) {
                 isAuth={isAuth}
                 handleSignOut={handleSignOut}
             />
-            <LogoProps className="z-1100" />
+            {/* <LogoProps className="z-1100" /> */}
             <EditorContainer
                 database={database}
                 currentUserId={currentUserId}
