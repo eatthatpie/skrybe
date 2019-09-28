@@ -100,18 +100,8 @@ function App(props) {
         }
     }
 
-    function handleBodyClick(e) {
-        if (
-            window.innerWidth <= 1024 &&
-            e.target.classList.contains('app') ||
-            e.target.classList.contains('editor-view')
-        ) {
-            props.toggleTreeMode({ isTreeMode: true });
-        }
-    }
-
     return (
-        <div className="app container" onClick={handleBodyClick}>
+        <div className="app container">
             <NavMobileContainer />
             <NavContainer
                 isAuth={isAuth}
