@@ -8,10 +8,7 @@ export default class Card extends React.Component {
         super(props);
 
         this.placeholders = [
-            'Write a little bit more about that.',
-            'What`s that all about?',
-            'Describe how it actually goes.',
-            'What more should the reader know about it?'
+            'Write here.',
         ];
         
         this.state = {
@@ -61,19 +58,19 @@ export default class Card extends React.Component {
     render() {
         const { leadText, bodyText, handleChangeLeadText, handleChangeBodyText } = this.props;
         const parentBodyText = this.props.parentBodyText
-            ? this.props.parentBodyText.replace(leadText, `<strong>${leadText}</strong>`)
+            ? '<strong>This card`s ancestor content</strong>:<br/>' + this.props.parentBodyText.replace(leadText, `<strong>${leadText}</strong>`)
             : null;
 
         return (
-            <div className="card bg-light">
+            <div className="card bg-light pt-15">
                 <div
                     className={this.state.leadClassName}
-                    data-placeholder="What are you going to write about here?"
+                    data-placeholder="Type here what are you going to write about below."
                 >
                     {parentBodyText &&
                         <div
                             className="card-tooltip bg-reversed br-50 text-center fs-8 sl:hide"
-                            dangerouslySetInnerHTML={{__html: parentBodyText}}
+                            dangerouslySetInnerHTML={{ __html:parentBodyText }}
                         />
                     }
                     <ContentEditable

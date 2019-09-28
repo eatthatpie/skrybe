@@ -15,10 +15,10 @@ class EditorView extends React.Component {
         super();
 
         this.rootChildPlaceholder = `
-            Write a very short brief of your story. Try to mention its all main parts. For example: After breaking up with her boyfriend, JANE moves to a big city to forget about him. She decides to live in an unusual apartment...
+            Write here a very short brief of your story. Try to mention its all main parts. For example: After breaking up with her boyfriend, JANE moves to a big city to forget about him. She decides to live in an unusual apartment...
         `
         this.rootPlaceholder = `
-            For example: The main character -- JANE -- writes a book that eventually destroys her as a human.
+            Write here.
         `;
 
         let cardPlaceholder = null;
@@ -42,6 +42,7 @@ class EditorView extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
+        this.handleGenerate = this.handleGenerate.bind(this);
         this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
         this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
         this.handleCardFocus = this.handleCardFocus.bind(this);
@@ -49,6 +50,7 @@ class EditorView extends React.Component {
         this.handleTreeBulletClick = this.handleTreeBulletClick.bind(this);
 
         this.isAllowedToAddSiblings = this.isAllowedToAddSiblings.bind(this);
+        this.isAllowedToAddChildren = this.isAllowedToAddChildren.bind(this);
 
         this.cardRef = React.createRef();
     }
@@ -93,6 +95,17 @@ class EditorView extends React.Component {
         }
 
         if (
+            this.state.bodyText !== nextProps.currentNode.bodyText ||
+            this.state.leadText !== nextProps.currentNode.leadText
+        ) {
+            this.setState({
+                bodyText: nextProps.currentNode.bodyText,
+                leadText: nextProps.currentNode.leadText,
+                cardPlaceholder
+            });
+        }
+
+        if (
             nextProps.outlineTree.currentNodeId === this.props.outlineTree.currentNodeId
         ) {
             return;
@@ -105,12 +118,6 @@ class EditorView extends React.Component {
         } else if(nextProps.parentNodeId === 'root') {
             cardPlaceholder = this.rootChildPlaceholder;
         }
-
-        this.setState({
-            bodyText: nextProps.currentNode.bodyText,
-            leadText: nextProps.currentNode.leadText,
-            cardPlaceholder
-        });
     }
 
     handleEdit() {
@@ -145,6 +152,33 @@ class EditorView extends React.Component {
                 shouldSaveToDatabaseOnUpdate: true
             },
             () => {
+                if (
+                    this.props.outlineTree.currentNodeId === 'root' &&
+                    Object.keys(this.props.outlineTree.items).length === 1 &&
+                    this.state.bodyText.length > 0
+                ) {
+                    const self = this;
+            
+                    this.props.togglePopup({
+                        isActive: true,
+                        type: 'tutorial-step-1',
+                        props: {
+                            onClickGenerateDescendants() {
+                                self.props.togglePopup({
+                                    isActive: false
+                                });
+        
+                                self.handleGenerate();
+                            },
+                            onClickGoBackToEditing() {
+                                self.props.togglePopup({
+                                    isActive: false
+                                });
+                            }
+                        }
+                    });
+                }
+
                 this.props.updateCard({
                     nodeId: this.props.outlineTree.currentNodeId,
                     leadText: this.state.leadText,
@@ -187,6 +221,22 @@ class EditorView extends React.Component {
         });
     }
 
+    handleGenerate() {
+        if (this.isAllowedToAddChildren()) {
+            this.setState(
+                {
+                    shouldGainFocusOnUpdate: true,
+                    shouldSaveToDatabaseOnUpdate: true
+                },
+                () => {
+                    this.props.generateDescendants({
+                        nodeId: this.props.outlineTree.currentNodeId
+                    });
+                }
+            );
+        }
+    }
+
     handleTreeBulletClick(nodeId) {
         this.props.moveToNode({ nodeId });
         this.props.toggleTreeMode({ isTreeMode: false });
@@ -207,6 +257,13 @@ class EditorView extends React.Component {
         return (
             this.props.parentNodeId !== 'root' &&
             this.props.outlineTree.currentNodeId !== 'root'
+        );
+    }
+
+    isAllowedToAddChildren() {
+        return (
+            !this.props.currentNode.descendants ||
+            this.props.currentNode.descendants.length <= 0
         );
     }
 
@@ -277,28 +334,28 @@ class EditorView extends React.Component {
                             `to-top ${!this.props.canMoveUp ? 'is-inactive' : ''}`
                         }
                         iconClassName="angle-up"
-                        onClick={this.props.moveUp}
+                        onClick={() => { this.handleSave(); this.props.moveUp(); }}
                     />
                     <CardGhost
                         className={
                             `to-bottom ${!this.props.canMoveDown ? 'is-inactive' : ''}`
                         }
                         iconClassName="angle-down"
-                        onClick={this.props.moveDown}
+                        onClick={() => { this.handleSave(); this.props.moveDown(); }}
                     />
                     <CardGhost
                         className={
                             `to-left ${!this.props.canMoveLeft ? 'is-inactive' : ''}`
                         }
                         iconClassName="angle-left"
-                        onClick={this.props.moveLeft}
+                        onClick={() => { this.handleSave(); this.props.moveLeft(); }}
                     />
                     <CardGhost
                         className={
                             `to-right ${!this.props.canMoveRight ? 'is-inactive' : ''}`
                         }
                         iconClassName="angle-right"
-                        onClick={this.props.moveRight}
+                        onClick={() => { this.handleSave(); this.props.moveRight(); }}
                     />
                     <Card
                         leadText={this.state.leadText}
@@ -320,6 +377,11 @@ class EditorView extends React.Component {
                 <EditorControls
                     hideAllIf={this.props.isTreeMode}
                     controls={{
+                        generate: {
+                            visibleIf: !this.props.isEditMode && this.props.currentNode.bodyText.length > 0,
+                            disabledIf: !this.isAllowedToAddChildren(),
+                            handleClick: this.handleGenerate.bind(this)
+                        },
                         edit: {
                             visibleIf: !this.props.isEditMode,
                             handleClick: this.handleEdit.bind(this)
@@ -346,6 +408,8 @@ class EditorView extends React.Component {
                 />
                 {!this.props.isAuth &&
                     <HintSignIn
+                        label="Sign in"
+                        tooltipText="Sign in to make your story remotely accessible to you"
                         handleClick={
                             () => { this.props.togglePopup({ isActive: true, type: 'sign-in' }) }
                         }

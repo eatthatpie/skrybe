@@ -41,6 +41,12 @@ const stateToProps = function(state) {
 
 const dispatchToProps = function(dispatch) {
     return {
+        generateDescendants({ nodeId }) {
+            dispatch(generateDescendantsOfNode({
+                nodeId,
+                shouldMoveAfter: true
+            }));
+        },
         insertCard({ parentNodeId, leadText, bodyText }) {
             dispatch(setOutlineTreeNode({
                 parentNodeId,
@@ -51,10 +57,6 @@ const dispatchToProps = function(dispatch) {
         },
         updateCard({ nodeId, leadText, bodyText }) {
             dispatch(setOutlineTreeNode({ nodeId, leadText, bodyText }));
-            dispatch(generateDescendantsOfNode({
-                nodeId,
-                shouldMoveAfter: true
-            }));
         },
         updateCharacters({ nodeId, characterNames }) {
             dispatch(updateCharacters({ nodeId, characterNames }));

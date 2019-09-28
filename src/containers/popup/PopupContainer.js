@@ -1,7 +1,8 @@
 import PopupDashboard from '@/view/popup/PopupDashboard';
 import PopupRemoveItemConfirmation from '@/view/popup/PopupRemoveItemConfirmation';
 import PopupSignIn from '@/view/popup/PopupSignIn';
-import React, { useContext } from 'react';
+import PopupTutorialStep1 from '@/view/popup/PopupTutorialStep1';
+import React from 'react';
 import { connect } from 'react-redux';
 import { togglePopup } from '@/actions/index';
 import './Popup.scss';
@@ -48,6 +49,10 @@ function Popup(props) {
     } else if (props.popupData.type === 'remove-item-confirmation') {
         contentView = (
             <PopupRemoveItemConfirmation {...props} />
+        );
+    } else if (props.popupData.type === 'tutorial-step-1') {
+        contentView = (
+            <PopupTutorialStep1 {...props} />
         );
     } else {
         contentView = <PopupDashboard {...props} />;

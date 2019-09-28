@@ -39,6 +39,8 @@ function App(props) {
             props.dangerouslyResetOutlineTree(
                 JSON.parse(offlineStoredOutlineTree)
             );
+
+            props.togglePopup({ isActive: false });
         }
     }, [null]);
 
@@ -115,7 +117,7 @@ function App(props) {
                 isAuth={isAuth}
                 handleSignOut={handleSignOut}
             />
-            <LogoProps className="z-1100" />
+            {/* <LogoProps className="z-1100" /> */}
             <EditorContainer
                 database={database}
                 currentUserId={currentUserId}

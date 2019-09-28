@@ -1,6 +1,6 @@
 import NavAside from '@/view/nav/NavAside';
 import { connect } from 'react-redux';
-import { navToggle, navAsideMobileToggle } from '@/actions/index';
+import { navToggle, navAsideMobileToggle, togglePopup } from '@/actions/index';
 
 const stateToProps = function(state) {
     return ({
@@ -18,6 +18,9 @@ const dispatchToProps = function(dispatch) {
         },
         closeNavAsideMobile() {
             dispatch(navAsideMobileToggle({ isOpen: false }));
+        },
+        togglePopup({ isActive, type, props }) {
+            dispatch(togglePopup({ isActivePopup: isActive, popupType: type, props }));
         }
     };
 };

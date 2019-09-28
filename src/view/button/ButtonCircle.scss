@@ -12,6 +12,20 @@
         font-size: 24px;
     }
 
+    &.is-disabled {
+        i {
+            opacity: 0.2;
+        }
+
+        &:not([class^='bg-']) {
+            background-color: rgba($primary, 0.2);
+
+            &:hover {
+                background-color: rgba($primary, 0.2);
+            }
+        }
+    }
+
     @media (max-width: $screen-laptop) {
         width: 48px;
         height: 48px;

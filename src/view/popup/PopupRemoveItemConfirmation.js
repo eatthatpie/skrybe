@@ -3,8 +3,8 @@ import React from 'react';
 
 export default function PopupRemoveItemConfirmation(props) {
     return (
-        <div className="popup-remove-item-confirmation h-100p flex flex-center ph-15">
-            <Content className="text-center">
+        <div className="popup-remove-item-confirmation h-100p flex flex-center ph-15 o-a">
+            <Content className="text-center m-a">
                 {props.popupData.props && props.popupData.props.currentNode &&
                     <p>
                         <em>

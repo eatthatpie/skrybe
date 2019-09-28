@@ -1,3 +1,7 @@
+.p-20 {
+    padding: 20px;
+}
+
 .pv-10 {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -18,12 +22,24 @@
     padding-right: 25px;
 }
 
+.pt-15 {
+    padding-top: 15px;
+}
+
+.pt-20 {
+    padding-top: 20px;
+}
+
 .pt-30 {
     padding-top: 30px;
 }
 
 .pt-50 {
     padding-top: 50px;
+}
+
+.pb-20 {
+    padding-bottom: 20px;
 }
 
 @media (max-width: $screen-laptop) {

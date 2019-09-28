@@ -44,7 +44,17 @@
         position: relative;
 
         &:before {
+            color: $default;
             padding: 37px 40px 0 40px;
+        }
+
+        &:after {
+            content: 'Write about this:';
+            color: $default;
+            position: absolute;
+            bottom: calc(100% - 32px);
+            padding: 37px 40px 0 40px;
+            font-size: 14px;
         }
 
         &:hover {
@@ -162,6 +172,12 @@
                 [contenteditable] {
                     padding-bottom: 30px;
                 }
+            }
+        }
+
+        &-lead {
+            &:after {
+                padding: 8px 25px 10px 25px;
             }
         }
     }
