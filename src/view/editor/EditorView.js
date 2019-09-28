@@ -346,6 +346,8 @@ class EditorView extends React.Component {
                 />
                 {!this.props.isAuth &&
                     <HintSignIn
+                        label="Sign in"
+                        tooltipText="Sign in to make your story remotely accessible to you"
                         handleClick={
                             () => { this.props.togglePopup({ isActive: true, type: 'sign-in' }) }
                         }

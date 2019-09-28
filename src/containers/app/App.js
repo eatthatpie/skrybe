@@ -39,6 +39,8 @@ function App(props) {
             props.dangerouslyResetOutlineTree(
                 JSON.parse(offlineStoredOutlineTree)
             );
+
+            props.togglePopup({ isActive: false });
         }
     }, [null]);
 

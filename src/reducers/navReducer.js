@@ -22,21 +22,21 @@ const initialState = {
                 }
             ]
         },
-        characters: {
-            name: 'Characters',
-            isActive: false,
-            content: `
-                To add a character simply type the name in capital letters, like JOHN, JANE while editing your story card.
-                <br/><br/>
-                Remember, that each letter matters, so JANES will be considered as a character other than JANE.`,
-            items: []
-        },
-        notes: {
-            name: 'Notes',
-            isActive: false,
-            content: '',
-            items: []
-        }
+        // characters: {
+        //     name: 'Characters',
+        //     isActive: false,
+        //     content: `
+        //         To add a character simply type the name in capital letters, like JOHN, JANE while editing your story card.
+        //         <br/><br/>
+        //         Remember, that each letter matters, so JANES will be considered as a character other than JANE.`,
+        //     items: []
+        // },
+        // notes: {
+        //     name: 'Notes',
+        //     isActive: false,
+        //     content: '',
+        //     items: []
+        // }
     }
 };
 

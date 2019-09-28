@@ -4,8 +4,8 @@ import React from 'react';
 
 export default function PopupDashboard(props) {
     return (
-        <div className="popup-dashboard h-100p flex flex-center ph-15">
-            <Content className="text-center">
+        <div className="popup-dashboard h-100p flex flex-center ph-15 o-a">
+            <Content className="text-center m-a">
                 <LogoProps />
                 <h2>
                     What would you like to do?

@@ -8,9 +8,9 @@ export default function HintSignIn(props) {
             onClick={props.handleClick}
         >
             <span>
-                Save story
+                {props.label}
             </span>
-            <Tooltip text="Sign in to save your story" />
+            <Tooltip text={props.tooltipText} />
         </a>
     );
 }
