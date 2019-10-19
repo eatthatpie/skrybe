@@ -191,6 +191,14 @@ class EditorView extends React.Component {
                     nodeId: this.props.outlineTree.currentNodeId,
                     characterNames
                 });
+
+                const gtagPayload = {
+                    'event_category': 'card',
+                    'event_label': this.state.bodyText,
+                    'value': Date.now()
+                };
+
+                gtag('event', 'save', gtagPayload);
             });
     }
 
@@ -232,6 +240,14 @@ class EditorView extends React.Component {
                     this.props.generateDescendants({
                         nodeId: this.props.outlineTree.currentNodeId
                     });
+
+                    const gtagPayload = {
+                        'event_category': 'card',
+                        'event_label': this.state.bodyText,
+                        'value': Date.now()
+                    };
+    
+                    gtag('event', 'generate', gtagPayload);
                 }
             );
         }
