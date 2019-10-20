@@ -1,12 +1,22 @@
 import { createSelector } from 'reselect';
 
-const getCurrentNode = createSelector(
-    state => {
-        return state.outlineTree.items[
-            state.outlineTree.currentNodeId
-        ];
+const getCurrentNodeId = createSelector(
+    function(state) {
+        return state.outlineTree.currentNodeId;
     },
-    currentNode => currentNode
+    function(currentNodeId) {
+        return currentNodeId;
+    }
+);
+
+const getCurrentNode = createSelector(
+    getCurrentNodeId,
+    function(state) {
+        return state.outlineTree.items;
+    },
+    function(currentNodeId, items) {
+        return items[currentNodeId];
+    }
 );
 
 const getCurrentNodeParentId = createSelector(
@@ -40,19 +50,28 @@ const getCurrentNodeSiblings = createSelector(
     }
 );
 
-const canMoveUp = createSelector(
-    getCurrentNode,
-    currentNode => {
-        return currentNode.parentNodeId !== null;
+const getOutlineTreeItemsCount = createSelector(
+    state => state.outlineTree.items,
+    function(items) {
+        return Object.keys(items).length
     }
 );
 
-const canMoveDown = createSelector(
-    getCurrentNode,
-    currentNode => {
-        return currentNode.descendants.length > 0;
+const canAddChildren = createSelector(getCurrentNode, function(currentNode) {
+    return !currentNode.descendants || currentNode.descendants.length <= 0;
+});
+
+const canAddSiblings = createSelector(
+    getCurrentNodeId,
+    getCurrentNodeParentId,
+    function(currentNodeId, parentNodeId) {
+        return parentNodeId !== 'root' && currentNodeId !== 'root';
     }
 );
+
+const canMoveDown = createSelector(getCurrentNode, function(currentNode) {
+    return currentNode.descendants.length > 0;
+});
 
 const canMoveLeft = createSelector(
     getCurrentNodeParent,
@@ -76,14 +95,22 @@ const canMoveRight = createSelector(
     }
 );
 
+const canMoveUp = createSelector(getCurrentNode, function(currentNode) {
+    return currentNode.parentNodeId !== null;
+});
+
 export {
-    getCurrentNode,
-    getCurrentNodeParent,
-    getCurrentNodeDescendants,
-    getCurrentNodeSiblings,
-    getCurrentNodeParentId,
-    canMoveUp,
+    canAddChildren,
+    canAddSiblings,
     canMoveDown,
     canMoveLeft,
-    canMoveRight
+    canMoveRight,
+    canMoveUp,
+    getCurrentNode,
+    getCurrentNodeDescendants,
+    getCurrentNodeId,
+    getCurrentNodeParent,
+    getCurrentNodeParentId,
+    getCurrentNodeSiblings,
+    getOutlineTreeItemsCount
 };

@@ -1,439 +1,254 @@
-import Card from '@/view/card/Card';
-import CardGhost from '@/view/card/CardGhost';
+import CardsGridContainer from '@/containers/CardsGridContainer';
 import EditorControls from '@/view/editor/EditorControls';
 import HintSignIn from '@/view/hint/HintSignIn';
 import TreeView from '@/view/tree/TreeView';
 import TreeViewToggler from '@/view/tree/TreeViewToggler';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './EditorView.scss';
 
-// @TODO: refactor. This class is way too big.
-// Make sth like policies, what controls show in what circumstances, what
-// action to perform, etc.
-class EditorView extends React.Component {
-    constructor(props) {
-        super();
+export default function EditorView(props) {
+    const [leadText, setLeadText] = useState(props.currentNode.leadText || '');
+    const [bodyText, setBodyText] = useState(props.currentNode.bodyText || '');
+    const [
+        shouldSaveToDatabaseOnUpdate,
+        setShouldSaveToDatabaseOnUpdate
+    ] = useState(false);
 
-        this.rootChildPlaceholder = `
-            Write here a very short brief of your story. Try to mention its all main parts. For example: After breaking up with her boyfriend, JANE moves to a big city to forget about him. She decides to live in an unusual apartment...
-        `
-        this.rootPlaceholder = `
-            Write here.
-        `;
-
-        let cardPlaceholder = null;
-        if (props.outlineTree.currentNodeId === 'root') {
-            cardPlaceholder = this.rootPlaceholder;
-        } else if(props.parentNodeId === 'root') {
-            cardPlaceholder = this.rootChildPlaceholder;
-        }
-
-        this.state = {
-            leadText: props.currentNode.leadText || '',
-            bodyText: props.currentNode.bodyText || '',
-            cardPlaceholder,
-            shouldGainFocusOnUpdate: false,
-            shouldSaveToDatabaseOnUpdate: false
-        }
-
-        this.findCharacterNames = this.findCharacterNames.bind(this);
-        this.handleAdd = this.handleAdd.bind(this);
-        this.handleDiscard = this.handleDiscard.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-        this.handleRemove = this.handleRemove.bind(this);
-        this.handleGenerate = this.handleGenerate.bind(this);
-        this.handleChangeLeadText = this.handleChangeLeadText.bind(this);
-        this.handleChangeBodyText = this.handleChangeBodyText.bind(this);
-        this.handleCardFocus = this.handleCardFocus.bind(this);
-        this.handleCardBlur = this.handleCardBlur.bind(this);
-        this.handleTreeBulletClick = this.handleTreeBulletClick.bind(this);
-
-        this.isAllowedToAddSiblings = this.isAllowedToAddSiblings.bind(this);
-        this.isAllowedToAddChildren = this.isAllowedToAddChildren.bind(this);
-
-        this.cardRef = React.createRef();
-    }
-
-    componentWillUpdate(nextProps) {
-        // @TESTING
-        // if (
-        //     this.state.shouldGainFocusOnUpdate &&
-        //     nextProps.outlineTree.currentNodeId !== this.props.outlineTree.currentNodeId
-        // ) {
-        //     this.cardRef.current.focus();
-
-        //     this.setState({
-        //         shouldGainFocusOnUpdate: false
-        //     });
-        // }
-
-        if (
-            this.state.shouldSaveToDatabaseOnUpdate &&
-            this.props.isAuth
-        ) {
-            this.props.database.set(
-                `/user/${this.props.currentUserId}/project/test-project`,
-                nextProps.outlineTree
+    useEffect(() => {
+        if (shouldSaveToDatabaseOnUpdate && props.isAuth) {
+            props.database.set(
+                `/user/${props.currentUserId}/project/test-project`,
+                props.outlineTree
             );
 
-            this.setState({
-                shouldSaveToDatabaseOnUpdate: false
-            });
-        } else if (
-            this.state.shouldSaveToDatabaseOnUpdate &&
-            !this.props.isAuth
-        ) {
+            setShouldSaveToDatabaseOnUpdate(false);
+        } else if (shouldSaveToDatabaseOnUpdate && !props.isAuth) {
             localStorage.setItem(
                 'skrybe:osot',
-                JSON.stringify(nextProps.outlineTree)
+                JSON.stringify(props.outlineTree)
             );
 
-            this.setState({
-                shouldSaveToDatabaseOnUpdate: false
-            });
+            setShouldSaveToDatabaseOnUpdate(false);
         }
+    }, [props.outlineTree]);
 
-        if (
-            this.props.currentNode.bodyText !== nextProps.currentNode.bodyText ||
-            this.props.currentNode.leadText !== nextProps.currentNode.leadText
-        ) {
-            this.setState({
-                bodyText: nextProps.currentNode.bodyText,
-                leadText: nextProps.currentNode.leadText,
-                cardPlaceholder
-            });
-        }
+    useEffect(() => {
+        setLeadText(props.currentNode.leadText);
+        setBodyText(props.currentNode.bodyText);
+    }, [props.currentNode.bodyText, props.currentNode.leadText]);
 
-        if (
-            nextProps.outlineTree.currentNodeId === this.props.outlineTree.currentNodeId
-        ) {
+    function handleDiscard() {
+        setLeadText(props.currentNode.leadText || '');
+        setBodyText(props.currentNode.bodyText || '');
+    }
+
+    function handleAdd() {
+        if (!props.canAddSiblings) {
             return;
         }
 
-        let cardPlaceholder = null;
-
-        if (nextProps.outlineTree.currentNodeId === 'root') {
-            cardPlaceholder = this.rootPlaceholder;
-        } else if(nextProps.parentNodeId === 'root') {
-            cardPlaceholder = this.rootChildPlaceholder;
-        }
-    }
-
-    handleEdit() {
-        if (this.cardRef.current) {
-            this.cardRef.current.focus();
-        }
-    }
-
-    handleDiscard() {
-        this.setState({
-            leadText: this.props.currentNode.leadText || '',
-            bodyText: this.props.currentNode.bodyText || ''
-        });
-    }
-
-    handleAdd() {
-        if (!this.isAllowedToAddSiblings()) {
-            return;
-        }
-
-        this.props.insertCard({
-            parentNodeId: this.props.parentNodeId,
+        props.insertCard({
+            parentNodeId: props.parentNodeId,
             leadText: '',
             bodyText: ''
         });
     }
 
-    handleSave() {
-        this.setState(
-            {
-                shouldGainFocusOnUpdate: true,
-                shouldSaveToDatabaseOnUpdate: true
-            },
-            () => {
-                if (
-                    this.props.outlineTree.currentNodeId === 'root' &&
-                    Object.keys(this.props.outlineTree.items).length === 1 &&
-                    this.state.bodyText.length > 0
-                ) {
-                    const self = this;
-            
-                    this.props.togglePopup({
-                        isActive: true,
-                        type: 'tutorial-step-1',
-                        props: {
-                            onClickGenerateDescendants() {
-                                self.props.togglePopup({
-                                    isActive: false
-                                });
-        
-                                self.handleGenerate();
-                            },
-                            onClickGoBackToEditing() {
-                                self.props.togglePopup({
-                                    isActive: false
-                                });
-                            }
-                        }
-                    });
+    function handleSave() {
+        setShouldSaveToDatabaseOnUpdate(true);
+
+        if (
+            props.outlineTree.currentNodeId === 'root' &&
+            props.hasExactlyOneItemBesidesRoot &&
+            bodyText.length > 0
+        ) {
+            props.togglePopup({
+                isActive: true,
+                type: 'tutorial-step-1',
+                props: {
+                    onClickGenerateDescendants() {
+                        props.togglePopup({ isActive: false });
+
+                        handleGenerate();
+                    },
+                    onClickGoBackToEditing() {
+                        props.togglePopup({ isActive: false });
+                    }
                 }
-
-                this.props.updateCard({
-                    nodeId: this.props.outlineTree.currentNodeId,
-                    leadText: this.state.leadText,
-                    bodyText: this.state.bodyText
-                });
-        
-                const characterNames = this.findCharacterNames();
-        
-                this.props.updateCharacters({
-                    nodeId: this.props.outlineTree.currentNodeId,
-                    characterNames
-                });
-
-                const gtagPayload = {
-                    'event_category': 'card',
-                    'event_label': this.state.bodyText,
-                    'value': Date.now()
-                };
-
-                gtag('event', 'save', gtagPayload);
             });
+        }
+
+        props.updateCard({
+            nodeId: props.outlineTree.currentNodeId,
+            leadText: leadText,
+            bodyText: bodyText
+        });
+
+        // const gtagPayload = {
+        //     'event_category': 'card',
+        //     'event_label': bodyText,
+        //     'value': 1
+        // };
+
+        // gtag('event', 'save', gtagPayload);
     }
 
-    handleRemove() {
-        const self = this;
-
-        this.props.togglePopup({
+    function handleRemove() {
+        props.togglePopup({
             isActive: true,
             type: 'remove-item-confirmation',
             props: {
-                currentNode: this.props.currentNode,
+                currentNode: props.currentNode,
                 onRemove() {
-                    self.props.togglePopup({
-                        isActive: false
+                    props.togglePopup({ isActive: false });
+
+                    setShouldSaveToDatabaseOnUpdate(true);
+
+                    props.moveToNode({
+                        nodeId: props.currentNode.parentNodeId
                     });
 
-                    self.props.moveToNode({ nodeId: self.props.currentNode.parentNodeId });
-
-                    self.props.removeNodeWithDescendants({
-                        nodeId: self.props.outlineTree.currentNodeId
-                    });
-
-                    self.setState({
-                        shouldSaveToDatabaseOnUpdate: true
+                    props.removeNodeWithDescendants({
+                        nodeId: props.outlineTree.currentNodeId
                     });
                 }
             }
         });
     }
 
-    handleGenerate() {
-        if (this.isAllowedToAddChildren()) {
-            this.setState(
-                {
-                    shouldGainFocusOnUpdate: true,
-                    shouldSaveToDatabaseOnUpdate: true
-                },
-                () => {
-                    this.props.generateDescendants({
-                        nodeId: this.props.outlineTree.currentNodeId
-                    });
-
-                    const gtagPayload = {
-                        'event_category': 'card',
-                        'event_label': this.state.bodyText,
-                        'value': Date.now()
-                    };
-    
-                    gtag('event', 'generate', gtagPayload);
-                }
-            );
+    function handleGenerate() {
+        if (!props.canAddChildren) {
+            return;
         }
+
+        setShouldSaveToDatabaseOnUpdate(true);
+
+        const nodeId = props.outlineTree.currentNodeId;
+
+        props.generateDescendants({ nodeId });
+
+        // const gtagPayload = {
+        //     'event_category': 'card',
+        //     'event_label': bodyText,
+        //     'value': 1
+        // };
+    
+        // gtag('event', 'generate', gtagPayload);
     }
 
-    handleTreeBulletClick(nodeId) {
-        this.props.moveToNode({ nodeId });
-        this.props.toggleTreeMode({ isTreeMode: false });
+    function handleTreeBulletClick(nodeId) {
+        props.moveToNode({ nodeId });
+        props.toggleTreeMode({ isTreeMode: false });
     }
 
-    findCharacterNames() {
-        // English and Polish names are supoorted for now.
-        const characterNameRegex = /[A-ZŻŁĆĘŚĄŹŃ]{2,}-?\s?[A-ZŻÓŁĆĘŚĄŹŃ]+/gu;
-        const names = [].concat(
-            this.state.bodyText.match(characterNameRegex),
-            this.state.leadText.match(characterNameRegex)
-        );
-
-        return Array.from(new Set(names.filter(item => !!item)));
+    function handleChangeLeadText(e) {
+        setLeadText(e.target.value);
     }
 
-    isAllowedToAddSiblings() {
-        return (
-            this.props.parentNodeId !== 'root' &&
-            this.props.outlineTree.currentNodeId !== 'root'
-        );
+    function handleChangeBodyText(e) {
+        setBodyText(e.target.value);
     }
 
-    isAllowedToAddChildren() {
-        return (
-            !this.props.currentNode.descendants ||
-            this.props.currentNode.descendants.length <= 0
-        );
-    }
-
-    handleChangeLeadText(e) {
-        const value = e.target.value;
-
-        this.setState({
-            leadText: value
-        });
-    }
-
-    handleChangeBodyText(e) {
-        const value = e.target.value;
-
-        this.setState({
-            bodyText: value
-        });
-    }
-
-    handleCardFocus() {
+    function handleCardFocus() {
         setTimeout(() => {
-            this.props.toggleEditMode({ isEditMode: true });
+            props.toggleEditMode({ isEditMode: true });
         }, 200);
     }
 
-    handleCardBlur() {
+    function handleCardBlur() {
         setTimeout(() => {
-            this.props.toggleEditMode({ isEditMode: false });
+            props.toggleEditMode({ isEditMode: false });
 
             if (
-                this.state.bodyText !== this.props.currentNode.bodyText ||
-                this.state.leadText !== this.props.currentNode.leadText
+                bodyText !== props.currentNode.bodyText ||
+                leadText !== props.currentNode.leadText
             ) {
-                this.handleSave();
+                handleSave();
             }
         }, 200);
     }
-    
-    render() {
-        return (
-            <div
-                className={
-                    `editor-view ${this.props.isTreeMode ? 'is-tree-view' : ''} ${this.props.isEditMode ? 'is-edit-mode' : ''}`
-                }
-            >
-                <EditorControls
-                    hideAllIf={this.props.isTreeMode}
-                    className="editor-controls--mobile flex flex-normal flex-sb fixed cover-top h-60 bg-black z-550 ph-15 st:ph-0"
-                    controls={{
-                        save: {
-                            visibleIf: this.props.isEditMode,
-                            handleClick: this.handleSave.bind(this)
-                        },
-                        discard: {
-                            visibleIf: this.props.isEditMode,
-                            handleClick: this.handleDiscard.bind(this)
-                        }
-                    }}
-                />
-                <TreeViewToggler
-                    className={`z-550 ${this.props.isTreeMode ? 'is-tree-mode' : ''}`}
-                    handleClick={() => { this.props.toggleTreeMode({ isTreeMode: !this.props.isTreeMode }) }}
-                    title="Toggle story tree view"
-                />
-                <div className="card-view flex h-100p">
-                    <CardGhost
-                        className={
-                            `to-top ${!this.props.canMoveUp ? 'is-inactive' : ''}`
-                        }
-                        iconClassName="angle-up"
-                        onClick={() => { this.handleSave(); this.props.moveUp(); }}
-                    />
-                    <CardGhost
-                        className={
-                            `to-bottom ${!this.props.canMoveDown ? 'is-inactive' : ''}`
-                        }
-                        iconClassName="angle-down"
-                        onClick={() => { this.handleSave(); this.props.moveDown(); }}
-                    />
-                    <CardGhost
-                        className={
-                            `to-left ${!this.props.canMoveLeft ? 'is-inactive' : ''}`
-                        }
-                        iconClassName="angle-left"
-                        onClick={() => { this.handleSave(); this.props.moveLeft(); }}
-                    />
-                    <CardGhost
-                        className={
-                            `to-right ${!this.props.canMoveRight ? 'is-inactive' : ''}`
-                        }
-                        iconClassName="angle-right"
-                        onClick={() => { this.handleSave(); this.props.moveRight(); }}
-                    />
-                    <Card
-                        leadText={this.state.leadText}
-                        bodyText={this.state.bodyText}
-                        parentBodyText={this.props.parentNode ? this.props.parentNode.bodyText : null}
-                        handleChangeLeadText={this.handleChangeLeadText}
-                        handleChangeBodyText={this.handleChangeBodyText}
-                        placeholder={this.state.cardPlaceholder}
-                        ref={this.cardRef}
-                        onFocus={this.handleCardFocus}
-                        onBlur={this.handleCardBlur}
-                    />
-                </div>
-                <TreeView
-                    data={this.props.outlineTree.items}
-                    currentNodeId={this.props.outlineTree.currentNodeId}
-                    handleClick={this.handleTreeBulletClick}
-                />
-                <EditorControls
-                    hideAllIf={this.props.isTreeMode}
-                    controls={{
-                        generate: {
-                            visibleIf: !this.props.isEditMode && this.props.currentNode.bodyText.length > 0,
-                            disabledIf: !this.isAllowedToAddChildren(),
-                            handleClick: this.handleGenerate.bind(this)
-                        },
-                        edit: {
-                            visibleIf: !this.props.isEditMode,
-                            handleClick: this.handleEdit.bind(this)
-                        },
-                        add: {
-                            visibleIf: this.isAllowedToAddSiblings() &&
-                                !this.props.isEditMode,
-                            handleClick: this.handleAdd.bind(this)
-                        },
-                        remove: {
-                            visibleIf: this.isAllowedToAddSiblings() &&
-                                !this.props.isEditMode,
-                            handleClick: this.handleRemove.bind(this)
-                        },
-                        save: {
-                            visibleIf: this.props.isEditMode,
-                            handleClick: this.handleSave.bind(this)
-                        },
-                        discard: {
-                            visibleIf: this.props.isEditMode,
-                            handleClick: this.handleDiscard.bind(this)
-                        }
-                    }}
-                />
-                {!this.props.isAuth &&
-                    <HintSignIn
-                        label="Sign in"
-                        tooltipText="Sign in to make your story remotely accessible to you"
-                        handleClick={
-                            () => { this.props.togglePopup({ isActive: true, type: 'sign-in' }) }
-                        }
-                    />
-                }
-            </div>
-        );
-    }
-}
 
-export default EditorView;
+    function handleSignInButtonClick() {
+        props.togglePopup({ isActive: true, type: 'sign-in' })
+    }
+
+    return (
+        <div
+            className={
+                `editor-view ${props.isTreeMode ? 'is-tree-view' : ''} ${props.isEditMode ? 'is-edit-mode' : ''}`
+            }
+        >
+            <EditorControls
+                hideAllIf={props.isTreeMode}
+                className="editor-controls--mobile flex flex-normal flex-sb fixed cover-top h-60 bg-black z-550 ph-15 st:ph-0"
+                controls={{
+                    save: {
+                        visibleIf: props.isEditMode,
+                        handleClick: handleSave.bind(this)
+                    },
+                    discard: {
+                        visibleIf: props.isEditMode,
+                        handleClick: handleDiscard.bind(this)
+                    }
+                }}
+            />
+            <TreeViewToggler
+                className={`z-550 ${props.isTreeMode ? 'is-tree-mode' : ''}`}
+                handleClick={() => { props.toggleTreeMode({ isTreeMode: !props.isTreeMode }) }}
+                title="Toggle story tree view"
+            />
+            <CardsGridContainer
+                bodyText={bodyText}
+                leadText={leadText}
+                handleChangeBodyText={handleChangeBodyText}
+                handleChangeLeadText={handleChangeLeadText}
+                handleCardFocus={handleCardFocus}
+                handleCardBlur={handleCardBlur}
+                handleSave={handleSave}
+            />
+            <TreeView
+                data={props.outlineTree.items}
+                currentNodeId={props.outlineTree.currentNodeId}
+                handleClick={handleTreeBulletClick}
+            />
+            <EditorControls
+                hideAllIf={props.isTreeMode}
+                controls={{
+                    generate: {
+                        visibleIf: (
+                            !props.isEditMode &&
+                            props.currentNode.bodyText.length > 0
+                        ),
+                        disabledIf: !props.canAddChildren,
+                        handleClick: handleGenerate.bind(this)
+                    },
+                    add: {
+                        visibleIf: props.canAddSiblings &&
+                            !props.isEditMode,
+                        handleClick: handleAdd.bind(this)
+                    },
+                    remove: {
+                        visibleIf: props.canAddSiblings &&
+                            !props.isEditMode,
+                        handleClick: handleRemove.bind(this)
+                    },
+                    save: {
+                        visibleIf: props.isEditMode,
+                        handleClick: handleSave.bind(this)
+                    },
+                    discard: {
+                        visibleIf: props.isEditMode,
+                        handleClick: handleDiscard.bind(this)
+                    }
+                }}
+            />
+            {!props.isAuth &&
+                <HintSignIn
+                    label="Sign in"
+                    tooltipText="Sign in to make your story remotely accessible to you"
+                    handleClick={handleSignInButtonClick}
+                />
+            }
+        </div>
+    );
+}

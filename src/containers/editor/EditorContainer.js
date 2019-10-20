@@ -1,23 +1,25 @@
 import EditorView from '@/view/editor/EditorView';
 import { connect } from 'react-redux';
 import {
+    canAddChildren,
+    canAddSiblings,
+    canMoveDown,
+    canMoveLeft,
+    canMoveRight,
+    canMoveUp,
     getCurrentNode,
     getCurrentNodeParent,
     getCurrentNodeParentId,
-    canMoveUp,
-    canMoveDown,
-    canMoveLeft,
-    canMoveRight
+    getOutlineTreeItemsCount
 } from '@/selectors';
 import {
     generateDescendantsOfNode,
     setOutlineTreeNode,
-    updateCharacters,
-    moveUp,
     moveDown,
     moveLeft,
     moveRight,
     moveToNode,
+    moveUp,
     removeNodeWithDescendants,
     toggleEditMode,
     togglePopup,
@@ -26,16 +28,19 @@ import {
 
 const stateToProps = function(state) {
     return ({
-        currentNode: getCurrentNode(state),
-        parentNodeId: getCurrentNodeParentId(state),
-        parentNode: getCurrentNodeParent(state),
-        isEditMode: state.mode.isEditMode,
-        isTreeMode: state.mode.isTreeMode,
-        outlineTree: state.outlineTree,
-        canMoveUp: canMoveUp(state),
+        canAddChildren: canAddChildren(state),
+        canAddSiblings: canAddSiblings(state),
         canMoveDown: canMoveDown(state),
         canMoveLeft: canMoveLeft(state),
-        canMoveRight: canMoveRight(state)
+        canMoveRight: canMoveRight(state),
+        canMoveUp: canMoveUp(state),
+        currentNode: getCurrentNode(state),
+        hasExactlyOneItemBesidesRoot: getOutlineTreeItemsCount(state) === 1,
+        isEditMode: state.mode.isEditMode,
+        isTreeMode: state.mode.isTreeMode,
+        parentNode: getCurrentNodeParent(state),
+        parentNodeId: getCurrentNodeParentId(state),
+        outlineTree: state.outlineTree
     });
 };
 
@@ -55,15 +60,6 @@ const dispatchToProps = function(dispatch) {
                 shouldMoveAfter: true
             }));
         },
-        updateCard({ nodeId, leadText, bodyText }) {
-            dispatch(setOutlineTreeNode({ nodeId, leadText, bodyText }));
-        },
-        updateCharacters({ nodeId, characterNames }) {
-            dispatch(updateCharacters({ nodeId, characterNames }));
-        },
-        moveUp() {
-            dispatch(moveUp());
-        },
         moveDown() {
             dispatch(moveDown());
         },
@@ -76,17 +72,27 @@ const dispatchToProps = function(dispatch) {
         moveToNode({ nodeId }) {
             dispatch(moveToNode({ nodeId }));
         },
+        moveUp() {
+            dispatch(moveUp());
+        },
         removeNodeWithDescendants({ nodeId }) {
             dispatch(removeNodeWithDescendants({ nodeId }));
+        },
+        toggleEditMode({ isEditMode }) {
+            dispatch(toggleEditMode({ isEditMode }));
+        },
+        togglePopup({ isActive, type, props }) {
+            dispatch(togglePopup({
+                isActivePopup: isActive,
+                popupType: type,
+                props
+            }));
         },
         toggleTreeMode({ isTreeMode }) {
             dispatch(toggleTreeMode({ isTreeMode }));
         },
-        togglePopup({ isActive, type, props }) {
-            dispatch(togglePopup({ isActivePopup: isActive, popupType: type, props }));
-        },
-        toggleEditMode({ isEditMode }) {
-            dispatch(toggleEditMode({ isEditMode }));
+        updateCard({ nodeId, leadText, bodyText }) {
+            dispatch(setOutlineTreeNode({ nodeId, leadText, bodyText }));
         }
     };
 };

@@ -117,6 +117,10 @@ export default function Map({ data }) {
     }
 
     function drawMapItem(key, level, left, right, parentX) {
+        if (!data.hasOwnProperty(key)) {
+            return [];
+        }
+
         const item = data[key];
         const pointx = (right + left) / 2;
         const stepY = 40;
@@ -385,7 +389,10 @@ export default function Map({ data }) {
                 {drawMapItem('root', 1, 0, 800)}
                 {tooltips.map(item => {
                     return (
-                        <g className={item.key === currentBulletHovered ? 'tt-container is-active' : 'tt-container'}>
+                        <g
+                            key={item.key}
+                            className={item.key === currentBulletHovered ? 'tt-container is-active' : 'tt-container'}
+                        >
                             {item.view}
                         </g>
                     )

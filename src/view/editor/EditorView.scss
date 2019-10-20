@@ -41,7 +41,8 @@
         }
     }
 
-    .card-view {
+    .card-view,
+    .cards-grid-view {
         @include transition(all 0.2s ease-in-out 0s);
     }
 
@@ -55,7 +56,8 @@
     }
 
     &.is-tree-view {
-        .card-view {
+        .card-view,
+        .cards-grid-view {
             @include transition(all 0.2s ease-in-out 0s);
             @include transform(scale(0.618));
             opacity: 0;
@@ -79,7 +81,8 @@
     }
     
     @media (min-width: 1025px) {
-        .card-view {
+        .card-view,
+        .cards-grid-view {
             position: absolute;
             left: 0;
             right: 0;
