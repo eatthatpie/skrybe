@@ -69,8 +69,12 @@ export default function outlineTreeReducer(state = initialState, {
             if (nodeId) {
                 let entry = state.items[nodeId]
 
-                entry.leadText = leadText || entry.leadText;
-                entry.bodyText = bodyText || entry.bodyText;
+                entry.leadText = (leadText !== null && leadText !== undefined)
+                    ? leadText
+                    : entry.leadText;
+                entry.bodyText = (bodyText !== null && bodyText !== undefined)
+                    ? bodyText
+                    : entry.bodyText;
 
                 return {
                     ...state,

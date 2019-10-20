@@ -37,6 +37,7 @@ export default function EditorView(props) {
         setBodyText(props.currentNode.bodyText);
     }, [props.currentNode.bodyText, props.currentNode.leadText]);
 
+    // @TODO: this is not working at the moment
     function handleDiscard() {
         setLeadText(props.currentNode.leadText || '');
         setBodyText(props.currentNode.bodyText || '');
@@ -156,7 +157,9 @@ export default function EditorView(props) {
     }
 
     function handleCardBlur() {
+        // @TODO: handle this by onClick on .editor-view
         setTimeout(() => {
+            // @TODO: should have callback
             props.toggleEditMode({ isEditMode: false });
 
             if (
@@ -165,7 +168,7 @@ export default function EditorView(props) {
             ) {
                 handleSave();
             }
-        }, 200);
+        }, 10);
     }
 
     function handleSignInButtonClick() {
@@ -203,8 +206,8 @@ export default function EditorView(props) {
                 handleChangeBodyText={handleChangeBodyText}
                 handleChangeLeadText={handleChangeLeadText}
                 handleCardFocus={handleCardFocus}
-                handleCardBlur={handleCardBlur}
-                handleSave={handleSave}
+                handleCardBlur={handleCardBlur.bind(this)}
+                handleSave={handleSave.bind(this)}
             />
             <TreeView
                 data={props.outlineTree.items}

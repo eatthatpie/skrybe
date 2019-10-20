@@ -78,7 +78,7 @@ export default class ContentEditable extends React.Component {
                 ...props,
                 ref: (e) => this.htmlEl = e,
                 onInput: this.emitChange,
-                onBlur: this.props.onBlur || this.emitChange,
+                onBlur: e => { this.emitChange(e); this.props.onBlur(e); },
                 onPaste: this.onPaste,
                 onDrop: this.onDrop,
                 contentEditable: !this.props.isDisabled,
