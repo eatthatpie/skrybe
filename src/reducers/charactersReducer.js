@@ -1,3 +1,5 @@
+// @deprecated
+
 import actionTypes from '@/actions/types';
 
 const initialState = {};

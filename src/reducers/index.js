@@ -1,10 +1,13 @@
-import characters from './charactersReducer';
-import mode from './modeReducer';
-import nav from './navReducer';
-import outlineTree from './outlineTreeReducer';
-import view from './viewReducer';
-import { combineReducers } from 'redux';
+import charactersReducer from './charactersReducer';
+import modeReducer from './modeReducer';
+import navReducer from './navReducer';
+import outlineTreeReducer from './outlineTreeReducer';
+import viewReducer from './viewReducer';
 
-const rootReducer = combineReducers({ characters, mode, nav, outlineTree, view });
-
-export default rootReducer;
+export {
+    charactersReducer,
+    modeReducer,
+    navReducer,
+    outlineTreeReducer,
+    viewReducer
+};
