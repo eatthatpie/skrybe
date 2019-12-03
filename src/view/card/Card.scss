@@ -10,7 +10,7 @@
 
     [contenteditable] {
         height: 100%;
-        padding: 15px 40px;
+        padding: 15px 50px;
         outline: 0;
     }
 
@@ -42,19 +42,24 @@
     &-lead {
         font-style: italic;
         position: relative;
+        z-index: 1;
 
         &:before {
             color: $default;
-            padding: 37px 40px 0 40px;
+            display: none;
+            padding: 37px 50px 0 50px;
         }
 
         &:after {
-            content: 'Write about this:';
-            color: $default;
+            // content: 'Write about this:';
+            // color: $default;
             position: absolute;
             bottom: calc(100% - 32px);
-            padding: 37px 40px 0 40px;
-            font-size: 14px;
+            padding: 37px 50px 0 50px;
+            // font-size: 14px;
+            content: 'The story:';
+            font-size: 17px;
+            font-style: normal;
         }
 
         &:hover {
@@ -69,7 +74,7 @@
 
     &-body {
         &:before {
-            padding: 18px 40px 0 40px;
+            padding: 43px 50px 0 50px;
         }
 
         [contenteditable] {
@@ -86,13 +91,16 @@
             content: attr(data-placeholder);
             position: absolute;
             pointer-events: none;
-            line-height: 1.8rem;
+            line-height: 2.9rem;
             opacity: 0;
         }
 
         &:first-child {
             [contenteditable] {
                 padding-top: 40px;
+                font-size: 32px;
+                padding-bottom: 39px;
+                font-style: normal;
             }
 
             i {
@@ -102,7 +110,10 @@
 
         &:last-child {
             [contenteditable] {
-                padding-bottom: 40px;
+                padding-bottom: 50px;
+                min-height: 54vh;
+                padding-top: 43px;
+                line-height: 2.9rem;
             }
         }
 

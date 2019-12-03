@@ -1,0 +1,90 @@
+.bg {
+    background-color: $bg;
+}
+
+.bg-light {
+    background-color: $light;
+}
+
+.bg-primary-light {
+    background-color: $primary-light;
+}
+
+.bg-primary-dark {
+    background-color: $primary-dark;
+}
+
+.bg-primary {
+    background-color: $primary;
+}
+
+.color-default {
+    color: $default;
+}
+
+.color-muted {
+    color: $default-light;
+}
+
+.color-light {
+    color: $light;
+}
+
+.color-primary-bright {
+    color: $primary-bright;
+}
+
+.fill-light {
+    fill: $light;
+}
+
+.fill-primary-light {
+    fill: $primary-light;
+}
+
+.stroke-light {
+    fill: $light;
+}
+
+.stroke-primary-light {
+    stroke: $primary-light;
+}
+
+.after\:bg {
+    &-primary {
+        &:after {
+            background-color: $primary;
+        }
+    }
+}
+
+.after\:color {
+    &-muted {
+        &:after {
+            color: $muted;
+        }
+    }
+
+    &-primary {
+        &:after {
+            background-color: $primary;
+        }
+    }
+}
+
+.before\:color {
+    &-muted {
+        &:before {
+            color: $muted;
+        }
+    }
+}
+
+.h\:bg {
+    &-primary-light {
+        &:hover {
+            transition: 0.1s;
+            background-color: $primary-light;
+        }
+    }
+}

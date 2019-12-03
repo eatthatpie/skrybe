@@ -1,0 +1,13 @@
+.theme-desert {
+    $bg: #e9e9e9;
+    $default: #111;
+    $default-light: #535353;
+    $light: #fff;
+    $muted: #999;
+    $primary: rgb(152, 109, 92);
+    $primary-light: rgb(197, 158, 137);
+    $primary-bright: lighten($primary-light, 25%);
+    $primary-dark: rgb(84, 45, 36);
+
+    @import 'classes';
+}

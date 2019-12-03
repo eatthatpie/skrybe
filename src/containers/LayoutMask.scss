@@ -1,5 +1,5 @@
-@import './../../assets/style/mixins/mixins';
-@import './../../assets/style/variables/variables';
+@import './../assets/style/mixins/mixins';
+@import './../assets/style/variables/variables';
 
 .layout-mask {
     @include hide();

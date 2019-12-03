@@ -1,41 +1,14 @@
 import Card from '@/view/card/Card';
-import CardGhost from '@/view/card/CardGhost';
 import React from 'react';
 import { usePlaceholder } from '@/hooks';
+import DetailedViewNav from '@/view/editor/DetailedViewNav';
 
 export default function CardsGridView(props) {
     const placeholder = usePlaceholder(props.currentNodeId, props.parentNodeId);
 
     return (
         <div className="cards-grid-view flex h-100p">
-            <CardGhost
-                className={
-                    `to-top ${!props.canMoveUp ? 'is-inactive' : ''}`
-                }
-                iconClassName="angle-up"
-                onClick={() => { props.moveUp(); }}
-            />
-            <CardGhost
-                className={
-                    `to-bottom ${!props.canMoveDown ? 'is-inactive' : ''}`
-                }
-                iconClassName="angle-down"
-                onClick={() => { props.moveDown(); }}
-            />
-            <CardGhost
-                className={
-                    `to-left ${!props.canMoveLeft ? 'is-inactive' : ''}`
-                }
-                iconClassName="angle-left"
-                onClick={() => { props.moveLeft(); }}
-            />
-            <CardGhost
-                className={
-                    `to-right ${!props.canMoveRight ? 'is-inactive' : ''}`
-                }
-                iconClassName="angle-right"
-                onClick={() => { props.moveRight(); }}
-            />
+            <DetailedViewNav />
             <Card
                 leadText={props.leadText}
                 bodyText={props.bodyText}

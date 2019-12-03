@@ -1,0 +1,49 @@
+.toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 83px;
+    display: flex;
+    align-content: center;
+    z-index: 599;
+
+    &-hamburger {
+        padding: 8px 24px 8px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &-logo {
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-right: 30px;
+
+        > span {
+            height: auto;
+            font-size: 28px;
+        }
+    }
+
+    &-picker {
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        flex-direction: column;
+    }
+
+    &-nav {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 30px;
+    }
+}

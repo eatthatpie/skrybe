@@ -1,21 +1,20 @@
-import EditorContainer from '@/containers/editor/EditorContainer';
-import LayoutMaskContainer from '@/containers/layout/LayoutMaskContainer';
-import LogoProps from '@/view/logo/LogoProps';
-import NavContainer from '@/containers/nav/NavContainer';
-import NavMobileContainer from '@/containers/nav/NavMobileContainer'
-import PopupContainer from '@/containers/popup/PopupContainer';
+import EditorContainer from '@/containers/EditorContainer';
+import NavContainer from '@/containers/NavContainer';
 import React, { useContext, useEffect, useState } from 'react';
+import Toolbar from '@/view/toolbar/Toolbar';
 import { connect } from 'react-redux';
 import { AuthContext } from '@/services/auth';
 import { DatabaseContext } from '@/services/database';
 import {
     dangerouslyResetOutlineTree,
-    toggleLayoutOverlay,
-    togglePopup,
-    toggleTreeMode
+    toggleLayoutOverlay
 } from '@/actions';
+import {
+    caseTogglePopupDTP,
+    caseToggleTreeModeDTP
+} from '@/containers/dtp';
+import { objectMerge } from '@/helpers';
 import '@/assets/style/style.scss';
-import './App.scss';
 
 function App(props) {
     const auth = useContext(AuthContext);
@@ -101,20 +100,19 @@ function App(props) {
     }
 
     return (
-        <div className="app container">
-            <NavMobileContainer />
-            <NavContainer
-                isAuth={isAuth}
-                handleSignOut={handleSignOut}
-            />
-            {/* <LogoProps className="z-1100" /> */}
-            <EditorContainer
-                database={database}
-                currentUserId={currentUserId}
-                isAuth={isAuth}
-            />
-            <LayoutMaskContainer />
-            <PopupContainer auth={auth} />
+        <div className="app container h-100p theme-sea">
+            <div className="bg color-default h-100p">
+                <Toolbar />
+                <NavContainer
+                    isAuth={isAuth}
+                    handleSignOut={handleSignOut}
+                />
+                <EditorContainer
+                    database={database}
+                    currentUserId={currentUserId}
+                    isAuth={isAuth}
+                />
+            </div>
         </div>
     );
 }
@@ -127,20 +125,18 @@ const stateToProps = function(state) {
 };
 
 const dispatchToProps = function(dispatch) {
-    return {
-        dangerouslyResetOutlineTree(outlineTree) {
-            dispatch(dangerouslyResetOutlineTree(outlineTree));
-        },
-        toggleLayoutOverlay({ isActive }) {
-            dispatch(toggleLayoutOverlay({ isLayoutOverlayActive: isActive }));
-        },
-        togglePopup({ isActive, type }) {
-            dispatch(togglePopup({ isActivePopup: isActive, popupType: type }));
-        },
-        toggleTreeMode({ isTreeMode }) {
-            dispatch(toggleTreeMode({ isTreeMode }));
-        },
-    };
+    return objectMerge(
+        caseTogglePopupDTP(dispatch),
+        caseToggleTreeModeDTP(dispatch),
+        {
+            dangerouslyResetOutlineTree(outlineTree) {
+                dispatch(dangerouslyResetOutlineTree(outlineTree));
+            },
+            toggleLayoutOverlay({ isActive }) {
+                dispatch(toggleLayoutOverlay({ isLayoutOverlayActive: isActive }));
+            }
+        }
+    );
 };
 
 export default connect(stateToProps, dispatchToProps)(App);

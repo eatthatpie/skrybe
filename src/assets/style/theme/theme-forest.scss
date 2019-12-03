@@ -1,0 +1,13 @@
+.theme-forest {
+    $bg: #e9e9e9;
+    $default: #111;
+    $default-light: #535353;
+    $light: #fff;
+    $muted: #999;
+    $primary: rgb(91, 108, 48);
+    $primary-light: rgb(124, 144, 42);
+    $primary-bright: lighten($primary-light, 25%);
+    $primary-dark: rgb(66, 79, 35);
+
+    @import 'classes';
+}

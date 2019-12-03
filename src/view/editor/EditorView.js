@@ -178,7 +178,7 @@ export default function EditorView(props) {
     return (
         <div
             className={
-                `editor-view ${props.isTreeMode ? 'is-tree-view' : ''} ${props.isEditMode ? 'is-edit-mode' : ''}`
+                `editor-view${props.isTreeMode ? ' is-tree-view' : ''}${props.isEditMode ? ' is-edit-mode' : ''}`
             }
         >
             <EditorControls
@@ -234,24 +234,9 @@ export default function EditorView(props) {
                         visibleIf: props.canAddSiblings &&
                             !props.isEditMode,
                         handleClick: handleRemove.bind(this)
-                    },
-                    save: {
-                        visibleIf: props.isEditMode,
-                        handleClick: handleSave.bind(this)
-                    },
-                    discard: {
-                        visibleIf: props.isEditMode,
-                        handleClick: handleDiscard.bind(this)
                     }
                 }}
             />
-            {!props.isAuth &&
-                <HintSignIn
-                    label="Sign in"
-                    tooltipText="Sign in to make your story remotely accessible to you"
-                    handleClick={handleSignInButtonClick}
-                />
-            }
         </div>
     );
 }

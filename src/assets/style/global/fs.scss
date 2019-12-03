@@ -1,0 +1,53 @@
+.fs {
+    // &-8 {
+    //     font-size: 0.8rem;
+    // }
+
+    // &-9 {
+    //     font-size: 0.9rem;
+    // }
+
+    // &-10 {
+    //     font-size: 1rem;
+    // }
+
+    // &-12 {
+    //     font-size: 1.2rem;
+    // }
+
+    &-13 {
+        font-size: 1.3rem;
+    }
+
+    // &-15 {
+    //     font-size: 1.6rem;
+    // }
+
+    &-16 {
+        font-size: 1.6rem;
+    }
+
+    &-17 {
+        font-size: 1.7rem;
+    }
+
+    &-20 {
+        font-size: 2rem;
+    }
+
+    &-25 {
+        font-size: 2.5rem;
+    }
+
+    &-32 {
+        font-size: 3.2rem;
+    }
+}
+
+.sl\:fs {
+    @media (max-width: 1024px) {
+        &-8 {
+            font-size: 0.8rem;
+        }
+    }
+}

@@ -6,14 +6,12 @@ import {
     canMoveLeft,
     canMoveRight
 } from '@/selectors';
+import { navAsideMobileToggle } from '@/actions';
+import { objectMerge } from '@/helpers';
 import {
-    moveUp,
-    moveDown,
-    moveLeft,
-    moveRight,
-    navAsideMobileToggle,
-    toggleTreeMode
-} from '@/actions';
+    caseMoveUpDownLeftRightDTP,
+    caseToggleTreeModeDTP
+} from '@/containers/dtp';
 
 const stateToProps = function(state) {
     return ({
@@ -27,26 +25,15 @@ const stateToProps = function(state) {
 };
 
 const dispatchToProps = function(dispatch) {
-    return {
-        moveUp() {
-            dispatch(moveUp());
-        },
-        moveDown() {
-            dispatch(moveDown());
-        },
-        moveLeft() {
-            dispatch(moveLeft());
-        },
-        moveRight() {
-            dispatch(moveRight());
-        },
-        openNavAsideMobile() {
-            dispatch(navAsideMobileToggle({ isOpen: true }));
-        },
-        toggleTreeMode({ isTreeMode }) {
-            dispatch(toggleTreeMode({ isTreeMode }));
+    return objectMerge(
+        caseMoveUpDownLeftRightDTP(dispatch),
+        caseToggleTreeModeDTP(dispatch),
+        {
+            openNavAsideMobile() {
+                dispatch(navAsideMobileToggle({ isOpen: true }));
+            }
         }
-    };
+    );
 };
 
 export default connect(stateToProps, dispatchToProps)(NavMobile);

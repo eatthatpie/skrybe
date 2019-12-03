@@ -9,12 +9,7 @@ import {
     getCurrentNodeParent,
     getCurrentNodeParentId
 } from '@/selectors';
-import {
-    moveDown,
-    moveLeft,
-    moveRight,
-    moveUp,
-} from '@/actions/index';
+import { caseMoveUpDownLeftRightDTP } from '@/containers/dtp';
 
 const stateToProps = function(state) {
     return ({
@@ -28,21 +23,6 @@ const stateToProps = function(state) {
     });
 }
 
-const dispatchToProps = function(dispatch) {
-    return {
-        moveDown() {
-            dispatch(moveDown());
-        },
-        moveLeft() {
-            dispatch(moveLeft());
-        },
-        moveRight() {
-            dispatch(moveRight());
-        },
-        moveUp() {
-            dispatch(moveUp());
-        }
-    }
-}
+const dispatchToProps = caseMoveUpDownLeftRightDTP;
 
 export default connect(stateToProps, dispatchToProps)(CardsGridView);

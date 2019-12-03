@@ -22,11 +22,11 @@ function NavItem(props) {
     return (
         <li className={props.isActive ? 'is-active' : ''}>
             <a
-                className=" h:bg-nav-ic fs-16"
+                className=" h:bg-primary-light fs-17"
                 data-nav-name={props.navName}
                 onClick={props.handleClick}
             >
-                <i className="fas fa-angle-right"></i> {props.name}
+                {props.name}
             </a>
             {props.isActive && props.items.length > 0 ? childrenView : ''}
             {content}

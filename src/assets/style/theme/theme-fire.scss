@@ -1,0 +1,13 @@
+.theme-fire {
+    $bg: #e9e9e9;
+    $default: #111;
+    $default-light: #535353;
+    $light: #fff;
+    $muted: #999;
+    $primary: darken(rgb(178, 32, 37), 10%);
+    $primary-light: darken(rgb(236, 52, 54), 10%);
+    $primary-bright: lighten($primary-light, 25%);
+    $primary-dark: darken(rgb(118, 13, 22), 10%);
+
+    @import 'classes';
+}

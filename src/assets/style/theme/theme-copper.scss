@@ -1,0 +1,13 @@
+.theme-copper {
+    $bg: #e9e9e9;
+    $default: #111;
+    $default-light: #535353;
+    $light: #fff;
+    $muted: #999;
+    $primary: darken(rgb(249, 159, 53), 25%);
+    $primary-light: darken(rgb(253, 189, 94), 25%);
+    $primary-bright: lighten($primary-light, 25%);
+    $primary-dark: darken(rgb(215, 121, 28), 25%);
+
+    @import 'classes';
+}

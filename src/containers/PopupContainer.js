@@ -4,7 +4,7 @@ import PopupSignIn from '@/view/popup/PopupSignIn';
 import PopupTutorialStep1 from '@/view/popup/PopupTutorialStep1';
 import React from 'react';
 import { connect } from 'react-redux';
-import { togglePopup } from '@/actions/index';
+import { caseTogglePopupDTP } from '@/containers/dtp';
 import './Popup.scss';
 
 // @TODO
@@ -73,12 +73,6 @@ const stateToProps = function(state) {
     });
 };
 
-const dispatchToProps = function(dispatch) {
-    return {
-        togglePopup({ isActive, type, props }) {
-            dispatch(togglePopup({ isActivePopup: isActive, popupType: type, props }));
-        }
-    };
-};
+const dispatchToProps = caseTogglePopupDTP;
 
 export default connect(stateToProps, dispatchToProps)(Popup);
